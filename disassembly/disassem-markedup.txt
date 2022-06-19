@@ -42,7 +42,7 @@ IRQ4: Intein ()/ AD complete
 0026: aa           EI               // Enable interrupts
 0027: 62           RETI             // Return from interrupt
 
-IRQ5: Serial IRSR
+IRQ5: Serial ISR
 
 0028: 54 2f 16     JMP     $162F    // Jump to 162f
 002b: 0e           MOV     A,H
@@ -427,7 +427,7 @@ IRQ5: Serial IRSR
 Entry Point (jump from reset vector)
 
 02cd: 68 ff        MVI     V,$FF     // Load xff into reg V
-02cf: 10           EXA               // Exchange A? (V swap V')(A swap A')(EA swap EA')
+02cf: 10           EXA               // Exchange A (V swap V')(A swap A')(EA swap EA')
 02d0: 68 ff        MVI     V,$FF     // Load xff into reg V
 02d2: 04 ff ff     LXI     SP,$FFFF  // Ld immed, SP, xffff
 02d5: 69 08        MVI     A,$08     // Mv Immed A, 0x8
@@ -519,29 +519,32 @@ From (364)
 036a: 0a           MOV     A,B
 036b: 3b           STAX    (HL)
 From above (34e, 355, 359, ):
-036c: 34 07 40     LXI     HL,$4007
-036f: 69 00        MVI     A,$00
-0371: 3d           STAX    (HL+)
-0372: 3d           STAX    (HL+)
-0373: 32           INX     HL
-0374: 69 3c        MVI     A,$3C
-0376: 3b           STAX    (HL)
-0377: aa           EI
-0378: 14 3a 02     LXI     BC,$023A
-037b: 53           DCR     C
-037c: fe           JR      $037B
-037d: 52           DCR     B
-037e: fc           JR      $037B
-037f: 75 22 22     EQIW    VV:22,$22
-0382: c4           JR      $0387
-0383: 40 f4 1d     CALL    $1DF4
-0386: c8           JR      $038F
-0387: 59 22        BIT     1,VV:22
-0389: c5           JR      $038F
-038a: 69 08        MVI     A,$08
-038c: 63 26        STAW    VV:26
-038e: f8           JR      $0387
-038f: 15 69 40     ORIW    VV:69,$40
+036c: 34 07 40     LXI     HL,$4007  // Load HL with 0x4007 (Analog board ?)
+036f: 69 00        MVI     A,$00     // Clear A
+0371: 3d           STAX    (HL+)     // Write 0 thru HL (0x4007), increment
+0372: 3d           STAX    (HL+)     // Write 0 thru HL (0x4008), increment
+0373: 32           INX     HL        // increment HL (0x400a?)
+0374: 69 3c        MVI     A,$3C     // Ld A with 0x3c
+0376: 3b           STAX    (HL)      // Store A (0x3c) thru HL
+0377: aa           EI                // Enable Interrupts
+0378: 14 3a 02     LXI     BC,$023A  // Load BC with 0x023a
+Jump from 037c, 037e
+037b: 53           DCR     C         // Decrement C (0x239? or 0x013a?)
+037c: fe           JR      $037B     // Jump back 2
+037d: 52           DCR     B         // Decrement B
+037e: fc           JR      $037B     // Jump R??? back 4
+037f: 75 22 22     EQIW    VV:22,$22 // Tst EQ, immed, VV+0x22 == 0x22
+0382: c4           JR      $0387     // Jump R??? fwd 3
+0383: 40 f4 1d     CALL    $1DF4     // Call ?? It just rets?
+0386: c8           JR      $038F     // Jump R??? fwd ~5
+Jump from 0382, 038e
+0387: 59 22        BIT     1,VV:22   // Test bit 1, 22 off of VV.
+0389: c5           JR      $038F     // Jump R??? fwd ~3
+038a: 69 08        MVI     A,$08     // Load Imm A with 0x08
+038c: 63 26        STAW    VV:26     // St A to VV+26
+038e: f8           JR      $0387     // Jmp R??? back 5
+Jmp from 0386
+038f: 15 69 40     ORIW    VV:69,$40 //
 0392: 71 53 ff     MVIW    VV:53,$FF
 0395: 70 69 ef 2f  MOV     A,($2FEF)
 0399: 77 5a        EQI     A,$5A
@@ -3152,6 +3155,8 @@ Loop
 1623: 69 a0        MVI     A,$A0
 1625: 63 4f        STAW    VV:4F
 1627: b8           RET
+
+Jmp's from below (1637)
 1628: 40 a7 15     CALL    $15A7
 162b: 11           EXX
 162c: 10           EXA
@@ -3160,15 +3165,16 @@ Loop
 
 Serial ISR:
 
-162f: 10           EXA
-1630: 11           EXX
-1631: 64 5e 04     OFFI    MKH,$04
-1634: c3           JR      $1638
-1635: 48 49        SKIT    FSR
-1637: f0           JR      $1628
-1638: 4c d9        MOV     A,RXB
-163a: 48 6b        SKNIT   ER
-163c: 4e b6        JRE     $16F4
+162f: 10           EXA               // Swap (A)(V)(EA) (Setup interrupt context)
+1630: 11           EXX               // Swap (B)(C)(D)(E)(H)(L)
+1631: 64 5e 04     OFFI    MKH,$04   // Masks INTST (ser tx irq?)
+1634: c3           JR      $1638     // Jmp fwd
+1635: 48 49        SKIT    FSR       //
+1637: f0           JR      $1628     // Jmp R??? back ~10
+From 1634:
+1638: 4c d9        MOV     A,RXB     // Get RXBuffer into a
+163a: 48 6b        SKNIT   ER        // Skip if IRF, reset IRF
+163c: 4e b6        JRE     $16F4     // Skip way fwd
 163e: 1c           MOV     D,A
 163f: 27 f7        GTI     A,$F7
 1641: c9           JR      $164B
@@ -3176,8 +3182,8 @@ Serial ISR:
 1644: 55 63 01     OFFIW   VV:63,$01
 1647: 7d 08        CALF    $0D08
 1649: 4e 31        JRE     $167C
-164b: 57 80        OFFI    A,$80
-164d: 4e 23        JRE     $1672
+164b: 57 80        OFFI    A,$80     // Clear MSB of A
+164d: 4e 23        JRE     $1672     //
 164f: 01 6b        LDAW    VV:6B
 1651: 37 0c        LTI     A,$0C
 1653: 4e 9f        JRE     $16F4
@@ -3199,6 +3205,7 @@ Serial ISR:
 166f: 18           MOV     EAH,A
 1670: 88           CALT    ($0090)
 1671: 18           MOV     EAH,A
+
 1672: 05 69 fe     ANIW    VV:69,$FE
 1675: 07 f0        ANI     A,$F0
 1677: 77 f0        EQI     A,$F0
@@ -3211,6 +3218,7 @@ Serial ISR:
 1683: 29           LDAX    (BC)
 1684: 18           MOV     EAH,A
 1685: b8           RET
+// Is this hunting for statuses? it recognizes?
 1686: 17 b0        ORI     A,$B0
 1688: 17 b2        ORI     A,$B2
 168a: 17 b8        ORI     A,$B8
@@ -3271,6 +3279,9 @@ Serial ISR:
 16ed: 01 4d        LDAW    VV:4D
 16ef: 63 4e        STAW    VV:4E
 16f1: 64 0e fb     ANI     MKH,$FB
+
+Jmp from way above
+
 16f4: 11           EXX
 16f5: 10           EXA
 16f6: aa           EI
@@ -3516,26 +3527,27 @@ Serial ISR:
 18ba: 64 4e 04     ONI     MKH,$04
 18bd: f9           JR      $18B7
 18be: 40 fd 19     CALL    $19FD
-18c1: 64 00 01     MVI     PA,$01
-18c4: 64 01 00     MVI     PB,$00
-18c7: 01 33        LDAW    VV:33
-18c9: 07 f0        ANI     A,$F0
-18cb: 1e           MOV     H,A
-18cc: 01 73        LDAW    VV:73
-18ce: 07 0f        ANI     A,$0F
-18d0: 60 1e        ORA     H,A
-18d2: 6f 00        MVI     L,$00
-18d4: 71 56 00     MVIW    VV:56,$00
-18d7: 69 f0        MVI     A,$F0
-18d9: 9c           CALT    ($00B8)
-18da: 69 41        MVI     A,$41
-18dc: 9c           CALT    ($00B8)
+18c1: 64 00 01     MVI     PA,$01    // Load PA (scan row output) with 0x01
+18c4: 64 01 00     MVI     PB,$00    // Load PB (LED scan) with 0x0
+18c7: 01 33        LDAW    VV:33     // Load A with 0x33 off V
+18c9: 07 f0        ANI     A,$F0     // Mask off MSBs
+18cb: 1e           MOV     H,A       // Mv A to H
+18cc: 01 73        LDAW    VV:73     // Ld A with 0x73 off V
+18ce: 07 0f        ANI     A,$0F     // Mask off LSBs
+18d0: 60 1e        ORA     H,A       // A = H or A (IE: MSBs from 33, LSBs from 73)
+18d2: 6f 00        MVI     L,$00     // Clear L
+18d4: 71 56 00     MVIW    VV:56,$00 // Clear 56 off V
+18d7: 69 f0        MVI     A,$F0     // Ld A with 0xf0
+18d9: 9c           CALT    ($00B8)   // Call thru B8 ???
+18da: 69 41        MVI     A,$41     // Load A with 0x41
+18dc: 9c           CALT    ($00B8)   // ???
 18dd: 69 52        MVI     A,$52
 18df: 9c           CALT    ($00B8)
 18e0: 69 01        MVI     A,$01
 18e2: 9c           CALT    ($00B8)
-18e3: 01 73        LDAW    VV:73
+18e3: 01 73        LDAW    VV:73     // Ld A with 0x73 off V
 18e5: 9c           CALT    ($00B8)
+jmp from below (18fb)
 18e6: 2b           LDAX    (HL)
 18e7: 07 0f        ANI     A,$0F
 18e9: 9c           CALT    ($00B8)
@@ -3547,14 +3559,14 @@ Serial ISR:
 18f3: 74 c0 56     ADDW    VV:56
 18f6: 63 56        STAW    VV:56
 18f8: 74 7f 00     EQI     L,$00
-18fb: ea           JR      $18E6
-18fc: 01 56        LDAW    VV:56
-18fe: 48 3a        NEGA
-1900: 07 7f        ANI     A,$7F
-1902: 9c           CALT    ($00B8)
-1903: 69 f7        MVI     A,$F7
-1905: 9c           CALT    ($00B8)
-1906: 75 73 4f     EQIW    VV:73,$4F
+18fb: ea           JR      $18E6     // jmp back ~10
+18fc: 01 56        LDAW    VV:56     // Ld A with 0x56 off V
+18fe: 48 3a        NEGA              // 1's complement
+1900: 07 7f        ANI     A,$7F     // Clear MSB
+1902: 9c           CALT    ($00B8)   //
+1903: 69 f7        MVI     A,$F7     //
+1905: 9c           CALT    ($00B8)   //
+1906: 75 73 4f     EQIW    VV:73,$4F //
 1909: 69 54        MVI     A,$54
 190b: 69 55        MVI     A,$55
 190d: 1c           MOV     D,A
@@ -3574,8 +3586,8 @@ Serial ISR:
 192a: 55 33 10     OFFIW   VV:33,$10
 192d: 17 04        ORI     A,$04
 192f: 63 53        STAW    VV:53
-1931: 64 00 01     MVI     PA,$01
-1934: 64 01 00     MVI     PB,$00
+1931: 64 00 01     MVI     PA,$01    // Sel scan col 1
+1934: 64 01 00     MVI     PB,$00    // Clear LED scan
 1937: 9b           CALT    ($00B6)
 1938: 77 01        EQI     A,$01
 193a: 4e 5a        JRE     $1996
@@ -3672,11 +3684,12 @@ Serial ISR:
 19e3: 30 62        DCRW    VV:62
 19e5: c5           JR      $19EB
 19e6: 71 62 04     MVIW    VV:62,$04
-19e9: 69 10        MVI     A,$10
-19eb: 4d c1        MOV     PB,A
-19ed: 70 69 00 40  MOV     A,($4000)
+19e9: 69 10        MVI     A,$10     // Load A with 0x10
+19eb: 4d c1        MOV     PB,A      // Write LED sel val
+19ed: 70 69 00 40  MOV     A,($4000) //
 19f1: 47 01        ONI     A,$01
 19f3: b8           RET
+
 19f4: 04 ff ff     LXI     SP,$FFFF
 19f7: 71 6b 00     MVIW    VV:6B,$00
 19fa: 54 08 03     JMP     $0308

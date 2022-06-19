@@ -2,9 +2,17 @@
 
 _as largely extracted from the datasheets, reading disassembly, etc..._
 
+If you want the background that gets here, there are 3 CPU documents to track down:
+
+* upd7810/11 manual
+* upd87c10/11 manual
+* upd8710/11, 7810H/87811H, 78c10/c11/c14 Microcomputers ()
+
+The first two are very similar, and light on details.  The third is 189 pages, and has those missing details.
+
 ## Boot Mode
 
-Mode0,1 buth hi thru 4k7's
+Mode0,1 buth hi thru 4k7's =
 
 ## Instructions with skip conditions
 
@@ -22,12 +30,45 @@ From Datasheet:
 My understanding:
 * External EEPROM 0x0000 to 0x1fff
 * External RAM    0x2000 to 0x3fff
+* Analog interface 0x4000
 * Internal RAM    0xff00 to 0xffff
 
 Where are the triggers/vel dacs?
 
+* Decode of A[0,1,2]
+* !WR
+* A[13,14,15] = 010 (0x4xxx)
+
+Where are the switch inputs?  Mapped to data bus.
+
+* At address?
+* !RD
+* A[13,14,15] = (0x4xxx?)
+
 ## Execution Registers
 
+One each of the following
+
+* PSW - 8b - Program Status Word
+   * b0 - Carry
+   * b1 - RFU
+   * b2 - L0 - Overlay Zero
+   * b3 - L1 - Overlay One
+   * b4 - HC - Carry from bit 3 to 4
+   * b5 - SK - Skip
+   * b6 - Z - Operation result was zero
+   * b7 - RFU
+* PC - 16b - Program Counter - next instr to be fetched
+* SP - 16b - Stack Pointer - grown downward
+
+Two sets of the following (IE A and A'), some with swap instructions to trade contents.
+
+* EA - 16b - Arith & logic operations
+* A - 8b - Arith & logic operations
+* V - 8b - Vector - MSB's of a page indexing reg (LSBs will be immed)
+* B, C - Dual 8b, gang to 16b
+* D, E - Dual 8b, gang to 16b - with indexing, inc/dec
+* H, L - Dual 8b, gang to 16b - with indexing, inc/dec
 
 
 ## Interrupts
