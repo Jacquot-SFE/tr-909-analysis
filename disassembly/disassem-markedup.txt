@@ -13,18 +13,18 @@ IRQ0: NMI
 IRQ1: Interrupt timer 0,1
 
 0008: 01 02        LDAW    VV:02    // load AW from vv02
-000a: 04 08 10     LXI     SP,$1008 // Set SP to 0x1008
+000a: 04 08 10     LXI     SP,$1008 // Set SP imm to 0x1008
 000d: 20 40        INRW    VV:40    // Increment vv:40
-000f: 80           CALT    ($0080)
+000f: 80           CALT    ($0080)  // ???
 
 IRQ2: External int 1,2
 Ext int 1 is DIN clk
 
-0010: b0           PUSH    VA
-0011: b4           PUSH    EA
-0012: 59 63        BIT     1,VV:63
-0014: 4e af        JRE     $00C5
-0016: 4e a4        JRE     $00BC
+0010: b0           PUSH    VA        // Store VA
+0011: b4           PUSH    EA        // Store EA
+0012: 59 63        BIT     1,VV:63   // Test bit 1 of vv:63
+0014: 4e af        JRE     $00C5     // (cond) to C5
+0016: 4e a4        JRE     $00BC     // (?) to BC
 
 IRQ3: Timer/counter
 
@@ -47,13 +47,13 @@ From 0022
 IRQ5: Serial ISR
 
 0028: 54 2f 16     JMP     $162F    // Jump to 162f
-002b: 0e           MOV     A,H
-002c: 07 0c        ANI     A,$0C
-002e: 7d 98        CALF    $0D98
-0030: 74 0e 70     ANI     H,$70
+002b: 0e           MOV     A,H      // Mov H to A
+002c: 07 0c        ANI     A,$0C    // And Immed, A with 0x0c
+002e: 7d 98        CALF    $0D98    // to fixed area ??
+0030: 74 0e 70     ANI     H,$70    //
 0033: 60 9e        ORA     A,H
-0035: 17 0c        ORI     A,$0C
-0037: 1e           MOV     H,A
+0035: 17 0c        ORI     A,$0C    // Or immed A with 0x0c
+0037: 1e           MOV     H,A      //
 0038: b8           RET
 
 0039: 6a 64        MVI     B,$64
@@ -80,6 +80,8 @@ IRQ5: Serial ISR
 005a: 4d c0        MOV     PA,A
 005c: 64 19 20     ORI     PB,$20
 005f: 2d           LDAX    (HL+)
+
+Soft IRQ
 0060: 5a 64        BIT     2,VV:64
 0062: 45 64 03     ONIW    VV:64,$03
 0065: 2b           LDAX    (HL)
@@ -149,12 +151,14 @@ Call from timer ISR
 00b9: 19           MOV     EAL,A
 00ba: d2           JR      $00CD
 00bb: 19           MOV     EAL,A
+
+Jmp from Ext interrupt
 00bc: 69 f8        MVI     A,$F8
 00be: 7d 08        CALF    $0D08
 00c0: 40 f8 17     CALL    $17F8
 00c3: 4e 42        JRE     $0107
 
-Jmp from External interrupt (DIN Clk)
+Jmp from External interrupt (DIN Clk) if vv:63 && 0x01
 00c5: 48 c0        DMOV    EA,ECNT
 00c7: 69 00        MVI     A,$00
 00c9: 4d cc        MOV     ETMM,A
@@ -444,18 +448,18 @@ Entry Point (jump from reset vector)
 02cf: 10           EXA               // Exchange A (V swap V')(A swap A')(EA swap EA')
 02d0: 68 ff        MVI     V,$FF     // Load xff into reg V
 02d2: 04 ff ff     LXI     SP,$FFFF  // Ld immed, SP, xffff
-02d5: 69 08        MVI     A,$08     // Mv Immed A, 0x8
-02d7: 4d d0        MOV     MM,A      // Mv A to MM?
-02d9: 69 00        MVI     A,$00     // Mv Immed A, 0
+02d5: 69 08        MVI     A,$08     // Mv Immed A, 0x08
+02d7: 4d d0        MOV     MM,A      // Mv A to Mem map, enable internal ram
+02d9: 69 00        MVI     A,$00     // Mv Immed A, 00
 02d7: 4d d0        MOV     MM,A      // 0 to MM
-02db: 4d c0        MOV     PA,A      // 0 to Port A - scanner out
+02db: 4d c0        MOV     PA,A      // 0 to Port A - LED & btn scanner out
 02dd: 4d c1        MOV     PB,A      // 0 to Port B - LED scan return
 02df: 4d c5        MOV     PF,A      // 0 to Port F - Address bus MSBs
-02e1: 4d d2        MOV     MA,A      // 0 to Mode A
-02e3: 4d d3        MOV     MB,A      // 0 to Mode B
+02e1: 4d d2        MOV     MA,A      // 0 to Mode A - All outputs
+02e3: 4d d3        MOV     MB,A      // 0 to Mode B - All outputs
 02e5: 4d c8        MOV     ANM,A     // AD chan mode
 02e7: 64 02 ff     MVI     PC,$FF    // Mv Immed FF to port c - MIDI/DIN pins
-02ea: 34 00 ff     LXI     HL,$FF00  // Load HL ? with 0xff00
+02ea: 34 00 ff     LXI     HL,$FF00  // Load HL with 0xff00
 
 Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 02ed: 3d           STAX    (HL+)     // Store A through HL (post increment?)
@@ -495,11 +499,11 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 032c: 69 ee        MVI     A,$EE     // Mv imm a gets 0xee
 032e: 4d d4        MOV     MC,A      // Mv A to MC (port c mode - pin dirs?)
 0330: 69 1b        MVI     A,$1B     // Mv imm a gets 0x1b
-0332: 4d d1        MOV     MCC,A     // MCC (Mode control C) gets 0x1B ???
+0332: 4d d1        MOV     MCC,A     // MCC (Mode control C) gets 0x1B: T1 in,T0 out,!SCK, TX,RX out, others GPIO
 // Serial port
 0334: 69 4e        MVI     A,$4E     // Mv imm A gets 0x4e
 0336: 4d ca        MOV     SML,A     // Mv SML (Serial mode low) gets A (0x4e)
-0338: 64 81 0e     MVI     SMH,$0E   // Mv SMH (Ser Mode High) gets 0x0e
+0338: 64 81 0e     MVI     SMH,$0E   // Mv SMH (Ser Mode High) gets 0x0e:
 // Timer/event counter
 033b: 69 0c        MVI     A,$0C     // Mv Imm A gets 0x0c
 033d: 4d cc        MOV     ETMM,A    // Mv A to ETMM (Timer event ctr mode)
@@ -3189,19 +3193,19 @@ Loop
 15af: 48 4a        SKIT    FST
 15b1: b8           RET
 
-15b2: 01 d0        LDAW    VV:D0
-15b4: 71 d0 00     MVIW    VV:D0,$00
+15b2: 01 d0        LDAW    VV:D0     // Load A thru VV:d0
+15b4: 71 d0 00     MVIW    VV:D0,$00 // Clear vv:d0
 15b7: 4d d8        MOV     TXB,A     // Write A to Transmit buf
 15b9: b8           RET
 
 15ba: 48 4a        SKIT    FST
 15bc: b8           RET
 
-15bd: 01 4b        LDAW    VV:4B
+15bd: 01 4b        LDAW    VV:4B     // Load A with vv:4b
 15bf: 4d d8        MOV     TXB,A     // Write A to Transmit buf
-15c1: 01 d0        LDAW    VV:D0
-15c3: 63 4b        STAW    VV:4B
-15c5: 71 d0 00     MVIW    VV:D0,$00
+15c1: 01 d0        LDAW    VV:D0     // Load A with vv:d0
+15c3: 63 4b        STAW    VV:4B     // Store A to 4b
+15c5: 71 d0 00     MVIW    VV:D0,$00 // clear vv:d0
 15c8: b8           RET
 
 15c9: 5d 69        BIT     5,VV:69
@@ -4038,7 +4042,7 @@ Called by 19c8
 1b9c: 64 01 10     MVI     PB,$10
 1b9f: 15 67 80     ORIW    VV:67,$80
 1ba2: 69 23        MVI     A,$23
-1ba4: 4d d1        MOV     MCC,A
+1ba4: 4d d1        MOV     MCC,A     // MCC of 23: tx,rx
 1ba6: 11           EXX
 1ba7: 24 ff 00     LXI     DE,$00FF
 1baa: 11           EXX

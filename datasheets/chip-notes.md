@@ -113,3 +113,17 @@ Pins AN[0..7], mostly unused
 
 * AN0 - Tempo
 * AN3 - Voice board master accent signal.
+
+Registers:
+
+# Instruction Notes
+
+*Really need to understand the conditional stuff.*
+*Really need to understand some of the addressing....*
+
+* Jumps: simply modify the PC (and some status flags) - nothing on stack
+   * JR: Jump Relative, 6 bits tot (+32, -31)
+   * JRE: Jmp relative, extended, 9 bits tot (+255, -255)
+   * JMP: Jump, full 16-bit operand
+   * JB: Jump to addr in BC (1 byte instr)
+   * JEA: Jump to addr in EA (2 byte instr)

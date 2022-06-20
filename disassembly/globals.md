@@ -17,6 +17,7 @@ What globals are there?  How do they appear to be used?
 |3c|0302||Init to 0x0a|
 |40|0017 |Word, counter | timer interrupt |
 |41|02ff||Init to 0x09|
+|4b|15bd|txbyte|staging transmit status byte?|
 |4C|0313||init to 0|
 |4D|0315||init to 0|
 |4e|0317||init to 0|
@@ -29,3 +30,4 @@ What globals are there?  How do they appear to be used?
 |67|0018, |Bits?|IRQ3 Interval counter|
 |6a|030e||init to 0xb3|
 |74|0305||init to 0x01|
+|D0|15b2|txbyte|staging transmit data byte?|
