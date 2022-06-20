@@ -31,6 +31,8 @@ My understanding:
 * External EEPROM 0x0000 to 0x1fff
 * External RAM    0x2000 to 0x3fff
 * Analog interface 0x4000
+* Cartridge 0x6000?
+* ? 0x7000
 * Internal RAM    0xff00 to 0xffff
 
 Where are the triggers/vel dacs?
@@ -76,6 +78,7 @@ Two sets of the following (IE A and A'), some with swap instructions to trade co
 * IRQ0 - vec at 4 - External NMI
 * IRQ1 - vec at 8 - Timers 0,1
 * IRQ2 - vec at 16 - External interrupt 1,2
+   * EI 1 is DIN Tempo
 * IRQ3 - vec at 24 - Timer/event counter 0,1
 * IRQ4 - vec at 32 - , AD complete
 * IRQ5 - vec at 40
