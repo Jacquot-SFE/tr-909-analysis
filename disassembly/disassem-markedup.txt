@@ -3,7 +3,7 @@ Reset Vec:
 0000: 54 cd 02     JMP     $02CD  // Jump to 02cd
 0003: 00           NOP
 
-IRQ0: NMI
+IRQ0: NMI 
 
 0004: aa           EI             // enable interrupts
 0005: 62           RETI           // return from interrupt
@@ -102,7 +102,7 @@ Soft IRQ
 007e: ff           JR      $007E     // Deadloop?
 007f: ff           JR      $007F     // Deadloop?
 
-Call from timer ISR
+Func from timer ISR
 0080: 2b           LDAX    (HL)
 0081: 00           NOP
 0082: 39           STAX    (BC)
@@ -155,7 +155,7 @@ Call from timer ISR
 Jmp from Ext interrupt
 00bc: 69 f8        MVI     A,$F8
 00be: 7d 08        CALF    $0D08
-00c0: 40 f8 17     CALL    $17F8
+00c0: 40 f8 17     CALL    $17F8     //
 00c3: 4e 42        JRE     $0107
 
 Jmp from External interrupt (DIN Clk) if vv:63 && 0x01
@@ -227,25 +227,26 @@ jmp from eb:
 0128: 00           NOP
 0129: 4f dc        JRE     $0107
 // Jmp dest from
-012b: 64 09 c0     ANI     PB,$C0
-012e: 64 00 01     MVI     PA,$01
-0131: 71 5a 09     MVIW    VV:5A,$09
+// This looks like the scanner
+012b: 64 09 c0     ANI     PB,$C0    // LED columns
+012e: 64 00 01     MVI     PA,$01    // Scan row 1
+0131: 71 5a 09     MVIW    VV:5A,$09 //
 0134: b0           PUSH    VA
 0135: b1           PUSH    BC
 0136: b2           PUSH    DE
 0137: b3           PUSH    HL
-0138: 24 00 40     LXI     DE,$4000
-013b: 2a           LDAX    (DE)
-013c: 64 00 02     MVI     PA,$02
-013f: 5f 64        BIT     7,VV:64
-0141: 4e 33        JRE     $0176
-0143: 05 64 7f     ANIW    VV:64,$7F
-0146: 74 98 17     ORAW    VV:17
-0149: 63 17        STAW    VV:17
+0138: 24 00 40     LXI     DE,$4000  // Read DE from 4000
+013b: 2a           LDAX    (DE)      //
+013c: 64 00 02     MVI     PA,$02    // Scan row 2
+013f: 5f 64        BIT     7,VV:64   //
+0141: 4e 33        JRE     $0176     // Cond jump to 176
+0143: 05 64 7f     ANIW    VV:64,$7F // And vv:64 - keep 7 LSBs
+0146: 74 98 17     ORAW    VV:17     // Or A with vv:17
+0149: 63 17        STAW    VV:17     // Store A thru vv:17 - tracking most recent state?
 014b: 1a           MOV     B,A
-014c: 2a           LDAX    (DE)
-014d: 63 1f        STAW    VV:1F
-014f: 64 00 04     MVI     PA,$04
+014c: 2a           LDAX    (DE)      // Read thru DE (4000)
+014d: 63 1f        STAW    VV:1F     // Store to vv:1f
+014f: 64 00 04     MVI     PA,$04    // Scan row 3
 0152: 34 10 ff     LXI     HL,$FF10
 0155: 7a e0        CALF    $0AE0
 0157: 6f 20        MVI     L,$20
@@ -254,9 +255,9 @@ jmp from eb:
 015c: 1a           MOV     B,A
 015d: 4c c2        MOV     A,PC
 015f: 07 04        ANI     A,$04
-0161: 70 9a        ORAX    (DE)
+0161: 70 9a        ORAX    (DE)      // Or A with contents of 4000
 0163: 3d           STAX    (HL+)
-0164: 64 00 08     MVI     PA,$08
+0164: 64 00 08     MVI     PA,$08    // Scan row 4
 0167: 57 3b        OFFI    A,$3B
 0169: 07 3b        ANI     A,$3B
 016b: 60 8a        ANA     A,B
@@ -266,13 +267,14 @@ jmp from eb:
 0172: 2a           LDAX    (DE)
 0173: 3b           STAX    (HL)
 0174: 4e 33        JRE     $01A9
+Jmp from 0141:
 0176: 15 64 80     ORIW    VV:64,$80
 0179: 63 17        STAW    VV:17
 017b: 2a           LDAX    (DE)
 017c: 74 98 1f     ORAW    VV:1F
 017f: 63 1f        STAW    VV:1F
 0181: 1a           MOV     B,A
-0182: 64 00 10     MVI     PA,$10
+0182: 64 00 10     MVI     PA,$10    // Scan row 5
 0185: 34 18 ff     LXI     HL,$FF18
 0188: 7a e0        CALF    $0AE0
 018a: 55 1c 30     OFFIW   VV:1C,$30
@@ -292,6 +294,7 @@ jmp from eb:
 01a2: 60 8a        ANA     A,B
 01a4: 74 98 24     ORAW    VV:24
 01a7: 63 24        STAW    VV:24
+Jmp from 0174
 01a9: 64 1e 01     ORI     MKH,$01
 01ac: aa           EI
 01ad: 01 6a        LDAW    VV:6A
@@ -310,33 +313,34 @@ jmp from eb:
 01c7: 8c           CALT    ($0098)
 01c8: 5b 32        BIT     3,VV:32
 01ca: 7d 55        CALF    $0D55
-01cc: 4d c0        MOV     PA,A
-01ce: 64 19 01     ORI     PB,$01
+// This looks like LED scanner
+01cc: 4d c0        MOV     PA,A      // LED Pulls
+01ce: 64 19 01     ORI     PB,$01    // LED Sels
 01d1: 4e 39        JRE     $020C
 01d3: 71 6a f0     MVIW    VV:6A,$F0
 01d6: 6f 28        MVI     L,$28
 01d8: 8c           CALT    ($0098)
 01d9: 55 32 08     OFFIW   VV:32,$08
 01dc: 7d 55        CALF    $0D55
-01de: 4d c0        MOV     PA,A
-01e0: 64 19 02     ORI     PB,$02
+01de: 4d c0        MOV     PA,A      // LED Pulls
+01e0: 64 19 02     ORI     PB,$02    // LED Sels
 01e3: 4e 27        JRE     $020C
 01e5: 71 6a ff     MVIW    VV:6A,$FF
 01e8: 01 2e        LDAW    VV:2E
-01ea: 4d c0        MOV     PA,A
-01ec: 64 19 28     ORI     PB,$28
+01ea: 4d c0        MOV     PA,A      // LED Pulls
+01ec: 64 19 28     ORI     PB,$28    // LED Sels
 01ef: dc           JR      $020C
 01f0: 71 6a e5     MVIW    VV:6A,$E5
 01f3: 05 64 f9     ANIW    VV:64,$F9
 01f6: 6f 2b        MVI     L,$2B
 01f8: 8c           CALT    ($0098)
-01f9: 4d c0        MOV     PA,A
-01fb: 64 19 04     ORI     PB,$04
+01f9: 4d c0        MOV     PA,A      // LED pulls
+01fb: 64 19 04     ORI     PB,$04    // LED Sels
 01fe: cd           JR      $020C
 01ff: 71 6a b3     MVIW    VV:6A,$B3
 0202: 01 2f        LDAW    VV:2F
-0204: 4d c0        MOV     PA,A
-0206: 64 19 30     ORI     PB,$30
+0204: 4d c0        MOV     PA,A      // LED Pulls
+0206: 64 19 30     ORI     PB,$30    // LED sels
 0209: 5f 64        BIT     7,VV:64
 020b: 96           CALT    ($00AC)
 020c: 5f 66        BIT     7,VV:66
@@ -457,13 +461,13 @@ Entry Point (jump from reset vector)
 02df: 4d c5        MOV     PF,A      // 0 to Port F - Address bus MSBs
 02e1: 4d d2        MOV     MA,A      // 0 to Mode A - All outputs
 02e3: 4d d3        MOV     MB,A      // 0 to Mode B - All outputs
-02e5: 4d c8        MOV     ANM,A     // AD chan mode
+02e5: 4d c8        MOV     x`,A     // 0 to AD chan mode
 02e7: 64 02 ff     MVI     PC,$FF    // Mv Immed FF to port c - MIDI/DIN pins
 02ea: 34 00 ff     LXI     HL,$FF00  // Load HL with 0xff00
 
 Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 02ed: 3d           STAX    (HL+)     // Store A through HL (post increment?)
-02ee: 74 7f 00     EQI     L,$00     // Equal to zero?  Then skip next instr ???
+02ee: 74 7f 00     EQI     L,$00     // L Equal to zero?  Then skip next instr ???
 02f1: fb           JR      $02ED     // Jmp back by 3
 
 02f2: 34 fe 2f     LXI     HL,$2FFE  // Load HL with x2ffe (In ext RAM)
@@ -530,7 +534,7 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 0361: 3b           STAX    (HL)
 0362: 70 eb        NEAX    (HL)
 0364: c5           JR      $036A
-0365: 40 00 60     CALL    $6000
+0365: 40 00 60     CALL    $6000     // Call to ??? cart space?
 0368: aa           EI
 0369: d5           JR      $037F
 From (364)
@@ -541,7 +545,7 @@ From above (34e, 355, 359, ):
 036f: 69 00        MVI     A,$00     // Clear A
 0371: 3d           STAX    (HL+)     // Write 0 thru HL (0x4007), increment
 0372: 3d           STAX    (HL+)     // Write 0 thru HL (0x4008), increment
-0373: 32           INX     HL        // increment HL (0x400a?)
+0373: 32           INX     HL        // increment HL (0x4009?)
 0374: 69 3c        MVI     A,$3C     // Ld A with 0x3c
 0376: 3b           STAX    (HL)      // Store A (0x3c) thru HL
 0377: aa           EI                // Enable Interrupts
@@ -583,23 +587,23 @@ Jmp from 0386
 03b4: c6           JR      $03BB
 03b5: a7           DMOV    EA,HL
 03b6: 74 bd        DLT     EA,BC
-03b8: 40 8c 10     CALL    $108C
+03b8: 40 8c 10     CALL    $108C     //
 03bb: 75 33 30     EQIW    VV:33,$30
 03be: c9           JR      $03C8
 03bf: 71 33 20     MVIW    VV:33,$20
-03c2: 40 2f 10     CALL    $102F
+03c2: 40 2f 10     CALL    $102F     //
 03c5: 7a 12        CALF    $0A12
 03c7: c8           JR      $03D0
 03c8: 71 33 30     MVIW    VV:33,$30
-03cb: 40 2f 10     CALL    $102F
+03cb: 40 2f 10     CALL    $102F     //
 03ce: 7a 10        CALF    $0A10
 03d0: 05 63 0f     ANIW    VV:63,$0F
 03d3: 15 63 80     ORIW    VV:63,$80
 03d6: 05 65 fe     ANIW    VV:65,$FE
-03d9: 40 2f 10     CALL    $102F
+03d9: 40 2f 10     CALL    $102F     //
 03dc: 15 66 40     ORIW    VV:66,$40
 03df: 71 0a 00     MVIW    VV:0A,$00
-03e2: 40 2e 0f     CALL    $0F2E
+03e2: 40 2e 0f     CALL    $0F2E     //
 03e5: 7d b7        CALF    $0DB7
 03e7: 74 bd        DLT     EA,BC
 03e9: c6           JR      $03F0
@@ -632,7 +636,7 @@ Jmp from 0386
 0419: 7a 46        CALF    $0A46
 041b: 7e d1        CALF    $0ED1
 041d: 5e 69        BIT     6,VV:69
-041f: 40 03 1a     CALL    $1A03
+041f: 40 03 1a     CALL    $1A03     //
 0422: 55 22 1e     OFFIW   VV:22,$1E
 0425: fc           JR      $0422
 0426: 71 21 00     MVIW    VV:21,$00
@@ -739,20 +743,20 @@ Jmp from 0386
 04f0: c4           JR      $04F5
 04f1: 84           CALT    ($0088)
 04f2: 54 57 06     JMP     $0657
-04f5: 7f 84        CALF    $0F84
+04f5: 7f 84        CALF    $0F84     //
 04f7: df           JR      $0517
 04f8: 65 68 00     NEIW    VV:68,$00
 04fb: c5           JR      $0501
 04fc: 71 68 00     MVIW    VV:68,$00
 04ff: 7d df        CALF    $0DDF
-0501: 40 ae 14     CALL    $14AE
+0501: 40 ae 14     CALL    $14AE     //
 0504: 85           CALT    ($008A)
 0505: 54 d0 03     JMP     $03D0
-0508: 40 49 0f     CALL    $0F49
+0508: 40 49 0f     CALL    $0F49     //
 050b: 7d df        CALF    $0DDF
 050d: 7a fe        CALF    $0AFE
 050f: 55 67 04     OFFIW   VV:67,$04
-0512: 40 6e 1a     CALL    $1A6E
+0512: 40 6e 1a     CALL    $1A6E     //
 0515: 4e 20        JRE     $0537
 0517: 58 24        BIT     0,VV:24
 0519: dd           JR      $0537
@@ -763,11 +767,11 @@ Jmp from 0386
 0524: 47 0c        ONI     A,$0C
 0526: d0           JR      $0537
 0527: 71 68 00     MVIW    VV:68,$00
-052a: 40 61 10     CALL    $1061
+052a: 40 61 10     CALL    $1061     //
 052d: 99           CALT    ($00B2)
 052e: b5           DMOV    BC,EA
 052f: 9a           CALT    ($00B4)
-0530: 40 1f 1a     CALL    $1A1F
+0530: 40 1f 1a     CALL    $1A1F     //
 0533: 7d df        CALF    $0DDF
 0535: 7e d1        CALF    $0ED1
 0537: 55 65 01     OFFIW   VV:65,$01
@@ -805,7 +809,7 @@ Jmp from 0386
 0570: c9           JR      $057A
 0571: 70 1f 75 ff  LBCD    $FF75
 0575: 5d 2e        BIT     5,VV:2E
-0577: 40 df 13     CALL    $13DF
+0577: 40 df 13     CALL    $13DF     //
 057a: 9a           CALT    ($00B4)
 057b: 29           LDAX    (BC)
 057c: 7d f9        CALF    $0DF9
@@ -836,7 +840,7 @@ Jmp from 0386
 05ab: 05 66 3f     ANIW    VV:66,$3F
 05ae: 05 67 fc     ANIW    VV:67,$FC
 05b1: 7a 46        CALF    $0A46
-05b3: 40 2e 0f     CALL    $0F2E
+05b3: 40 2e 0f     CALL    $0F2E     //
 05b6: 69 03        MVI     A,$03
 05b8: 7d b9        CALF    $0DB9
 05ba: 34 77 ff     LXI     HL,$FF77
@@ -847,13 +851,13 @@ Jmp from 0386
 05c6: 15 67 01     ORIW    VV:67,$01
 05c9: 48 95        STEAX   (HL++)
 05cb: b6           DMOV    DE,EA
-05cc: 40 25 0f     CALL    $0F25
+05cc: 40 25 0f     CALL    $0F25     //
 05cf: 48 93        STEAX   (HL)
 05d1: 74 e6        DSUB    EA,DE
 05d3: 99           CALT    ($00B2)
 05d4: b7           DMOV    HL,EA
 05d5: 9a           CALT    ($00B4)
-05d6: 40 ed 0e     CALL    $0EED
+05d6: 40 ed 0e     CALL    $0EED     //
 05d9: 00           NOP
 05da: 7e c7        CALF    $0EC7
 05dc: 5c 33        BIT     4,VV:33
@@ -866,24 +870,24 @@ Jmp from 0386
 05ed: 71 24 00     MVIW    VV:24,$00
 05f0: 85           CALT    ($008A)
 05f1: 4e 5a        JRE     $064D
-05f3: 40 84 0f     CALL    $0F84
+05f3: 40 84 0f     CALL    $0F84     //
 05f6: d6           JR      $060D
 05f7: 05 68 80     ANIW    VV:68,$80
 05fa: 84           CALT    ($0088)
 05fb: 00           NOP
 05fc: 7c 8b        CALF    $0C8B
-05fe: 40 49 0f     CALL    $0F49
+05fe: 40 49 0f     CALL    $0F49     //
 0601: 00           NOP
 0602: 94           CALT    ($00A8)
 0603: ca           JR      $060E
-0604: 40 55 10     CALL    $1055
+0604: 40 55 10     CALL    $1055     //
 0607: c6           JR      $060E
 0608: 58 23        BIT     0,VV:23
 060a: 7e d1        CALF    $0ED1
 060c: c1           JR      $060E
 060d: 97           CALT    ($00AE)
 060e: 7e 0d        CALF    $0E0D
-0610: 40 ed 0e     CALL    $0EED
+0610: 40 ed 0e     CALL    $0EED     //
 0613: 00           NOP
 0614: 91           CALT    ($00A2)
 0615: 4f d9        JRE     $05F0
@@ -897,7 +901,7 @@ Jmp from 0386
 0620: c4           JR      $0625
 0621: 57 04        OFFI    A,$04
 0623: 7b 64        CALF    $0B64
-0625: 40 84 0f     CALL    $0F84
+0625: 40 84 0f     CALL    $0F84     //
 0628: d4           JR      $063D
 0629: 05 68 80     ANIW    VV:68,$80
 062c: 98           CALT    ($00B0)
@@ -907,20 +911,20 @@ Jmp from 0386
 0631: 7a 6a        CALF    $0A6A
 0633: 94           CALT    ($00A8)
 0634: c8           JR      $063D
-0635: 40 55 10     CALL    $1055
+0635: 40 55 10     CALL    $1055     //
 0638: c4           JR      $063D
 0639: 58 23        BIT     0,VV:23
 063b: 7e d1        CALF    $0ED1
-063d: 40 ed 0e     CALL    $0EED
+063d: 40 ed 0e     CALL    $0EED     //
 0640: c5           JR      $0646
 0641: 90           CALT    ($00A0)
 0642: 4f d3        JRE     $0617
 0644: 4f aa        JRE     $05F0
 0646: 7e 0d        CALF    $0E0D
-0648: 40 49 0f     CALL    $0F49
+0648: 40 49 0f     CALL    $0F49     //
 064b: 00           NOP
 064c: f4           JR      $0641
-064d: 40 8c 10     CALL    $108C
+064d: 40 8c 10     CALL    $108C     //
 0650: 58 20        BIT     0,VV:20
 0652: 54 d0 03     JMP     $03D0
 0655: 4f 4e        JRE     $05A5
@@ -943,7 +947,7 @@ Jmp from 0386
 0677: 84           CALT    ($0088)
 0678: 4f dd        JRE     $0657
 067a: 7c 8b        CALF    $0C8B
-067c: 40 ae 14     CALL    $14AE
+067c: 40 ae 14     CALL    $14AE     //
 067f: 94           CALT    ($00A8)
 0680: c2           JR      $0683
 0681: 7b a4        CALF    $0BA4
@@ -978,13 +982,13 @@ Jmp from 0386
 06ac: 7b 0b        CALF    $0B0B
 06ae: 7c 55        CALF    $0C55
 06b0: 69 00        MVI     A,$00
-06b2: 40 3a 12     CALL    $123A
+06b2: 40 3a 12     CALL    $123A     //
 06b5: 05 66 3f     ANIW    VV:66,$3F
 06b8: 58 20        BIT     0,VV:20
 06ba: cf           JR      $06CA
 06bb: 97           CALT    ($00AE)
 06bc: 7b ad        CALF    $0BAD
-06be: 40 13 15     CALL    $1513
+06be: 40 13 15     CALL    $1513     //
 06c1: 85           CALT    ($008A)
 06c2: 54 a5 05     JMP     $05A5
 06c5: 7c 6c        CALF    $0C6C
@@ -1695,8 +1699,7 @@ Jmp from 0386
 0ba2: 43           INR     C
 0ba3: eb           JR      $0B8F
 
-Called by 0348
-
+Func from 0348
 0ba4: 69 0f        MVI     A,$0F     // imm load A of 0x0f
 0ba6: 63 25        STAW    VV:25     // Store A, 25 off VV
 0ba8: 63 28        STAW    VV:28     //          28
@@ -1715,12 +1718,12 @@ Called by 0348
 0bbd: 15 33 02     ORIW    VV:33,$02
 0bc0: 15 2e 02     ORIW    VV:2E,$02
 0bc3: 69 00        MVI     A,$00
-0bc5: 40 3a 12     CALL    $123A
+0bc5: 40 3a 12     CALL    $123A     //
 0bc8: b8           RET
 
 0bc9: 5b 20        BIT     3,VV:20
 0bcb: 4e 2d        JRE     $0BFA
-0bcd: 40 33 12     CALL    $1233
+0bcd: 40 33 12     CALL    $1233     //
 0bd0: 24 26 ff     LXI     DE,$FF26
 0bd3: 69 00        MVI     A,$00
 0bd5: 59 66        BIT     1,VV:66
@@ -2003,12 +2006,12 @@ Called by 0348
 0d74: d3           JR      $0D88     // Jmp to Shift left 4 bits
 0d75: 60 ec        NEA     A,D
 0d77: d0           JR      $0D88     // Jmp to Shift left 4 bits
-0d78: 60 ed        NEA     A,E
+0d78: 60 ed        NEA     A,E       //
 0d7a: 48 2b        STC
-0d7c: 48 33        RLR     C
+0d7c: 48 33        RLR     C         // Rotate Logical Right C
 0d7e: 48 2b        STC
 
-0d80: 48 32        RLR     B         // Rotate Right
+0d80: 48 32        RLR     B         // Rotate Logical Right B
 0d82: 0f           MOV     A,L       // Mv Lo to A
 0d83: 57 07        OFFI    A,$07     // And immed with x07 : keep 3 lsbs
 0d85: 4f de        JRE     $0D65     //
@@ -2117,7 +2120,7 @@ Called by 0348
 0e26: f3           JR      $0E1A
 0e27: 59 68        BIT     1,VV:68
 0e29: 4e 25        JRE     $0E50
-0e2b: 40 61 10     CALL    $1061
+0e2b: 40 61 10     CALL    $1061     //
 0e2e: 99           CALT    ($00B2)
 0e2f: 74 b5        DSUBNB  EA,BC
 0e31: 4e 94        JRE     $0EC7
@@ -2142,7 +2145,7 @@ Called by 0348
 0e50: 45 68 0c     ONIW    VV:68,$0C
 0e53: 4e 44        JRE     $0E99
 0e55: 71 68 00     MVIW    VV:68,$00
-0e58: 40 61 10     CALL    $1061
+0e58: 40 61 10     CALL    $1061     //
 0e5b: 99           CALT    ($00B2)
 0e5c: 74 ed        DNE     EA,BC
 0e5e: 4e 67        JRE     $0EC7
@@ -2235,6 +2238,8 @@ Called by 0348
 0ee8: b8           RET
 0ee9: 14 00 00     LXI     BC,$0000
 0eec: d3           JR      $0F00
+
+Func from 109b, 05d6, 0610, 063d
 0eed: 58 67        BIT     0,VV:67
 0eef: b8           RET
 0ef0: 70 3f 77 ff  LHLD    $FF77
@@ -2269,11 +2274,15 @@ Called by 0348
 0f20: 4f de        JRE     $0F00
 0f22: 7e dc        CALF    $0EDC
 0f24: b9           RETS
+
+Func from 05cc, 1039, 108f,
 0f25: 44 7f 03     LXI     EA,$037F
 0f28: 01 33        LDAW    VV:33
 0f2a: 17 0f        ORI     A,$0F
 0f2c: 18           MOV     EAH,A
 0f2d: b8           RET
+
+Func from 03e2, 05b3, 1035,
 0f2e: 01 3b        LDAW    VV:3B
 0f30: 51           DCR     A
 0f31: cb           JR      $0F3D
@@ -2291,6 +2300,8 @@ Called by 0348
 0f46: b5           DMOV    BC,EA
 0f47: 9a           CALT    ($00B4)
 0f48: b8           RET
+
+Func from 0508, 05fe, 0648,
 0f49: 5c 24        BIT     4,VV:24
 0f4b: d5           JR      $0F61
 0f4c: 99           CALT    ($00B2)
@@ -2328,6 +2339,8 @@ Called by 0348
 0f7e: 7e d1        CALF    $0ED1
 0f80: 71 24 00     MVIW    VV:24,$00
 0f83: b8           RET
+
+func from 04f5, 05f3, 0625
 0f84: 58 20        BIT     0,VV:20
 0f86: b9           RETS
 0f87: 5a 23        BIT     2,VV:23
@@ -2414,12 +2427,15 @@ Called by 0348
 1026: 70 1e e6 2f  SBCD    $2FE6
 102a: 70 3e f6 2f  SHLD    $2FF6
 102e: b8           RET
+
+
+Func from 1dce, 02c2, 02cb, 03d9
 102f: 01 3b        LDAW    VV:3B
 1031: b0           PUSH    VA
 1032: 71 3b 00     MVIW    VV:3B,$00
-1035: 40 2e 0f     CALL    $0F2E
+1035: 40 2e 0f     CALL    $0F2E     //
 1038: 13           DCX     BC
-1039: 40 25 0f     CALL    $0F25
+1039: 40 25 0f     CALL    $0F25     //
 103c: b7           DMOV    HL,EA
 103d: 7d b7        CALF    $0DB7
 103f: 74 af        DGT     EA,HL
@@ -2436,6 +2452,8 @@ Called by 0348
 1051: a0           POP     VA
 1052: 63 3b        STAW    VV:3B
 1054: b8           RET
+
+Func from 0604, 0635
 1055: 5b 23        BIT     3,VV:23
 1057: b9           RETS
 1058: 71 24 00     MVIW    VV:24,$00
@@ -2444,6 +2462,8 @@ Called by 0348
 105d: 74 e5        DSUB    EA,BC
 105f: 81           CALT    ($0082)
 1060: b8           RET
+
+Func from 10b6, 10c6, 052a, 0e2b, 0e58
 1061: 01 2b        LDAW    VV:2B
 1063: 37 0a        LTI     A,$0A
 1065: 69 00        MVI     A,$00
@@ -2467,16 +2487,18 @@ Called by 0348
 1088: 74 bf        DLT     EA,HL
 108a: a7           DMOV    EA,HL
 108b: b8           RET
+
+Func from 03b8, 064d
 108c: 99           CALT    ($00B2)
 108d: a5           DMOV    EA,BC
 108e: b6           DMOV    DE,EA
-108f: 40 25 0f     CALL    $0F25
+108f: 40 25 0f     CALL    $0F25     //
 1092: 74 b7        DSUBNB  EA,HL
 1094: ca           JR      $109F
 1095: b5           DMOV    BC,EA
 1096: 7e dc        CALF    $0EDC
 1098: 15 67 03     ORIW    VV:67,$03
-109b: 40 ed 0e     CALL    $0EED
+109b: 40 ed 0e     CALL    $0EED     //
 109e: 00           NOP
 109f: 69 00        MVI     A,$00
 10a1: 70 79 ef 2f  MOV     ($2FEF),A
@@ -2486,15 +2508,15 @@ Called by 0348
 10ac: b8           RET
 10ad: 5e 63        BIT     6,VV:63
 10af: 4e 8f        JRE     $1140
-10b1: 40 27 11     CALL    $1127
+10b1: 40 27 11     CALL    $1127     //
 10b4: 4e 55        JRE     $110B
-10b6: 40 61 10     CALL    $1061
+10b6: 40 61 10     CALL    $1061     //
 10b9: 74 ff        DEQ     EA,HL
 10bb: 4e 57        JRE     $1114
 10bd: 70 3e 77 ff  SHLD    $FF77
-10c1: 40 27 11     CALL    $1127
+10c1: 40 27 11     CALL    $1127     //
 10c4: 4e 45        JRE     $110B
-10c6: 40 61 10     CALL    $1061
+10c6: 40 61 10     CALL    $1061     //
 10c9: 70 3f 77 ff  LHLD    $FF77
 10cd: 74 af        DGT     EA,HL
 10cf: 4e 43        JRE     $1114
@@ -2539,6 +2561,8 @@ Called by 0348
 1120: 71 24 00     MVIW    VV:24,$00
 1123: 71 21 00     MVIW    VV:21,$00
 1126: b8           RET
+
+Func from 10b1, 10c1
 1127: 71 7d 00     MVIW    VV:7D,$00
 112a: 71 24 00     MVIW    VV:24,$00
 112d: 98           CALT    ($00B0)
@@ -2628,7 +2652,7 @@ Called by 0348
 11cc: 63 25        STAW    VV:25
 11ce: 63 28        STAW    VV:28
 11d0: 63 2b        STAW    VV:2B
-11d2: 40 09 15     CALL    $1509
+11d2: 40 09 15     CALL    $1509     //
 11d5: e9           JR      $11BF
 11d6: 35 53 08     LTIW    VV:53,$08
 11d9: d3           JR      $11ED
@@ -2681,10 +2705,14 @@ Called by 0348
 122f: fb           JR      $122B
 1230: 69 50        MVI     A,$50
 1232: ea           JR      $121D
+
+Func from 0bcd
 1233: 98           CALT    ($00B0)
 1234: 4e 38        JRE     $126E
 1236: 37 08        LTI     A,$08
 1238: 4e 22        JRE     $125C
+
+Func from 06b2, 0bc5
 123a: 15 66 01     ORIW    VV:66,$01
 123d: 05 66 fd     ANIW    VV:66,$FD
 1240: 55 33 02     OFFIW   VV:33,$02
@@ -2692,9 +2720,9 @@ Called by 0348
 1245: 34 17 ff     LXI     HL,$FF17
 1248: 47 01        ONI     A,$01
 124a: c4           JR      $124F
-124b: 40 7f 12     CALL    $127F
+124b: 40 7f 12     CALL    $127F     //
 124e: c5           JR      $1254
-124f: 40 7f 12     CALL    $127F
+124f: 40 7f 12     CALL    $127F     //
 1252: 48 27        SLL     C
 1254: 2b           LDAX    (HL)
 1255: 60 cb        ONA     A,C
@@ -2721,6 +2749,8 @@ Called by 0348
 127a: 63 6c        STAW    VV:6C
 127c: 63 6d        STAW    VV:6D
 127e: b8           RET
+
+Func from 124b, 124f
 127f: 07 06        ANI     A,$06
 1281: 48 a8        TABLE             // Table lookup: BC = PC + A
 1283: c8           JR      $128C
@@ -2898,6 +2928,8 @@ Called by 0348
 13dc: 90           CALT    ($00A0)
 13dd: b9           RETS
 13de: b8           RET
+
+Func from 0577,
 13df: 55 63 03     OFFIW   VV:63,$03
 13e2: ca           JR      $13ED
 13e3: 15 64 18     ORIW    VV:64,$18
@@ -2975,6 +3007,7 @@ Called by 0348
 1452: 5e 23        BIT     6,VV:23
 1454: b9           RETS
 
+Func from 14a0
 1455: 58 63        BIT     0,VV:63
 1457: c7           JR      $145F
 1458: 71 2b 0f     MVIW    VV:2B,$0F
@@ -3015,13 +3048,14 @@ Called by 0348
 1498: 15 64 01     ORIW    VV:64,$01
 149b: 7c 47        CALF    $0C47
 149d: 71 5b 00     MVIW    VV:5B,$00
-14a0: 40 55 14     CALL    $1455
+14a0: 40 55 14     CALL    $1455     //
 14a3: 55 23 02     OFFIW   VV:23,$02
 14a6: fc           JR      $14A3
 14a7: 71 21 00     MVIW    VV:21,$00
 14aa: 71 24 00     MVIW    VV:24,$00
 14ad: b8           RET
 
+Func from 0501, 067c // A function to check vv:24 bit 1??  Importantstate?
 14ae: 59 24        BIT     1,VV:24
 14b0: b8           RET
 
@@ -3080,11 +3114,9 @@ Called by 0348
 1502: 0b           MOV     A,C
 1503: 60 fa        EQA     A,B
 1505: 15 65 02     ORIW    VV:65,$02
-1508: b9           RETS              // Cond skip?
+1508: b9           RETS              // Cond skip
 
-Called from 02fc, 11d9
-
-// A function that does
+Func from 02fc, 11d9, 1c13, 1da3, 11d2
 1509: 14 ff ff     LXI     BC,$FFFF  // Load BC with 0xffff
 Loop
 150c: b3           PUSH    HL        // Push HL
@@ -3093,8 +3125,9 @@ Loop
 150f: fc           JR      $150C     // Jump back to loop
 1510: 52           DCR     B         // decrement B
 1511: fa           JR      $150C     // Jump back to loop
-1512: b8           RET               // return to caller
+1512: b8           RET               // return
 
+Func from 06be
 1513: 98           CALT    ($00B0)
 1514: b8           RET
 
@@ -3129,9 +3162,9 @@ Loop
 1548: 58 23        BIT     0,VV:23
 154a: e2           JR      $152D
 154b: 71 24 00     MVIW    VV:24,$00
-154e: 40 9f 15     CALL    $159F
+154e: 40 9f 15     CALL    $159F     //
 1551: 31           BLOCK
-1552: 40 9f 15     CALL    $159F
+1552: 40 9f 15     CALL    $159F     //
 1555: 74 1c 01     ORI     D,$01
 1558: 74 1e 01     ORI     H,$01
 155b: 31           BLOCK
@@ -3143,7 +3176,7 @@ Loop
 1564: b7           DMOV    HL,EA
 1565: 80           CALT    ($0080)
 1566: 1c           MOV     D,A
-1567: 40 a0 15     CALL    $15A0
+1567: 40 a0 15     CALL    $15A0     //
 156a: 80           CALT    ($0080)
 156b: 2d           LDAX    (HL+)
 156c: 60 8a        ANA     A,B
@@ -3181,11 +3214,14 @@ Loop
 159c: 7a 1f        CALF    $0A1F
 159e: b8           RET
 
+Func from 154e, 159f
 159f: b6           DMOV    DE,EA
+Func from 1567
 15a0: 70 3f 32 ff  LHLD    $FF32
 15a4: 6b 0f        MVI     C,$0F
 15a6: b8           RET
 
+Func from 18b7, 1628
 15a7: 75 4b 00     EQIW    VV:4B,$00
 15aa: cf           JR      $15BA
 15ab: 65 d0 00     NEIW    VV:D0,$00
@@ -3266,7 +3302,7 @@ Loop
 
 
 Jmp's from below (1637)
-1628: 40 a7 15     CALL    $15A7
+1628: 40 a7 15     CALL    $15A7     //
 162b: 11           EXX
 162c: 10           EXA
 162d: aa           EI                // Enable interrupts
@@ -3508,7 +3544,7 @@ Jmp from way above
 17b8: 71 6b 00     MVIW    VV:6B,$00
 17bb: 4f 37        JRE     $16F4
 17bd: 55 63 01     OFFIW   VV:63,$01
-17c0: 40 f8 17     CALL    $17F8
+17c0: 40 f8 17     CALL    $17F8     //
 17c3: 4f 2c        JRE     $16F1
 17c5: 15 21 08     ORIW    VV:21,$08
 17c8: c7           JR      $17D0
@@ -3533,6 +3569,9 @@ Jmp from way above
 17f2: 01 5b        LDAW    VV:5B
 17f4: 63 d2        STAW    VV:D2
 17f6: 4f cb        JRE     $17C3
+
+
+Func from 00c0, 17c0
 17f8: 20 5b        INRW    VV:5B
 17fa: c9           JR      $1804
 17fb: 20 5b        INRW    VV:5B
@@ -3591,7 +3630,7 @@ Jmp from way above
 1859: 4e 58        JRE     $18B3
 185b: 71 73 40     MVIW    VV:73,$40
 185e: 05 67 ef     ANIW    VV:67,$EF
-1861: 40 b6 19     CALL    $19B6
+1861: 40 b6 19     CALL    $19B6     //
 1864: 6c f7        MVI     D,$F7
 1866: 4e 20        JRE     $1888
 1868: 67 71        NEI     A,$71
@@ -3625,7 +3664,7 @@ Jmp from way above
 1899: 69 53        MVI     A,$53
 189b: 1c           MOV     D,A
 189c: 05 69 7f     ANIW    VV:69,$7F
-189f: 40 b6 19     CALL    $19B6
+189f: 40 b6 19     CALL    $19B6     //
 18a2: 4e dd        JRE     $1981
 18a4: 5e 64        BIT     6,VV:64
 18a6: 5f 63        BIT     7,VV:63
@@ -3633,12 +3672,12 @@ Jmp from way above
 18aa: 15 67 10     ORIW    VV:67,$10
 18ad: 05 67 df     ANIW    VV:67,$DF
 18b0: 71 73 40     MVIW    VV:73,$40
-18b3: 40 b6 19     CALL    $19B6
+18b3: 40 b6 19     CALL    $19B6     //
 18b6: c3           JR      $18BA
-18b7: 40 a7 15     CALL    $15A7
+18b7: 40 a7 15     CALL    $15A7     //
 18ba: 64 4e 04     ONI     MKH,$04
 18bd: f9           JR      $18B7
-18be: 40 fd 19     CALL    $19FD
+18be: 40 fd 19     CALL    $19FD     //
 18c1: 64 00 01     MVI     PA,$01    // Load PA (scan row output) with 0x01
 18c4: 64 01 00     MVI     PB,$00    // Load PB (LED scan) with 0x0
 18c7: 01 33        LDAW    VV:33     // Load A with 0x33 off V
@@ -3683,7 +3722,7 @@ jmp from below (18fb)
 190b: 69 55        MVI     A,$55
 190d: 1c           MOV     D,A
 190e: 4e 71        JRE     $1981
-1910: 40 b6 19     CALL    $19B6
+1910: 40 b6 19     CALL    $19B6     //
 1913: 5e 64        BIT     6,VV:64
 1915: 5f 63        BIT     7,VV:63
 1917: c4           JR      $191C
@@ -3734,11 +3773,11 @@ jmp from below (18fb)
 1972: 07 7f        ANI     A,$7F
 1974: 67 00        NEI     A,$00
 1976: 15 69 80     ORIW    VV:69,$80
-1979: 40 b6 19     CALL    $19B6
+1979: 40 b6 19     CALL    $19B6     //
 197c: 54 f4 16     JMP     $16F4
 197f: 6c 70        MVI     D,$70
 1981: b2           PUSH    DE
-1982: 40 fd 19     CALL    $19FD
+1982: 40 fd 19     CALL    $19FD     //
 1985: 48 69        SKNIT   FSR
 1987: 4c d9        MOV     A,RXB
 1989: 6c f0        MVI     D,$F0
@@ -3752,7 +3791,7 @@ jmp from below (18fb)
 1996: 05 69 7e     ANIW    VV:69,$7E
 1999: 71 6b 00     MVIW    VV:6B,$00
 199c: 54 f4 16     JMP     $16F4
-199f: 40 e1 19     CALL    $19E1
+199f: 40 e1 19     CALL    $19E1     //
 19a2: 48 49        SKIT    FSR
 19a4: fa           JR      $199F
 19a5: 4c d9        MOV     A,RXB
@@ -3766,7 +3805,10 @@ jmp from below (18fb)
 19af: 05 69 7e     ANIW    VV:69,$7E
 19b2: 0c           MOV     A,D
 19b3: 54 72 16     JMP     $1672
-19b6: 40 e1 19     CALL    $19E1
+
+
+Func from 1861, 189f, 18b3, 1910, 1979
+19b6: 40 e1 19     CALL    $19E1     //
 19b9: 48 49        SKIT    FSR
 19bb: fa           JR      $19B6
 19bc: 4c d9        MOV     A,RXB
@@ -3779,7 +3821,7 @@ jmp from below (18fb)
 19c6: ef           JR      $19B6
 19c7: 1a           MOV     B,A       // Mov A to B
 Jmp from 19cd
-19c8: 40 e1 19     CALL    $19E1
+19c8: 40 e1 19     CALL    $19E1     //
 19cb: 48 4a        SKIT    FST       // Skip if FST = 1
 19cd: fa           JR      $19C8     // Jmp back
 19ce: 0a           MOV     A,B       // Mov B back to A
@@ -3797,26 +3839,30 @@ Jmp from 19cd
 19de: 63 4d        STAW    VV:4D
 19e0: b8           RET
 
-Called by 19c8
-19e1: 69 00        MVI     A,$00
-19e3: 30 62        DCRW    VV:62
-19e5: c5           JR      $19EB
-19e6: 71 62 04     MVIW    VV:62,$04
+Func from 19c8, 199f, 19b6, 19c8
+19e1: 69 00        MVI     A,$00     // Clear A
+19e3: 30 62        DCRW    VV:62     // Decrement vv:62
+19e5: c5           JR      $19EB     // Jmp fwd ~3
+19e6: 71 62 04     MVIW    VV:62,$04 // Init vv:62 to 4
 19e9: 69 10        MVI     A,$10     // Load A with 0x10
+From ~3 above
 19eb: 4d c1        MOV     PB,A      // Write LED sel val
-19ed: 70 69 00 40  MOV     A,($4000) //
-19f1: 47 01        ONI     A,$01
+19ed: 70 69 00 40  MOV     A,($4000) // Load A thru ptr x4000
+19f1: 47 01        ONI     A,$01     // Or with 1?
 19f3: b8           RET
 
 19f4: 04 ff ff     LXI     SP,$FFFF
 19f7: 71 6b 00     MVIW    VV:6B,$00
 19fa: 54 08 03     JMP     $0308
+
+Func from 18be, 1982
 19fd: 69 00        MVI     A,$00
 19ff: 00           NOP
 1a00: 41           INR     A
 1a01: fd           JR      $19FF
 1a02: b8           RET
 
+Func from 041f
 1a03: 55 69 01     OFFIW   VV:69,$01
 1a06: b8           RET
 
@@ -3833,6 +3879,7 @@ Called by 19c8
 1a1b: 64 06 00     MVI     MKH,$00
 1a1e: b8           RET
 
+Func from 0530,
 1a1f: 69 00        MVI     A,$00
 1a21: 63 70        STAW    VV:70
 1a23: 63 77        STAW    VV:77
@@ -3842,8 +3889,8 @@ Called by 19c8
 1a2f: a7           DMOV    EA,HL
 1a30: 74 ae        DGT     EA,DE
 1a32: cf           JR      $1A42
-1a33: 40 3d 1b     CALL    $1B3D
-1a36: 40 4b 1b     CALL    $1B4B
+1a33: 40 3d 1b     CALL    $1B3D     //
+1a36: 40 4b 1b     CALL    $1B4B     //
 1a39: 2b           LDAX    (HL)
 1a3a: 47 80        ONI     A,$80
 1a3c: ee           JR      $1A2B
@@ -3874,6 +3921,7 @@ Called by 19c8
 1a6a: 64 06 00     MVI     MKH,$00
 1a6d: b8           RET
 
+func from 0512,
 1a6e: 05 67 fb     ANIW    VV:67,$FB
 1a71: 69 00        MVI     A,$00
 1a73: 63 70        STAW    VV:70
@@ -3895,8 +3943,8 @@ Called by 19c8
 1a92: a8           INX     EA
 1a93: 74 ae        DGT     EA,DE
 1a95: 4e 91        JRE     $1B28
-1a97: 40 3d 1b     CALL    $1B3D
-1a9a: 40 4b 1b     CALL    $1B4B
+1a97: 40 3d 1b     CALL    $1B3D     //
+1a9a: 40 4b 1b     CALL    $1B4B     //
 1a9d: 70 1f 51 ff  LBCD    $FF51
 1aa1: 74 bd        DLT     EA,BC
 1aa3: c8           JR      $1AAC
@@ -3985,16 +4033,19 @@ Called by 19c8
 1b37: 69 ff        MVI     A,$FF
 1b39: 63 70        STAW    VV:70
 1b3b: 4f 4a        JRE     $1A87
-1b3d: 2c           LDAX    (DE+)
-1b3e: 48 21        SLR     A
-1b40: 07 fe        ANI     A,$FE
-1b42: 17 80        ORI     A,$80
-1b44: 1f           MOV     L,A
-1b45: 01 33        LDAW    VV:33
-1b47: 17 0f        ORI     A,$0F
-1b49: 1e           MOV     H,A
-1b4a: b8           RET
 
+Func from 1a33, 1a97
+1b3d: 2c           LDAX    (DE+)     // Load AX from DE, increment idx
+1b3e: 48 21        SLR     A         // Shift logical right
+1b40: 07 fe        ANI     A,$FE     // Clear LSB
+1b42: 17 80        ORI     A,$80     // Set MSB
+1b44: 1f           MOV     L,A       // MV a to L
+1b45: 01 33        LDAW    VV:33     // Load A with vv:33
+1b47: 17 0f        ORI     A,$0F     // Set lower nybble
+1b49: 1e           MOV     H,A       // Store A in H
+1b4a: b8           RET               // Return
+
+Func from 1a36, 1a9a
 1b4b: 2b           LDAX    (HL)
 1b4c: 7d 94        CALF    $0D94
 1b4e: 07 03        ANI     A,$03
@@ -4038,8 +4089,8 @@ Called by 19c8
 1b92: fc           JR      $1B8F
 1b93: 64 07 ff     MVI     MKL,$FF
 1b96: 64 06 ff     MVI     MKH,$FF
-1b99: 64 00 01     MVI     PA,$01
-1b9c: 64 01 10     MVI     PB,$10
+1b99: 64 00 01     MVI     PA,$01    // Scan sel 01
+1b9c: 64 01 10     MVI     PB,$10    // LEDs sel
 1b9f: 15 67 80     ORIW    VV:67,$80
 1ba2: 69 23        MVI     A,$23
 1ba4: 4d d1        MOV     MCC,A     // MCC of 23: tx,rx
@@ -4053,10 +4104,10 @@ Called by 19c8
 1bb3: 55 68 10     OFFIW   VV:68,$10
 1bb6: 4e 97        JRE     $1C4F
 1bb8: 6f ff        MVI     L,$FF
-1bba: 40 cc 1c     CALL    $1CCC
-1bbd: 40 cc 1c     CALL    $1CCC
+1bba: 40 cc 1c     CALL    $1CCC     //
+1bbd: 40 cc 1c     CALL    $1CCC     //
 1bc0: 6b 1e        MVI     C,$1E
-1bc2: 40 cc 1c     CALL    $1CCC
+1bc2: 40 cc 1c     CALL    $1CCC     //
 1bc5: 44 b8 01     LXI     EA,$01B8
 1bc8: 74 be        DLT     EA,DE
 1bca: ed           JR      $1BB8
@@ -4068,19 +4119,19 @@ Called by 19c8
 1bd6: 53           DCR     C
 1bd7: ea           JR      $1BC2
 1bd8: 64 00 03     MVI     PA,$03
-1bdb: 40 cc 1c     CALL    $1CCC
+1bdb: 40 cc 1c     CALL    $1CCC     //
 1bde: 48 65        SKNIT   FE0
 1be0: fa           JR      $1BDB
 1be1: 11           EXX
 1be2: 34 7b ff     LXI     HL,$FF7B
 1be5: 14 02 00     LXI     BC,$0002
 1be8: 11           EXX
-1be9: 40 3f 1d     CALL    $1D3F
+1be9: 40 3f 1d     CALL    $1D3F     //
 1bec: 48 1c        SKN     Z
 1bee: c4           JR      $1BF3
-1bef: 40 18 1d     CALL    $1D18
+1bef: 40 18 1d     CALL    $1D18     //
 1bf2: f6           JR      $1BE9
-1bf3: 40 28 1d     CALL    $1D28
+1bf3: 40 28 1d     CALL    $1D28     //
 1bf6: 70 1f 7d ff  LBCD    $FF7D
 1bfa: a5           DMOV    EA,BC
 1bfb: 70 1f 7b ff  LBCD    $FF7B
@@ -4092,7 +4143,7 @@ Called by 19c8
 1c0b: b5           DMOV    BC,EA
 1c0c: 70 1e 7d ff  SBCD    $FF7D
 1c10: 64 06 fe     MVI     MKH,$FE
-1c13: 40 09 15     CALL    $1509
+1c13: 40 09 15     CALL    $1509     //
 1c16: 4f 62        JRE     $1B7A
 1c18: 70 1e 71 ff  SBCD    $FF71
 1c1c: 11           EXX
@@ -4105,21 +4156,21 @@ Called by 19c8
 1c28: 64 00 05     MVI     PA,$05
 1c2b: 6b 00        MVI     C,$00
 1c2d: 6e 00        MVI     H,$00
-1c2f: 40 18 1d     CALL    $1D18
+1c2f: 40 18 1d     CALL    $1D18     //
 1c32: 5e 68        BIT     6,VV:68
 1c34: c4           JR      $1C39
-1c35: 40 3f 1d     CALL    $1D3F
+1c35: 40 3f 1d     CALL    $1D3F     //
 1c38: c4           JR      $1C3D
-1c39: 40 48 1d     CALL    $1D48
+1c39: 40 48 1d     CALL    $1D48     //
 1c3c: c0           JR      $1C3D
 1c3d: 48 1c        SKN     Z
 1c3f: c9           JR      $1C49
 1c40: 43           INR     C
 1c41: ed           JR      $1C2F
-1c42: 40 ff 1c     CALL    $1CFF
-1c45: 40 28 1d     CALL    $1D28
+1c42: 40 ff 1c     CALL    $1CFF     //
+1c45: 40 28 1d     CALL    $1D28     //
 1c48: e4           JR      $1C2D
-1c49: 40 ff 1c     CALL    $1CFF
+1c49: 40 ff 1c     CALL    $1CFF     //
 1c4c: 54 92 1d     JMP     $1D92
 1c4f: 11           EXX
 1c50: 14 dc 05     LXI     BC,$05DC
@@ -4131,13 +4182,13 @@ Called by 19c8
 1c5d: 64 00 03     MVI     PA,$03
 1c60: 69 ff        MVI     A,$FF
 1c62: 19           MOV     EAL,A
-1c63: 40 3a 1d     CALL    $1D3A
+1c63: 40 3a 1d     CALL    $1D3A     //
 1c66: 48 0c        SK      Z
 1c68: f7           JR      $1C60
 1c69: 64 00 05     MVI     PA,$05
 1c6c: 69 00        MVI     A,$00
 1c6e: 19           MOV     EAL,A
-1c6f: 40 59 1d     CALL    $1D59
+1c6f: 40 59 1d     CALL    $1D59     //
 1c72: 11           EXX
 1c73: 34 7d ff     LXI     HL,$FF7D
 1c76: 14 02 00     LXI     BC,$0002
@@ -4146,12 +4197,12 @@ Called by 19c8
 1c7b: 2d           LDAX    (HL+)
 1c7c: 11           EXX
 1c7d: 19           MOV     EAL,A
-1c7e: 40 3a 1d     CALL    $1D3A
+1c7e: 40 3a 1d     CALL    $1D3A     //
 1c81: 48 1c        SKN     Z
 1c83: c4           JR      $1C88
-1c84: 40 21 1d     CALL    $1D21
+1c84: 40 21 1d     CALL    $1D21     //
 1c87: f2           JR      $1C7A
-1c88: 40 33 1d     CALL    $1D33
+1c88: 40 33 1d     CALL    $1D33     //
 1c8b: 11           EXX
 1c8c: 6f 00        MVI     L,$00
 1c8e: 01 33        LDAW    VV:33
@@ -4161,27 +4212,27 @@ Called by 19c8
 1c96: 11           EXX
 1c97: 6b 00        MVI     C,$00
 1c99: 6e 00        MVI     H,$00
-1c9b: 40 21 1d     CALL    $1D21
+1c9b: 40 21 1d     CALL    $1D21     //
 1c9e: 11           EXX
 1c9f: 2d           LDAX    (HL+)
 1ca0: 11           EXX
 1ca1: 19           MOV     EAL,A
 1ca2: 60 46        ADD     H,A
-1ca4: 40 3a 1d     CALL    $1D3A
+1ca4: 40 3a 1d     CALL    $1D3A     //
 1ca7: 48 1c        SKN     Z
 1ca9: c9           JR      $1CB3
 1caa: 43           INR     C
 1cab: ef           JR      $1C9B
-1cac: 40 0d 1d     CALL    $1D0D
-1caf: 40 33 1d     CALL    $1D33
+1cac: 40 0d 1d     CALL    $1D0D     //
+1caf: 40 33 1d     CALL    $1D33     //
 1cb2: e6           JR      $1C99
-1cb3: 40 0d 1d     CALL    $1D0D
+1cb3: 40 0d 1d     CALL    $1D0D     //
 1cb6: 11           EXX
 1cb7: 14 fa 00     LXI     BC,$00FA
 1cba: 11           EXX
 1cbb: 69 ff        MVI     A,$FF
 1cbd: 19           MOV     EAL,A
-1cbe: 40 5d 1d     CALL    $1D5D
+1cbe: 40 5d 1d     CALL    $1D5D     //
 1cc1: 11           EXX
 1cc2: 13           DCX     BC
 1cc3: 0a           MOV     A,B
@@ -4190,8 +4241,10 @@ Called by 19c8
 1cc7: 48 0c        SK      Z
 1cc9: f1           JR      $1CBB
 1cca: 4e c6        JRE     $1D92
-1ccc: 74 17 ff     XRI     L,$FF
-1ccf: 40 da 1d     CALL    $1DDA
+
+Func from 1bba, 1bbd, 1cf1, 1bc2, 1bdb
+1ccc: 74 17 ff     XRI     L,$FF     //
+1ccf: 40 da 1d     CALL    $1DDA     //
 1cd2: 4c c2        MOV     A,PC
 1cd4: 60 97        XRA     A,L
 1cd6: 57 08        OFFI    A,$08
@@ -4206,12 +4259,17 @@ Called by 19c8
 1ce4: 4d cc        MOV     ETMM,A
 1ce6: b8           RET
 
+Func from 1d18
 1ce7: 69 01        MVI     A,$01
+
+Func from 1d02, 1d3f, 1d48
 1ce9: 69 07        MVI     A,$07
+
+Func from 1d28
 1ceb: 69 09        MVI     A,$09
 1ced: 1a           MOV     B,A
 1cee: 44 00 00     LXI     EA,$0000
-1cf1: 40 cc 1c     CALL    $1CCC
+1cf1: 40 cc 1c     CALL    $1CCC     //
 1cf4: 48 2b        STC
 1cf6: 48 45        SKIT    FE0
 1cf8: 48 2a        CLC
@@ -4220,52 +4278,63 @@ Called by 19c8
 1cfd: f3           JR      $1CF1
 1cfe: b8           RET
 
-1cff: 40 18 1d     CALL    $1D18
-1d02: 40 e9 1c     CALL    $1CE9
+Func from 1c42, 1c49
+1cff: 40 18 1d     CALL    $1D18     //
+1d02: 40 e9 1c     CALL    $1CE9     //
 1d05: 08           MOV     A,EAH
 1d06: 60 c6        ADD     A,H
 1d08: 77 00        EQI     A,$00
 1d0a: 4e c8        JRE     $1DD4
 1d0c: b8           RET
 
-1d0d: 40 21 1d     CALL    $1D21
+Func from 1cac, 1cb3
+1d0d: 40 21 1d     CALL    $1D21     //
 1d10: 0e           MOV     A,H
 1d11: 48 3a        NEGA
 1d13: 19           MOV     EAL,A
-1d14: 40 5d 1d     CALL    $1D5D
+1d14: 40 5d 1d     CALL    $1D5D     //
 1d17: b8           RET
 
-1d18: 40 e7 1c     CALL    $1CE7
+func from 1bef, 1c2f, 1cff
+1d18: 40 e7 1c     CALL    $1CE7     //
 1d1b: 08           MOV     A,EAH
 1d1c: 77 40        EQI     A,$40
 1d1e: 4e b4        JRE     $1DD4
 1d20: b8           RET
 
+Func from 1c84, 1c9b, 1d0d
 1d21: 69 01        MVI     A,$01
 1d23: 19           MOV     EAL,A
-1d24: 40 5b 1d     CALL    $1D5B
+1d24: 40 5b 1d     CALL    $1D5B     //
 1d27: b8           RET
 
-1d28: 40 eb 1c     CALL    $1CEB
+Func from 1bf3, 1c45
+1d28: 40 eb 1c     CALL    $1CEB     //
 1d2b: 24 c0 ff     LXI     DE,$FFC0
 1d2e: 74 fe        DEQ     EA,DE
 1d30: 4e a2        JRE     $1DD4
 1d32: b8           RET
 
+Func From 1c88, 1caf
 1d33: 44 ff 03     LXI     EA,$03FF
-1d36: 40 5f 1d     CALL    $1D5F
+1d36: 40 5f 1d     CALL    $1D5F     //
 1d39: b8           RET
 
-1d3a: 40 5d 1d     CALL    $1D5D
+func from 1c63, 1c7e, 1ca4
+1d3a: 40 5d 1d     CALL    $1D5D     //
 1d3d: 11           EXX
 1d3e: d4           JR      $1D53
-1d3f: 40 e9 1c     CALL    $1CE9
+
+func from 1be9, 1c35
+1d3f: 40 e9 1c     CALL    $1CE9     //
 1d42: 08           MOV     A,EAH
 1d43: 60 46        ADD     H,A
 1d45: 11           EXX
 1d46: 3d           STAX    (HL+)
 1d47: cb           JR      $1D53
-1d48: 40 e9 1c     CALL    $1CE9
+
+Func from 1c39,
+1d48: 40 e9 1c     CALL    $1CE9     //
 1d4b: 08           MOV     A,EAH
 1d4c: 60 46        ADD     H,A
 1d4e: 11           EXX
@@ -4277,9 +4346,16 @@ Called by 19c8
 1d57: 11           EXX
 1d58: b8           RET
 
+Func from 1c6f,
 1d59: 69 00        MVI     A,$00
+
+Func from 1d24
 1d5b: 69 01        MVI     A,$01
+
+Func From 1cbe, 1d14, 1d3a
 1d5d: 69 07        MVI     A,$07
+
+Func from 1d36
 1d5f: 69 09        MVI     A,$09
 1d61: 1a           MOV     B,A
 1d62: 48 b0        DRLR    EA
@@ -4294,7 +4370,7 @@ Called by 19c8
 1d75: 74 4f 80     ONI     L,$80
 1d78: 6f c0        MVI     L,$C0
 1d7a: 6f 00        MVI     L,$00
-1d7c: 40 da 1d     CALL    $1DDA
+1d7c: 40 da 1d     CALL    $1DDA     //
 1d7f: 48 3b        HALT
 1d81: 10           EXA
 1d82: a6           DMOV    EA,DE
@@ -4315,7 +4391,7 @@ Called by 19c8
 1d9a: 70 3e 7d ff  SHLD    $FF7D
 1d9e: 7f b9        CALF    $0FB9
 1da0: 64 06 fe     MVI     MKH,$FE
-1da3: 40 09 15     CALL    $1509
+1da3: 40 09 15     CALL    $1509     //
 1da6: 69 00        MVI     A,$00
 1da8: 63 21        STAW    VV:21
 1daa: 63 24        STAW    VV:24
@@ -4335,10 +4411,12 @@ Called by 19c8
 1dc9: 00           NOP
 1dca: 69 f8        MVI     A,$F8     // Load A with MIDI Clk
 1dcc: 4d d8        MOV     TXB,A     // Write A to Transmit buf
-1dce: 40 2f 10     CALL    $102F
+1dce: 40 2f 10     CALL    $102F     //
 1dd1: 54 d0 03     JMP     $03D0
 1dd4: 04 ff ff     LXI     SP,$FFFF
 1dd7: 54 7a 1b     JMP     $1B7A
+
+Func from 1ccf, 1d7c
 1dda: 4c c1        MOV     A,PB
 1ddc: 07 c0        ANI     A,$C0
 1dde: 30 62        DCRW    VV:62
@@ -4816,7 +4894,7 @@ Called by 19c8
 1fdd: 3a           STAX    (DE)
 1fde: 3c           STAX    (DE+)
 1fdf: 3e           STAX    (DE-)
-1fe0: 40 42 44     CALL    $4442
+1fe0: 40 42 44     CALL    $4442     // ????? call to ?
 1fe3: 46 48        ADI     A,$48
 1fe5: 4a 4c        MVIX    DE,$4C
 1fe7: 4e 50        JRE     $2039

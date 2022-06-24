@@ -30,7 +30,7 @@ From Datasheet:
 My understanding:
 * External EEPROM 0x0000 to 0x1fff
 * External RAM    0x2000 to 0x3fff
-* Analog interface 0x4000
+* Analog interface outputs 0x4000
 * Cartridge 0x6000?
 * ? 0x7000
 * Internal RAM    0xff00 to 0xffff
