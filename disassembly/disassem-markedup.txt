@@ -193,7 +193,7 @@ Jmp from Timer counter interrupt
 00e6: b0           PUSH    VA        // Push VA
 00e7: b4           PUSH    EA        // Push EA
 00e8: 55 63 03     OFFIW   VV:63,$03 // Immediate and with 0x03 - set Z cond
-00eb: df           JR      $010B     // If zero, Jump to 10b
+00eb: df           JR      $010B     // If zero, Jump to 010b
 00ec: 58 5b        BIT     0,VV:5B
 00ee: c5           JR      $00F4
 00ef: 30 5b        DCRW    VV:5B
