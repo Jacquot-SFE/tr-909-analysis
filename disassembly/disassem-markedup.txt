@@ -3,7 +3,7 @@ Reset Vec:
 0000: 54 cd 02     JMP     $02CD  // Jump to 02cd
 0003: 00           NOP
 
-IRQ0: NMI 
+IRQ0: NMI
 
 0004: aa           EI             // enable interrupts
 0005: 62           RETI           // return from interrupt
@@ -15,7 +15,7 @@ IRQ1: Interrupt timer 0,1
 0008: 01 02        LDAW    VV:02    // load AW from vv02
 000a: 04 08 10     LXI     SP,$1008 // Set SP imm to 0x1008
 000d: 20 40        INRW    VV:40    // Increment vv:40
-000f: 80           CALT    ($0080)  // ???
+000f: 80           CALT    ($0080)  // Call table
 
 IRQ2: External int 1,2
 Ext int 1 is DIN clk
@@ -76,9 +76,12 @@ IRQ5: Serial ISR
 0056: 63 25        STAW    VV:25
 0058: b8           RET
 
+Table func x4
 0059: 2d           LDAX    (HL+)
 005a: 4d c0        MOV     PA,A
 005c: 64 19 20     ORI     PB,$20
+
+Table func x5
 005f: 2d           LDAX    (HL+)
 
 Soft IRQ
@@ -88,7 +91,10 @@ Soft IRQ
 0066: 1a           MOV     B,A
 0067: b8           RET
 
+Table func x6
 0068: 70 3f 32 ff  LHLD    $FF32
+
+Table func x7
 006c: 0e           MOV     A,H
 006d: 74 1e 0f     ORI     H,$0F
 0070: 07 0c        ANI     A,$0C
@@ -118,43 +124,45 @@ Func from timer ISR
 008c: 16 12        XRI     A,$12
 008e: 1b           MOV     C,A
 008f: 12           INX     BC
-0090: 2d           LDAX    (HL+)
+
+// Is this the call table?  Not instructions, but addresses
+0090: 2d           LDAX    (HL+)     // x0 122d
 0091: 12           INX     BC
-0092: 91           CALT    ($00A2)
+0092: 91           CALT    ($00A2)   // x1 1291
 0093: 12           INX     BC
-0094: 33           DCX     HL
+0094: 33           DCX     HL        // x2 1233
 0095: 12           INX     BC
-0096: a8           INX     EA
+0096: a8           INX     EA        // x3 12a8
 0097: 12           INX     BC
-0098: 59 00        BIT     1,VV:00
-009a: 5f 00        BIT     7,VV:00
-009c: 68 00        MVI     V,$00
-009e: 6c 00        MVI     D,$00
-00a0: dd           JR      $00BE
+0098: 59 00        BIT     1,VV:00   // x4 0059
+009a: 5f 00        BIT     7,VV:00   // x5 005f
+009c: 68 00        MVI     V,$00     // x6 0068
+009e: 6c 00        MVI     D,$00     // x7 006c
+00a0: dd           JR      $00BE     // x8 12dd
 00a1: 12           INX     BC
-00a2: 59 13        BIT     1,VV:13
-00a4: 28           illegal
+00a2: 59 13        BIT     1,VV:13   // x9 1359
+00a4: 28           illegal           // xa 1228
 00a5: 12           INX     BC
-00a6: 1d           MOV     E,A
+00a6: 1d           MOV     E,A       // xb 121d
 00a7: 12           INX     BC
-00a8: 50           EXH
-00a9: 14 32 14     LXI     BC,$1432
-00ac: fc           JR      $00A9
+00a8: 50           EXH               // xc 1450
+00a9: 14 32 14     LXI     BC,$1432  // xd 1432
+00ac: fc           JR      $00A9     // xe 13fc
 00ad: 13           DCX     BC
-00ae: 78 14        CALF    $0814
-00b0: cb           JR      $00BC
-00b1: 14 1d 10     LXI     BC,$101D
-00b4: 26 10        ADINC   A,$10
-00b6: 9f           CALT    ($00BE)
+00ae: 78 14        CALF    $0814     // xf 1418
+00b0: cb           JR      $00BC     // x10 14cb
+00b1: 14 1d 10     LXI     BC,$101D  // x11 101d
+00b4: 26 10        ADINC   A,$10     // x12 1026
+00b6: 9f           CALT    ($00BE)   // x13 199f
 00b7: 19           MOV     EAL,A
-00b8: c7           JR      $00C0
+00b8: c7           JR      $00C0     // x14 19c7
 00b9: 19           MOV     EAL,A
-00ba: d2           JR      $00CD
+00ba: d2           JR      $00CD     // x15 19d2
 00bb: 19           MOV     EAL,A
 
 Jmp from Ext interrupt
 00bc: 69 f8        MVI     A,$F8
-00be: 7d 08        CALF    $0D08
+00be: 7d 08        CALF    $0D08     //
 00c0: 40 f8 17     CALL    $17F8     //
 00c3: 4e 42        JRE     $0107
 
@@ -196,8 +204,8 @@ Jmp from ee:
 00f4: 71 5b 01     MVIW    VV:5B,$01
 00f7: 69 f8        MVI     A,$F8
 00f9: 5c 64        BIT     4,VV:64
-00fb: 7d 08        CALF    $0D08
-00fd: 8b           CALT    ($0096)
+00fb: 7d 08        CALF    $0D08     //
+00fd: 8b           CALT    ($0096)   // tbl to x12a8
 00fe: 00           NOP
 00ff: 01 44        LDAW    VV:44
 0101: 19           MOV     EAL,A
@@ -223,7 +231,7 @@ jmp from eb:
 011f: 65 5b 00     NEIW    VV:5B,$00
 0122: 44 ff ff     LXI     EA,$FFFF
 0125: 48 d3        DMOV    ETM1,EA
-0127: 8b           CALT    ($0096)
+0127: 8b           CALT    ($0096)   // table to 12a8
 0128: 00           NOP
 0129: 4f dc        JRE     $0107
 // Jmp dest from
@@ -1921,16 +1929,20 @@ Func from 0348
 0cfc: 05 66 ef     ANIW    VV:66,$EF
 0cff: b8           RET
 
+// CALL TABLE (calt destinations?)
+//
 0d00: 69 00        MVI     A,$00
 0d02: 3d           STAX    (HL+)
 0d03: 74 5f 0f     OFFI    L,$0F
 0d06: fb           JR      $0D02
 0d07: b8           RET
 
-0d08: 75 4b 00     EQIW    VV:4B,$00
-0d0b: c6           JR      $0D12
-0d0c: 63 4b        STAW    VV:4B
-0d0e: 64 0e fb     ANI     MKH,$FB
+Func From 00be, 00fb, 12ce, 1393, 13a7, 1647
+Something with MIDI Tx?
+0d08: 75 4b 00     EQIW    VV:4B,$00 // Is vv:4b 0?
+0d0b: c6           JR      $0D12     // branch +6
+0d0c: 63 4b        STAW    VV:4B     // Store AW to vv:4b
+0d0e: 64 0e fb     ANI     MKH,$FB   // Set Mask Hi to xFB
 0d11: b8           RET
 
 0d12: 63 d0        STAW    VV:D0
@@ -2421,9 +2433,13 @@ func from 04f5, 05f3, 0625
 1017: 01 72        LDAW    VV:72
 1019: 63 7e        STAW    VV:7E
 101b: 4f 9c        JRE     $0FB9
+
+Table func xb
 101d: 70 1f e6 2f  LBCD    $2FE6
 1021: 70 3f f6 2f  LHLD    $2FF6
 1025: b8           RET
+
+Table func xc
 1026: 70 1e e6 2f  SBCD    $2FE6
 102a: 70 3e f6 2f  SHLD    $2FF6
 102e: b8           RET
@@ -2690,22 +2706,30 @@ Func from 10b1, 10c1
 1218: cc           JR      $1225
 1219: 48 22        SLR     B
 121b: 69 50        MVI     A,$50
+
+Table func xb
 121d: 74 c0 0a     ADDW    VV:0A
 1220: 48 21        SLR     A
 1222: ac           LDAX    (HL+A)
 1223: 3c           STAX    (DE+)
 1224: b8           RET
+
 1225: 48 02        SLRC    B
 1227: c3           JR      $122B
+
+Table func xa
 1228: 69 32        MVI     A,$32
 122a: f2           JR      $121D
 122b: 22           INX     DE
 122c: b9           RETS
+
+Table func x0
 122d: 48 02        SLRC    B
 122f: fb           JR      $122B
 1230: 69 50        MVI     A,$50
 1232: ea           JR      $121D
 
+Table func x1
 Func from 0bcd
 1233: 98           CALT    ($00B0)
 1234: 4e 38        JRE     $126E
@@ -2760,6 +2784,8 @@ Func from 124b, 124f
 128b: c0           JR      $128C
 128c: 70 1e 6c ff  SBCD    $FF6C
 1290: b8           RET
+
+Table func x2
 1291: 59 66        BIT     1,VV:66
 1293: c5           JR      $1299
 1294: 80           CALT    ($0080)
@@ -2775,6 +2801,8 @@ Func from 124b, 124f
 12a4: 60 ed        NEA     A,E
 12a6: b9           RETS
 12a7: b8           RET
+
+Table func x3
 12a8: 64 12 80     XRI     PC,$80
 12ab: 30 62        DCRW    VV:62
 12ad: c9           JR      $12B7
@@ -2794,7 +2822,7 @@ Func from 124b, 124f
 12c8: 55 63 01     OFFIW   VV:63,$01
 12cb: b8           RET
 12cc: 69 fc        MVI     A,$FC     // Midi Stop?
-12ce: 7d 08        CALF    $0D08
+12ce: 7d 08        CALF    $0D08     //
 12d0: b8           RET
 12d1: 20 d1        INRW    VV:D1
 12d3: 00           NOP
@@ -2803,6 +2831,8 @@ Func from 124b, 124f
 12d8: 69 68        MVI     A,$68
 12da: 4d da        MOV     TM0,A
 12dc: b9           RETS
+
+Table func x8
 12dd: 55 64 08     OFFIW   VV:64,$08
 12e0: 4e 24        JRE     $1306
 12e2: 64 5a 20     OFFI    PC,$20
@@ -2863,6 +2893,8 @@ Func from 124b, 124f
 1354: 69 04        MVI     A,$04
 1356: 69 00        MVI     A,$00
 1358: b8           RET
+
+Table func x9
 1359: 7b 64        CALF    $0B64
 135b: 59 63        BIT     1,VV:63
 135d: d1           JR      $136F
@@ -2890,7 +2922,7 @@ Func from 124b, 124f
 138c: 45 21 50     ONIW    VV:21,$50
 138f: 69 fa        MVI     A,$FA     // Midi Start?
 1391: 69 fb        MVI     A,$FB     // Midi Continue?
-1393: 7d 08        CALF    $0D08
+1393: 7d 08        CALF    $0D08     //
 1395: 4e 1c        JRE     $13B3
 1397: 44 00 14     LXI     EA,$1400
 139a: 69 00        MVI     A,$00
@@ -2899,7 +2931,7 @@ Func from 124b, 124f
 13a0: 45 21 50     ONIW    VV:21,$50
 13a3: 69 fa        MVI     A,$FA     // Midi start
 13a5: 69 fb        MVI     A,$FB     // Midi Continue
-13a7: 7d 08        CALF    $0D08
+13a7: 7d 08        CALF    $0D08     //
 13a9: 5f 2e        BIT     7,VV:2E
 13ab: c3           JR      $13AF
 13ac: 7c 7c        CALF    $0C7C
@@ -2944,6 +2976,8 @@ Func from 0577,
 13f7: 64 4a 20     ONI     PC,$20
 13fa: f2           JR      $13ED
 13fb: e7           JR      $13E3
+
+Table func xe
 13fc: 4c e0        MOV     A,CR0     // Read conversion complete reg
 13fe: 1a           MOV     B,A
 13ff: 74 b0 31     SUBNBW  VV:31
@@ -2966,6 +3000,7 @@ Func from 0577,
 1416: c8           JR      $141F
 1417: b8           RET
 
+Table func xf
 1418: 5f 65        BIT     7,VV:65
 141a: d3           JR      $142E
 141b: 60 aa        GTA     A,B
@@ -2983,6 +3018,8 @@ Func from 0577,
 142c: 63 65        STAW    VV:65
 142e: 01 31        LDAW    VV:31
 1430: 63 30        STAW    VV:30
+
+Table func xd
 1432: b4           PUSH    EA
 1433: 01 30        LDAW    VV:30
 1435: 6a e1        MVI     B,$E1
@@ -3003,6 +3040,7 @@ Func from 0577,
 144e: a4           POP     EA
 144f: b8           RET
 
+Table func xc
 1450: 5f 2e        BIT     7,VV:2E
 1452: 5e 23        BIT     6,VV:23
 1454: b9           RETS
@@ -3074,6 +3112,7 @@ Func from 0501, 067c // A function to check vv:24 bit 1??  Importantstate?
 14c7: 71 5b 00     MVIW    VV:5B,$00
 14ca: b8           RET
 
+Table func 10
 14cb: 01 1f        LDAW    VV:1F
 14cd: 1d           MOV     E,A
 14ce: 01 17        LDAW    VV:17
@@ -3325,7 +3364,7 @@ From 1634:
 1641: c9           JR      $164B
 1642: 67 f8        NEI     A,$F8
 1644: 55 63 01     OFFIW   VV:63,$01
-1647: 7d 08        CALF    $0D08
+1647: 7d 08        CALF    $0D08     //
 1649: 4e 31        JRE     $167C
 164b: 57 80        OFFI    A,$80     // Clear MSB of A
 164d: 4e 23        JRE     $1672     //
@@ -3791,6 +3830,8 @@ jmp from below (18fb)
 1996: 05 69 7e     ANIW    VV:69,$7E
 1999: 71 6b 00     MVIW    VV:6B,$00
 199c: 54 f4 16     JMP     $16F4
+
+Table func 13
 199f: 40 e1 19     CALL    $19E1     //
 19a2: 48 49        SKIT    FSR
 19a4: fa           JR      $199F
@@ -3819,6 +3860,8 @@ Func from 1861, 189f, 18b3, 1910, 1979
 19c3: 27 f7        GTI     A,$F7     // Is A G.T. xF7 (MIDI Sys RT)
 19c5: e8           JR      $19AE
 19c6: ef           JR      $19B6
+
+Table func x14
 19c7: 1a           MOV     B,A       // Mov A to B
 Jmp from 19cd
 19c8: 40 e1 19     CALL    $19E1     //
@@ -3828,6 +3871,7 @@ Jmp from 19cd
 19cf: 4d d8        MOV     TXB,A     // Write A to Transmit buf
 19d1: b8           RET
 
+Table func x15
 19d2: 6e ff        MVI     H,$FF
 19d4: 01 4d        LDAW    VV:4D
 19d6: 1f           MOV     L,A
