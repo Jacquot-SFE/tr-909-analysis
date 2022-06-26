@@ -9,7 +9,7 @@ So globals are referenced using the V register.  V is loaded at init as 0xff (as
 What globals are there?  How do they appear to be used?
 
 |Offset from VV:|Where ref'd|Type|Possible usage|
-|-|-|-|-| 
+|-|-|-|-|
 |02|0020, |Word|Timer 0,1 ISR|
 |08|2be|bits?||
 |09|2c1|||
@@ -36,12 +36,13 @@ What globals are there?  How do they appear to be used?
 |5a|0020, |Counter|IRQ4 - AD complete|
 |60|0d9d|||
 |61|0da0|||
-|62|19e3|Counter?||
+|62|19e3|Counter?|Seems to init to 4?  Or x17|
 |63|0012, 00e8, |bits|IRQ2,3...|
 |64|013f|bits|scanner related?|
 |67|0018, |Bits?|IRQ3 Interval counter|
 |69|1a03|bits|?|
 |6a|030e||init to 0xb3|
+|73|18e3|||
 |74|0305||init to 0x01|
 |D0|15b2|txbyte|staging transmit data byte?|
 

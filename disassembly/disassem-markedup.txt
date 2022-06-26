@@ -248,14 +248,14 @@ jmp from eb:
 0135: b1           PUSH    BC
 0136: b2           PUSH    DE
 0137: b3           PUSH    HL
-0138: 24 00 40     LXI     DE,$4000  // Read DE from 4000
-013b: 2a           LDAX    (DE)      //
+0138: 24 00 40     LXI     DE,$4000  // load imm DE with x4000
+013b: 2a           LDAX    (DE)      // Read thru 4000
 013c: 64 00 02     MVI     PA,$02    // Scan row 2
 013f: 5f 64        BIT     7,VV:64   //
 0141: 4e 33        JRE     $0176     // Cond jump to 176
 0143: 05 64 7f     ANIW    VV:64,$7F // And vv:64 - keep 7 LSBs
 0146: 74 98 17     ORAW    VV:17     // Or A with vv:17
-0149: 63 17        STAW    VV:17     // Store A thru vv:17 - tracking most recent state?
+0149: 63 17        STAW    VV:17     // Store A to vv:17 - tracking most recent state?
 014b: 1a           MOV     B,A
 014c: 2a           LDAX    (DE)      // Read thru DE (4000)
 014d: 63 1f        STAW    VV:1F     // Store to vv:1f
@@ -512,12 +512,12 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 // timer 1
 0325: 69 02        MVI     A,$02     // Mv Imm A gets x02
 0327: 4d db        MOV     TM1,A     // Mv timer1 gets A (tm1 <- 0x02)
-0329: 64 85 61     MVI     TMM,$61   // Mv imm timer mode 0x61
+0329: 64 85 61     MVI     TMM,$61   // Mv imm timer mode 0x61 tm1clk tm0 == 0,
 // Port c (MIDI/DIN) setup
 032c: 69 ee        MVI     A,$EE     // Mv imm a gets 0xee
 032e: 4d d4        MOV     MC,A      // Mv A to MC (port c mode - pin dirs?)
 0330: 69 1b        MVI     A,$1B     // Mv imm a gets 0x1b
-0332: 4d d1        MOV     MCC,A     // MCC (Mode control C) gets 0x1B: T1 in,T0 out,!SCK, TX,RX out, others GPIO
+0332: 4d d1        MOV     MCC,A     // Mode control C gets 0x1B: T1 in,T0 out,!SCK, TX,RX out, others GPIO
 // Serial port
 0334: 69 4e        MVI     A,$4E     // Mv imm A gets 0x4e
 0336: 4d ca        MOV     SML,A     // Mv SML (Serial mode low) gets A (0x4e)
@@ -1950,7 +1950,7 @@ Func from 0ccc, 0cd3
 Func From 00be, 00fb, 12ce, 1393, 13a7, 1647
 Something with MIDI Tx?
 0d08: 75 4b 00     EQIW    VV:4B,$00 // Is vv:4b 0?
-0d0b: c6           JR      $0D12     // branch +6
+0d0b: c6           JR      $0D12     // nonzero branch +6
 0d0c: 63 4b        STAW    VV:4B     // Store AW to vv:4b
 0d0e: 64 0e fb     ANI     MKH,$FB   // Set Mask Hi to xFB
 0d11: b8           RET
@@ -3875,7 +3875,7 @@ Func from 1861, 189f, 18b3, 1910, 1979
 19c5: e8           JR      $19AE
 19c6: ef           JR      $19B6
 
-Table func x14
+Table func x14 - called a lot
 19c7: 1a           MOV     B,A       // Mov A to B
 Jmp from 19cd
 19c8: 40 e1 19     CALL    $19E1     //
@@ -4151,7 +4151,7 @@ Func from 1a36, 1a9a
 1b9c: 64 01 10     MVI     PB,$10    // LEDs sel
 1b9f: 15 67 80     ORIW    VV:67,$80
 1ba2: 69 23        MVI     A,$23
-1ba4: 4d d1        MOV     MCC,A     // MCC of 23: tx,rx
+1ba4: 4d d1        MOV     MCC,A     // MCC of 23: tx,rx, C1 input
 1ba6: 11           EXX
 1ba7: 24 ff 00     LXI     DE,$00FF
 1baa: 11           EXX
@@ -4456,7 +4456,7 @@ Func from 1d36
 1dac: 63 68        STAW    VV:68
 1dae: 05 67 7f     ANIW    VV:67,$7F
 1db1: 69 1b        MVI     A,$1B
-1db3: 4d d1        MOV     MCC,A
+1db3: 4d d1        MOV     MCC,A     // MCC of x1b = T0 output, T1 input tx, rx,
 1db5: 69 0c        MVI     A,$0C
 1db7: 4d cc        MOV     ETMM,A
 1db9: 64 85 61     MVI     TMM,$61
@@ -4477,9 +4477,9 @@ Func from 1d36
 Func from 1ccf, 1d7c
 1dda: 4c c1        MOV     A,PB
 1ddc: 07 c0        ANI     A,$C0
-1dde: 30 62        DCRW    VV:62
-1de0: c5           JR      $1DE6
-1de1: 71 62 04     MVIW    VV:62,$04
+1dde: 30 62        DCRW    VV:62     // decrement vv:62
+1de0: c5           JR      $1DE6     //
+1de1: 71 62 04     MVIW    VV:62,$04 // set vv:62 to x4
 1de4: 17 10        ORI     A,$10
 1de6: 4d c1        MOV     PB,A
 1de8: 70 69 00 40  MOV     A,($4000)
@@ -4926,7 +4926,7 @@ Func from 1ccf, 1d7c
 1fb1: 46 4a        ADI     A,$4A
 1fb3: 4e 52        JRE     $2007
 1fb5: 56 5a        ACI     A,$5A
-1fb7: 5e 62        BIT     6,VV:62
+1fb7: 5e 62        BIT     6,VV:62   // Test bit 6 of vv:62?
 1fb9: 66 6a        SUI     A,$6A
 1fbb: 6e 72        MVI     H,$72
 1fbd: 76 7a        SBI     A,$7A
