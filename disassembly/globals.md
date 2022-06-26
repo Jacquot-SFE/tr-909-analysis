@@ -13,8 +13,12 @@ What globals are there?  How do they appear to be used?
 |02|0020, |Word|Timer 0,1 ISR|
 |08|2be|bits?||
 |09|2c1|||
+|10|0152||passed as HL Ptr to func?|
+...inc from 10...
 |16|0308||Init to 0x10|
 |17|0146||Scanner? Last observed states?|
+|18|0185||passed as HL Ptr to func?|
+...inc from 18...
 |1e|030b||Init to 0x18|
 |1f|014d||Scanner state?|
 |24|14ae|bits| important state??|
@@ -33,6 +37,7 @@ What globals are there?  How do they appear to be used?
 |4e|0317||init to 0|
 |4f|031b||init to 0xA0|
 |50|031e||init to 0xa0|
+|59|0b28|||
 |5a|0020, |Counter|IRQ4 - AD complete|
 |60|0d9d|||
 |61|0da0|||
@@ -42,9 +47,14 @@ What globals are there?  How do they appear to be used?
 |67|0018, |Bits?|IRQ3 Interval counter|
 |69|1a03|bits|?|
 |6a|030e||init to 0xb3|
+|6e|0d55|bits||
 |73|18e3|||
 |74|0305||init to 0x01|
 |D0|15b2|txbyte|staging transmit data byte?|
+
+Stack is growing downward from 0xffff.
+
+That D0 is puzzling, in that regard.  Does it never use more than a few bytes of stack?
 
 
 # Expectations

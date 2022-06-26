@@ -51,7 +51,7 @@ IRQ5: Serial ISR
 Table func from 0080?
 002b: 0e           MOV     A,H      // Mov H to A
 002c: 07 0c        ANI     A,$0C    // And Immed, A with 0x0c
-002e: 7d 98        CALF    $0D98    // to fixed area ??
+002e: 7d 98        CALF    $0D98    // call 0d98?
 0030: 74 0e 70     ANI     H,$70    //
 0033: 60 9e        ORA     A,H
 0035: 17 0c        ORI     A,$0C    // Or immed A with 0x0c
@@ -86,7 +86,7 @@ Table func x4
 Table func x5
 005f: 2d           LDAX    (HL+)
 
-Soft IRQ
+Soft IRQ: called from 0x1ff9
 0060: 5a 64        BIT     2,VV:64
 0065: 2b           LDAX    (HL)
 0062: 45 64 03     ONIW    VV:64,$03
@@ -260,8 +260,8 @@ jmp from eb:
 014c: 2a           LDAX    (DE)      // Read thru DE (4000)
 014d: 63 1f        STAW    VV:1F     // Store to vv:1f
 014f: 64 00 04     MVI     PA,$04    // Scan row 3
-0152: 34 10 ff     LXI     HL,$FF10
-0155: 7a e0        CALF    $0AE0
+0152: 34 10 ff     LXI     HL,$FF10  // Call param:
+0155: 7a e0        CALF    $0AE0     //
 0157: 6f 20        MVI     L,$20
 0159: 2b           LDAX    (HL)
 015a: 16 ff        XRI     A,$FF
@@ -288,8 +288,8 @@ Jmp from 0141:
 017f: 63 1f        STAW    VV:1F
 0181: 1a           MOV     B,A
 0182: 64 00 10     MVI     PA,$10    // Scan row 5
-0185: 34 18 ff     LXI     HL,$FF18
-0188: 7a e0        CALF    $0AE0
+0185: 34 18 ff     LXI     HL,$FF18  //
+0188: 7a e0        CALF    $0AE0     //
 018a: 55 1c 30     OFFIW   VV:1C,$30
 018d: 5e 66        BIT     6,VV:66
 018f: ca           JR      $019A
@@ -325,7 +325,7 @@ Jmp from 0174
 01c5: 6f 25        MVI     L,$25
 01c7: 8c           CALT    ($0098)   // tbl to 0059
 01c8: 5b 32        BIT     3,VV:32
-01ca: 7d 55        CALF    $0D55
+01ca: 7d 55        CALF    $0D55     //
 // This looks like LED scanner
 01cc: 4d c0        MOV     PA,A      // LED Pulls
 01ce: 64 19 01     ORI     PB,$01    // LED Sels
@@ -334,7 +334,7 @@ Jmp from 0174
 01d6: 6f 28        MVI     L,$28
 01d8: 8c           CALT    ($0098)   // tbl to 0059
 01d9: 55 32 08     OFFIW   VV:32,$08
-01dc: 7d 55        CALF    $0D55
+01dc: 7d 55        CALF    $0D55     //
 01de: 4d c0        MOV     PA,A      // LED Pulls
 01e0: 64 19 02     ORI     PB,$02    // LED Sels
 01e3: 4e 27        JRE     $020C
@@ -361,10 +361,10 @@ Jmp from 0174
 020f: 5f 64        BIT     7,VV:64
 0211: c5           JR      $0217
 0212: 6f 1c        MVI     L,$1C
-0214: 7b 28        CALF    $0B28
+0214: 7b 28        CALF    $0B28     //
 0216: c4           JR      $021B
 0217: 6f 14        MVI     L,$14
-0219: 7b 19        CALF    $0B19
+0219: 7b 19        CALF    $0B19     //
 021b: 34 80 1f     LXI     HL,$1F80
 021e: 6c ff        MVI     D,$FF
 0220: 69 00        MVI     A,$00
@@ -530,7 +530,7 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 0345: 64 07 bf     MVI     MKL,$BF   // Mv 0xBF to MKL (t/cnt Mask low)
 
 
-0348: 7b a4        CALF    $0BA4     // Call  ???
+0348: 7b a4        CALF    $0BA4     // Call
 034a: 4c e1        MOV     A,CR1     // Read conversion result 3 - mstr accent
 034c: 37 40        LTI     A,$40     // Less than 0x40, immed
 034e: dd           JR      $036C     // cond: skip ahead
@@ -606,11 +606,11 @@ Jmp from 0386
 03be: c9           JR      $03C8
 03bf: 71 33 20     MVIW    VV:33,$20
 03c2: 40 2f 10     CALL    $102F     //
-03c5: 7a 12        CALF    $0A12
+03c5: 7a 12        CALF    $0A12     //
 03c7: c8           JR      $03D0
 03c8: 71 33 30     MVIW    VV:33,$30
 03cb: 40 2f 10     CALL    $102F     //
-03ce: 7a 10        CALF    $0A10
+03ce: 7a 10        CALF    $0A10     //
 03d0: 05 63 0f     ANIW    VV:63,$0F
 03d3: 15 63 80     ORIW    VV:63,$80
 03d6: 05 65 fe     ANIW    VV:65,$FE
@@ -618,7 +618,7 @@ Jmp from 0386
 03dc: 15 66 40     ORIW    VV:66,$40
 03df: 71 0a 00     MVIW    VV:0A,$00
 03e2: 40 2e 0f     CALL    $0F2E     //
-03e5: 7d b7        CALF    $0DB7
+03e5: 7d b7        CALF    $0DB7     //
 03e7: 74 bd        DLT     EA,BC
 03e9: c6           JR      $03F0
 03ea: 99           CALT    ($00B2)   // tbl to 101d
@@ -646,9 +646,9 @@ Jmp from 0386
 0413: 0a           MOV     A,B
 0414: 63 30        STAW    VV:30
 0416: 95           CALT    ($00AA)   // tbl to 1432
-0417: 7d df        CALF    $0DDF
-0419: 7a 46        CALF    $0A46
-041b: 7e d1        CALF    $0ED1
+0417: 7d df        CALF    $0DDF     //
+0419: 7a 46        CALF    $0A46     //
+041b: 7e d1        CALF    $0ED1     //
 041d: 5e 69        BIT     6,VV:69
 041f: 40 03 1a     CALL    $1A03     //
 0422: 55 22 1e     OFFIW   VV:22,$1E
@@ -660,7 +660,7 @@ Jmp from 0386
 042f: 05 66 bf     ANIW    VV:66,$BF
 0432: 05 24 1b     ANIW    VV:24,$1B
 0435: 97           CALT    ($00AE)   // tbl to 1418
-0436: 7a 0a        CALF    $0A0A
+0436: 7a 0a        CALF    $0A0A     //
 0438: 4f 96        JRE     $03D0
 043a: 4e a0        JRE     $04DC
 043c: 5d 20        BIT     5,VV:20
@@ -678,17 +678,17 @@ Jmp from 0386
 0455: 01 3c        LDAW    VV:3C
 0457: 46 b0        ADI     A,$B0
 0459: 1a           MOV     B,A
-045a: 7b 5c        CALF    $0B5C
+045a: 7b 5c        CALF    $0B5C     //
 045c: 69 7c        MVI     A,$7C
-045e: 7b 5c        CALF    $0B5C
+045e: 7b 5c        CALF    $0B5C     //
 0460: 69 00        MVI     A,$00
-0462: 7b 5c        CALF    $0B5C
+0462: 7b 5c        CALF    $0B5C     //
 0464: 0a           MOV     A,B
-0465: 7b 5c        CALF    $0B5C
+0465: 7b 5c        CALF    $0B5C     //
 0467: 69 7f        MVI     A,$7F
-0469: 7b 5c        CALF    $0B5C
+0469: 7b 5c        CALF    $0B5C     //
 046b: 69 00        MVI     A,$00
-046d: 7b 5c        CALF    $0B5C
+046d: 7b 5c        CALF    $0B5C     //
 046f: 63 50        STAW    VV:50
 0471: 64 06 00     MVI     MKH,$00
 0474: 01 3c        LDAW    VV:3C
@@ -716,14 +716,14 @@ Jmp from 0386
 04a2: 05 24 f7     ANIW    VV:24,$F7
 04a5: 94           CALT    ($00A8)   // tbl to 1450
 04a6: c3           JR      $04AA
-04a7: 7e d1        CALF    $0ED1
+04a7: 7e d1        CALF    $0ED1     //
 04a9: d3           JR      $04BD
 04aa: 58 24        BIT     0,VV:24
 04ac: cf           JR      $04BC
 04ad: 71 24 00     MVIW    VV:24,$00
 04b0: 55 63 03     OFFIW   VV:63,$03
 04b3: c8           JR      $04BC
-04b4: 7d b7        CALF    $0DB7
+04b4: 7d b7        CALF    $0DB7     //
 04b6: 74 1d 08     ORI     E,$08
 04b9: 01 30        LDAW    VV:30
 04bb: 3a           STAX    (DE)
@@ -752,7 +752,7 @@ Jmp from 0386
 04e7: c9           JR      $04F1
 04e8: 85           CALT    ($008A)   // tbl to 11d6
 04e9: 4e ba        JRE     $05A5
-04eb: 7c 6c        CALF    $0C6C
+04eb: 7c 6c        CALF    $0C6C     //
 04ed: 54 a6 06     JMP     $06A6
 04f0: c4           JR      $04F5
 04f1: 84           CALT    ($0088)   // tbl to 0a2d
@@ -762,13 +762,13 @@ Jmp from 0386
 04f8: 65 68 00     NEIW    VV:68,$00
 04fb: c5           JR      $0501
 04fc: 71 68 00     MVIW    VV:68,$00
-04ff: 7d df        CALF    $0DDF
+04ff: 7d df        CALF    $0DDF     //
 0501: 40 ae 14     CALL    $14AE     //
 0504: 85           CALT    ($008A)   // tbl to 11d6
 0505: 54 d0 03     JMP     $03D0
 0508: 40 49 0f     CALL    $0F49     //
-050b: 7d df        CALF    $0DDF
-050d: 7a fe        CALF    $0AFE
+050b: 7d df        CALF    $0DDF     //
+050d: 7a fe        CALF    $0AFE     //
 050f: 55 67 04     OFFIW   VV:67,$04
 0512: 40 6e 1a     CALL    $1A6E     //
 0515: 4e 20        JRE     $0537
@@ -786,8 +786,8 @@ Jmp from 0386
 052e: b5           DMOV    BC,EA
 052f: 9a           CALT    ($00B4)   // tbl to 1026
 0530: 40 1f 1a     CALL    $1A1F     //
-0533: 7d df        CALF    $0DDF
-0535: 7e d1        CALF    $0ED1
+0533: 7d df        CALF    $0DDF     //
+0535: 7e d1        CALF    $0ED1     //
 0537: 55 65 01     OFFIW   VV:65,$01
 053a: 54 2c 04     JMP     $042C
 053d: 91           CALT    ($00A2)   // tbl to 1359
@@ -806,7 +806,7 @@ Jmp from 0386
 0552: 4e 37        JRE     $058B
 0554: 47 04        ONI     A,$04
 0556: c4           JR      $055B
-0557: 7b 64        CALF    $0B64
+0557: 7b 64        CALF    $0B64     //
 0559: 4e 30        JRE     $058B
 055b: 47 02        ONI     A,$02
 055d: 4e 2c        JRE     $058B
@@ -814,11 +814,11 @@ Jmp from 0386
 0561: 74 b8 37     LTAW    VV:37
 0564: c5           JR      $056A
 0565: 41           INR     A
-0566: 79 d7        CALF    $09D7
+0566: 79 d7        CALF    $09D7     //
 0568: 4e 21        JRE     $058B
 056a: 99           CALT    ($00B2)   // tbl to 101d
 056b: 12           INX     BC
-056c: 7d b7        CALF    $0DB7
+056c: 7d b7        CALF    $0DB7     //
 056e: 74 bd        DLT     EA,BC
 0570: c9           JR      $057A
 0571: 70 1f 75 ff  LBCD    $FF75
@@ -834,12 +834,12 @@ Jmp from 0386
 0583: 7a 6e        CALF    $0A6E
 0585: 79 cb        CALF    $09CB
 0587: 79 9d        CALF    $099D
-0589: 7a 46        CALF    $0A46
+0589: 7a 46        CALF    $0A46     //
 058b: 94           CALT    ($00A8)   // tbl to 1450
 058c: c6           JR      $0593
-058d: 7e d1        CALF    $0ED1
+058d: 7e d1        CALF    $0ED1     //
 058f: 58 20        BIT     0,VV:20
-0591: 7a fe        CALF    $0AFE
+0591: 7a fe        CALF    $0AFE     //
 0593: 5e 33        BIT     6,VV:33
 0595: c7           JR      $059D
 0596: 4c e1        MOV     A,CR1
@@ -853,7 +853,7 @@ Jmp from 0386
 05a8: 15 63 40     ORIW    VV:63,$40
 05ab: 05 66 3f     ANIW    VV:66,$3F
 05ae: 05 67 fc     ANIW    VV:67,$FC
-05b1: 7a 46        CALF    $0A46
+05b1: 7a 46        CALF    $0A46     //
 05b3: 40 2e 0f     CALL    $0F2E     //
 05b6: 69 03        MVI     A,$03
 05b8: 7d b9        CALF    $0DB9
@@ -897,7 +897,7 @@ Jmp from 0386
 0604: 40 55 10     CALL    $1055     //
 0607: c6           JR      $060E
 0608: 58 23        BIT     0,VV:23
-060a: 7e d1        CALF    $0ED1
+060a: 7e d1        CALF    $0ED1     //
 060c: c1           JR      $060E
 060d: 97           CALT    ($00AE)   // tbl to 1418
 060e: 7e 0d        CALF    $0E0D
@@ -914,7 +914,7 @@ Jmp from 0386
 061f: 83           CALT    ($0086)   // tbl to 09c3
 0620: c4           JR      $0625
 0621: 57 04        OFFI    A,$04
-0623: 7b 64        CALF    $0B64
+0623: 7b 64        CALF    $0B64     //
 0625: 40 84 0f     CALL    $0F84     //
 0628: d4           JR      $063D
 0629: 05 68 80     ANIW    VV:68,$80
@@ -928,7 +928,7 @@ Jmp from 0386
 0635: 40 55 10     CALL    $1055     //
 0638: c4           JR      $063D
 0639: 58 23        BIT     0,VV:23
-063b: 7e d1        CALF    $0ED1
+063b: 7e d1        CALF    $0ED1     //
 063d: 40 ed 0e     CALL    $0EED     //
 0640: c5           JR      $0646
 0641: 90           CALT    ($00A0)   // tbl to 12dd
@@ -953,7 +953,7 @@ Jmp from 0386
 066a: 97           CALT    ($00AE)   // tbl to 1418
 066b: 85           CALT    ($008A)   // tbl to 11d6
 066c: 4f 37        JRE     $05A5
-066e: 7c 6c        CALF    $0C6C
+066e: 7c 6c        CALF    $0C6C     //
 0670: 4e 34        JRE     $06A6
 0672: d0           JR      $0683
 0673: 85           CALT    ($008A)   // tbl to 11d6
@@ -964,7 +964,7 @@ Jmp from 0386
 067c: 40 ae 14     CALL    $14AE     //
 067f: 94           CALT    ($00A8)   // tbl to 1450
 0680: c2           JR      $0683
-0681: 7b a4        CALF    $0BA4
+0681: 7b a4        CALF    $0BA4     //
 0683: 91           CALT    ($00A2)   // tbl to 1359
 0684: e2           JR      $0667
 0685: 47 01        ONI     A,$01
@@ -976,7 +976,7 @@ Jmp from 0386
 068d: 83           CALT    ($0086)   // tbl to 09c3
 068e: c4           JR      $0693
 068f: 57 04        OFFI    A,$04
-0691: 7b 64        CALF    $0B64
+0691: 7b 64        CALF    $0B64     //
 0693: 98           CALT    ($00B0)   // tbl to 14cb
 0694: c2           JR      $0697
 0695: 7a 6e        CALF    $0A6E
@@ -987,7 +987,7 @@ Jmp from 0386
 069c: 7a 6a        CALF    $0A6A
 069e: 94           CALT    ($00A8)   // tbl to 1450
 069f: c2           JR      $06A2
-06a0: 7b a4        CALF    $0BA4
+06a0: 7b a4        CALF    $0BA4     //
 06a2: 90           CALT    ($00A0)   // tbl to 12dd
 06a3: e1           JR      $0685
 06a4: 4f c1        JRE     $0667
@@ -1005,11 +1005,11 @@ Jmp from 0386
 06be: 40 13 15     CALL    $1513     //
 06c1: 85           CALT    ($008A)   // tbl to 11d6
 06c2: 54 a5 05     JMP     $05A5
-06c5: 7c 6c        CALF    $0C6C
+06c5: 7c 6c        CALF    $0C6C     //
 06c7: 4f dd        JRE     $06A6
 06c9: d2           JR      $06DC
 06ca: 05 24 7f     ANIW    VV:24,$7F
-06cd: 7a fe        CALF    $0AFE
+06cd: 7a fe        CALF    $0AFE     //
 06cf: 85           CALT    ($008A)   // tbl to 11d6
 06d0: 54 d0 03     JMP     $03D0
 06d3: 84           CALT    ($0088)   // tbl to 0a2d
@@ -1017,7 +1017,7 @@ Jmp from 0386
 06d6: 7c 9b        CALF    $0C9B
 06d8: 94           CALT    ($00A8)   // tbl to 11d6
 06d9: c2           JR      $06DC
-06da: 7b a4        CALF    $0BA4
+06da: 7b a4        CALF    $0BA4     //
 06dc: 91           CALT    ($00A2)   // tbl to 1359
 06dd: 4f d6        JRE     $06B5
 06df: 5d 66        BIT     5,VV:66
@@ -1043,8 +1043,8 @@ Jmp from 0386
 0701: 54 b9 08     JMP     $08B9
 0704: 94           CALT    ($00A8)   // tbl to 1450
 0705: c2           JR      $0708
-0706: 7b a4        CALF    $0BA4
-0708: 7a fe        CALF    $0AFE
+0706: 7b a4        CALF    $0BA4     //
+0708: 7a fe        CALF    $0AFE     //
 070a: 90           CALT    ($00A0)   // tbl to 12dd
 070b: 4f d6        JRE     $06E3
 070d: 05 66 3f     ANIW    VV:66,$3F
@@ -1151,7 +1151,7 @@ Jmp from 0386
 07ca: 71 15 00     MVIW    VV:15,$00
 07cd: 71 1d 00     MVIW    VV:1D,$00
 07d0: 71 24 00     MVIW    VV:24,$00
-07d3: 7b 64        CALF    $0B64
+07d3: 7b 64        CALF    $0B64     //
 07d5: 4f 1a        JRE     $06F1
 07d7: 15 65 08     ORIW    VV:65,$08
 07da: 47 01        ONI     A,$01
@@ -1182,7 +1182,7 @@ Jmp from 0386
 0801: 4e 8f        JRE     $0892
 0803: 4e 4e        JRE     $0853
 0805: 57 04        OFFI    A,$04
-0807: 7b 64        CALF    $0B64
+0807: 7b 64        CALF    $0B64     //
 0809: 7b c9        CALF    $0BC9
 080b: 4e 85        JRE     $0892
 080d: 98           CALT    ($00B0)   // tbl to 14cb
@@ -1275,7 +1275,7 @@ Jmp from 0386
 08b2: 54 08 07     JMP     $0708
 08b5: 94           CALT    ($00A8)   // tbl to 1450
 08b6: c2           JR      $08B9
-08b7: 7b a4        CALF    $0BA4
+08b7: 7b a4        CALF    $0BA4     //
 08b9: 90           CALT    ($00A0)   // tbl to 12dd
 08ba: 4f 1e        JRE     $07DA
 08bc: 7a 86        CALF    $0A86
@@ -1387,9 +1387,9 @@ Table func from 0084?
 0989: 6b 02        MVI     C,$02
 098b: 79 b1        CALF    $09B1
 098d: 74 1e 02     ORI     H,$02
-0990: 7b 28        CALF    $0B28
+0990: 7b 28        CALF    $0B28     //
 0992: 74 0e fe     ANI     H,$FE
-0995: 7b 19        CALF    $0B19
+0995: 7b 19        CALF    $0B19     //
 0997: 01 3f        LDAW    VV:3F
 0999: 46 05        ADI     A,$05
 099b: 63 5c        STAW    VV:5C
@@ -1423,13 +1423,15 @@ Table func from 0086
 09c5: 74 b8 37     LTAW    VV:37
 09c8: c2           JR      $09CB
 09c9: 41           INR     A
-09ca: cc           JR      $09D7
+09ca: cc           JR      $09D7     //
 09cb: 7c 3f        CALF    $0C3F
 09cd: 63 33        STAW    VV:33
 09cf: 7a 6a        CALF    $0A6A
 09d1: 01 36        LDAW    VV:36
 09d3: 63 37        STAW    VV:37
 09d5: 01 35        LDAW    VV:35
+
+Fixed area call from 0566, 09ca
 09d7: 63 38        STAW    VV:38
 09d9: 7c 38        CALF    $0C38
 09db: 16 ff        XRI     A,$FF
@@ -1458,13 +1460,18 @@ Table func from 0086
 0a07: 7a c9        CALF    $0AC9
 0a09: b8           RET
 
+Fixed area call from 0436, 1541
 0a0a: 45 24 18     ONIW    VV:24,$18
 0a0d: b9           RETS
 
 0a0e: 5b 24        BIT     3,VV:24
+
+Fixed area call from 03ce
 0a10: 69 20        MVI     A,$20
-0a12: 69 30        MVI     A,$30
-0a14: 05 33 4f     ANIW    VV:33,$4F
+
+Fixed area call from 0c35
+0a12: 69 30        MVI     A,$30     // Set 0x03
+0a14: 05 33 4f     ANIW    VV:33,$4F // And with
 0a17: 74 98 33     ORAW    VV:33
 0a1a: 63 33        STAW    VV:33
 0a1c: 71 24 00     MVIW    VV:24,$00
@@ -1493,9 +1500,11 @@ Table func from 0088
 0a42: 1a           MOV     B,A
 0a43: 1b           MOV     C,A
 0a44: 7a 6e        CALF    $0A6E
+
+Fixed area call from 0419, 0589, 05b1, 0c57, 0df6
 0a46: 34 09 00     LXI     HL,$0009
 0a49: 01 34        LDAW    VV:34
-0a4b: 7d 98        CALF    $0D98
+0a4b: 7d 98        CALF    $0D98     // Call 0d98
 0a4d: 46 04        ADI     A,$04
 0a4f: ac           LDAX    (HL+A)
 0a50: 1a           MOV     B,A
@@ -1593,28 +1602,31 @@ Table func from 0088
 
 0adf: b8           RET
 
-0ae0: 2d           LDAX    (HL+)
-0ae1: 70 9d        ORAX    (HL+)
-0ae3: 70 9d        ORAX    (HL+)
-0ae5: 70 9d        ORAX    (HL+)
-0ae7: 16 ff        XRI     A,$FF
-0ae9: 60 8a        ANA     A,B
-0aeb: 3d           STAX    (HL+)
-0aec: 70 9b        ORAX    (HL)
-0aee: 3d           STAX    (HL+)
-0aef: 2b           LDAX    (HL)
-0af0: 41           INR     A
-0af1: 07 03        ANI     A,$03
-0af3: 1b           MOV     C,A
-0af4: 2b           LDAX    (HL)
-0af5: 07 f8        ANI     A,$F8
-0af7: 60 9b        ORA     A,C
-0af9: 3b           STAX    (HL)
-0afa: 1f           MOV     L,A
+Fixed area func from 0155, 0188
+Param: FA is address of ?? (ff10, ff18)
+0ae0: 2d           LDAX    (HL+)     // A thru param (ff10)
+0ae1: 70 9d        ORAX    (HL+)     // Or it thru   (ff11)
+0ae3: 70 9d        ORAX    (HL+)     // Or it thru   (ff12)
+0ae5: 70 9d        ORAX    (HL+)     // Or it thru   (ff13)
+0ae7: 16 ff        XRI     A,$FF     // XOR all bits
+0ae9: 60 8a        ANA     A,B       // And A with B
+0aeb: 3d           STAX    (HL+)     // Store it thru HL (ff14)
+0aec: 70 9b        ORAX    (HL)      // Or A with (FF15)
+0aee: 3d           STAX    (HL+)     // Store A theu HL (ff15)
+0aef: 2b           LDAX    (HL)      // ld A with ff16
+0af0: 41           INR     A         // Inc A, skip next if carry
+0af1: 07 03        ANI     A,$03     // And a with 0x03: mask off 2 LSBs
+0af3: 1b           MOV     C,A       // Mov A to C
+0af4: 2b           LDAX    (HL)      // Ld A from ff16
+0af5: 07 f8        ANI     A,$F8     // Keep top 5 bits of a
+0af7: 60 9b        ORA     A,C       // A gets stored 2 LSBs from C
+0af9: 3b           STAX    (HL)      // Store A to FF16
+0afa: 1f           MOV     L,A       //
 0afb: 0a           MOV     A,B
-0afc: 3b           STAX    (HL)
+0afc: 3b           STAX    (HL)      // Store A to FF16
 0afd: b8           RET
 
+Fixed area func from 050d, 0591, 06cd, 0708
 0afe: 5a 24        BIT     2,VV:24
 0b00: b8           RET
 
@@ -1633,6 +1645,7 @@ Table func from 0088
 0b15: 15 2e 04     ORIW    VV:2E,$04
 0b18: b8           RET
 
+Fixed area call from 0219, 0995
 0b19: 01 58        LDAW    VV:58
 0b1b: 16 ff        XRI     A,$FF
 0b1d: 70 8b        ANAX    (HL)
@@ -1641,9 +1654,11 @@ Table func from 0088
 0b23: 63 58        STAW    VV:58
 0b25: 6b 24        MVI     C,$24
 0b27: ce           JR      $0B36
-0b28: 01 59        LDAW    VV:59
-0b2a: 16 ff        XRI     A,$FF
-0b2c: 70 8b        ANAX    (HL)
+
+Fixed area call from 0214, 0990
+0b28: 01 59        LDAW    VV:59     // Get a from vv:59
+0b2a: 16 ff        XRI     A,$FF     // XOR all bits
+0b2c: 70 8b        ANAX    (HL)      //
 0b2e: 1a           MOV     B,A
 0b2f: 74 98 59     ORAW    VV:59
 0b32: 63 59        STAW    VV:59
@@ -1657,13 +1672,13 @@ Table func from 0088
 0b40: 1d           MOV     E,A
 0b41: 01 3c        LDAW    VV:3C
 0b43: 46 90        ADI     A,$90
-0b45: 7b 5c        CALF    $0B5C
+0b45: 7b 5c        CALF    $0B5C     //
 0b47: 48 02        SLRC    B
 0b49: cc           JR      $0B56
 0b4a: 0b           MOV     A,C
-0b4b: 7b 5c        CALF    $0B5C
+0b4b: 7b 5c        CALF    $0B5C     //
 0b4d: 01 0b        LDAW    VV:0B
-0b4f: 7b 5c        CALF    $0B5C
+0b4f: 7b 5c        CALF    $0B5C     //
 0b51: 63 50        STAW    VV:50
 0b53: 64 06 00     MVI     MKH,$00
 0b56: 74 6a 00     NEI     B,$00
@@ -1671,6 +1686,8 @@ Table func from 0088
 
 0b5a: 43           INR     C
 0b5b: eb           JR      $0B47
+
+Fixed area call from 045a, 045e, 0462, 0465, 0469, 046d, 0b45, 0b4b, 0b4f, 0b8d, 0b93, 0b97, 1a0e, 1a17, 1a53, 1a59, 1a66,
 0b5c: 3c           STAX    (DE+)
 0b5d: 0d           MOV     A,E
 0b5e: 37 d0        LTI     A,$D0
@@ -1678,6 +1695,7 @@ Table func from 0088
 0b62: 1d           MOV     E,A
 0b63: b8           RET
 
+Fixed area func from 0557, 0623, 0691, 07d3, 0807, 132a, 1359
 0b64: 55 69 01     OFFIW   VV:69,$01
 0b67: b8           RET
 
@@ -1702,13 +1720,13 @@ Table func from 0088
 0b88: 1d           MOV     E,A
 0b89: 01 3c        LDAW    VV:3C
 0b8b: 46 90        ADI     A,$90
-0b8d: 7b 5c        CALF    $0B5C
+0b8d: 7b 5c        CALF    $0B5C     //
 0b8f: 48 02        SLRC    B
 0b91: cc           JR      $0B9E
 0b92: 0b           MOV     A,C
-0b93: 7b 5c        CALF    $0B5C
+0b93: 7b 5c        CALF    $0B5C     //
 0b95: 69 00        MVI     A,$00
-0b97: 7b 5c        CALF    $0B5C
+0b97: 7b 5c        CALF    $0B5C     //
 0b99: 63 50        STAW    VV:50
 0b9b: 64 06 00     MVI     MKH,$00
 0b9e: 74 6a 00     NEI     B,$00
@@ -1717,7 +1735,7 @@ Table func from 0088
 0ba2: 43           INR     C
 0ba3: eb           JR      $0B8F
 
-Func from 0348
+Func from 0348, 0681, 06a0, 06da, 0706, 08b7, 0c59, 100e
 0ba4: 69 0f        MVI     A,$0F     // imm load A of 0x0f
 0ba6: 63 25        STAW    VV:25     // Store A, 25 off VV
 0ba8: 63 28        STAW    VV:28     //          28
@@ -1835,8 +1853,8 @@ Func from 0348
 0c54: b8           RET
 
 0c55: 7c ae        CALF    $0CAE
-0c57: 7a 46        CALF    $0A46
-0c59: 7b a4        CALF    $0BA4
+0c57: 7a 46        CALF    $0A46     //
+0c59: 7b a4        CALF    $0BA4     //
 0c5b: 05 66 3f     ANIW    VV:66,$3F
 0c5e: 45 22 ff     ONIW    VV:22,$FF
 0c61: 55 23 ff     OFFIW   VV:23,$FF
@@ -1846,6 +1864,7 @@ Func from 0348
 0c69: 63 24        STAW    VV:24
 0c6b: b8           RET
 
+Fixed area call from 04eb, 066e, 06c5
 0c6c: 84           CALT    ($0088)   // tbl to 0a2d
 0c6d: b8           RET
 
@@ -2003,12 +2022,14 @@ Something with MIDI Tx?
 
 0d54: b9           RETS
 
-0d55: 01 6e        LDAW    VV:6E
-0d57: 5b 66        BIT     3,VV:66
-0d59: c3           JR      $0D5D
-0d5a: 60 9a        ORA     A,B
+Fixed area call from 01ca, 01dc
+0d55: 01 6e        LDAW    VV:6E     // Load thru VV:6e
+0d57: 5b 66        BIT     3,VV:66   // Test bit 3 of vv:66, skip next if set
+0d59: c3           JR      $0D5D     // Jmp if set
+0d5a: 60 9a        ORA     A,B       //
 0d5c: b8           RET
 
+Jmp from 3 above (vv:66 & 0x08?)
 0d5d: 16 ff        XRI     A,$FF
 0d5f: 60 8a        ANA     A,B
 0d61: b8           RET
@@ -2049,6 +2070,8 @@ Something with MIDI Tx?
 
 0d94: 48 21        SLR     A         // Shift Right
 0d96: 48 21        SLR     A         // Shift Right
+
+Ficed area func, call from  002e, 0a4b
 0d98: 48 21        SLR     A         // Shift Right
 0d9a: 48 21        SLR     A         // Shift Right
 0d9c: b8           RET               // return
@@ -2057,7 +2080,7 @@ Something with MIDI Tx?
 0da0: 71 61 00     MVIW    VV:61,$00 // Clear vv:61
 0da3: b8           RET
 
-0da4: 7d b7        CALF    $0DB7
+0da4: 7d b7        CALF    $0DB7     //
 0da6: a8           INX     EA
 0da7: 08           MOV     A,EAH
 0da8: 07 0f        ANI     A,$0F
@@ -2068,6 +2091,8 @@ Something with MIDI Tx?
 0db3: b8           RET
 0db4: 48 82        LDEAX   (DE)
 0db6: ef           JR      $0DA6
+
+Fixed area call from 03e5, 04b4, 056c, 0da4,
 0db7: 01 3b        LDAW    VV:3B
 0db9: 7d 8b        CALF    $0D8B
 0dbb: 17 86        ORI     A,$86
@@ -2093,6 +2118,8 @@ Something with MIDI Tx?
 0ddb: 70 99        ORAX    (BC)
 0ddd: 39           STAX    (BC)
 0dde: b8           RET
+
+Fixed area func from 0417, 04ff, 050b, 0533, 0f79, 13c7, 1a8b
 0ddf: 99           CALT    ($00B2)   // tbl to 101d
 0de0: 29           LDAX    (BC)
 0de1: 7d f9        CALF    $0DF9
@@ -2109,7 +2136,7 @@ Something with MIDI Tx?
 0df0: 79 cb        CALF    $09CB
 0df2: 79 9d        CALF    $099D
 0df4: 7d 9d        CALF    $0D9D
-0df6: 7a 46        CALF    $0A46
+0df6: 7a 46        CALF    $0A46     //
 0df8: b8           RET
 0df9: 07 0c        ANI     A,$0C
 0dfb: 67 0c        NEI     A,$0C
@@ -2247,6 +2274,8 @@ Something with MIDI Tx?
 0eca: 74 bd        DLT     EA,BC
 0ecc: 7d e5        CALF    $0DE5
 0ece: 71 68 00     MVIW    VV:68,$00
+
+Fixed area call from 041b, 04a7, 0535, 058d, 060a, 063b, 07fe, 13c9
 0ed1: 99           CALT    ($00B2)   // tbl to 101d
 0ed2: a5           DMOV    EA,BC
 0ed3: 70 2f 75 ff  LDED    $FF75
@@ -2356,9 +2385,9 @@ Func from 0508, 05fe, 0648,
 0f73: b7           DMOV    HL,EA
 0f74: 14 00 00     LXI     BC,$0000
 0f77: 7e dc        CALF    $0EDC
-0f79: 7d df        CALF    $0DDF
+0f79: 7d df        CALF    $0DDF     //
 0f7b: 15 67 01     ORIW    VV:67,$01
-0f7e: 7e d1        CALF    $0ED1
+0f7e: 7e d1        CALF    $0ED1     //
 0f80: 71 24 00     MVIW    VV:24,$00
 0f83: b8           RET
 
@@ -2435,7 +2464,7 @@ func from 04f5, 05f3, 0625
 1008: 63 27        STAW    VV:27
 100a: 63 7d        STAW    VV:7D
 100c: 63 7e        STAW    VV:7E
-100e: 7b a4        CALF    $0BA4
+100e: 7b a4        CALF    $0BA4     //
 1010: 5d 68        BIT     5,VV:68
 1012: b8           RET
 1013: 01 71        LDAW    VV:71
@@ -2882,7 +2911,7 @@ Table func x8
 1323: 71 0a 00     MVIW    VV:0A,$00
 1326: 64 4e 04     ONI     MKH,$04
 1329: fc           JR      $1326
-132a: 7b 64        CALF    $0B64
+132a: 7b 64        CALF    $0B64     //
 132c: 05 64 f7     ANIW    VV:64,$F7
 132f: 58 63        BIT     0,VV:63
 1331: 5e 64        BIT     6,VV:64
@@ -2909,7 +2938,7 @@ Table func x8
 1358: b8           RET
 
 Table func x9
-1359: 7b 64        CALF    $0B64
+1359: 7b 64        CALF    $0B64     //
 135b: 59 63        BIT     1,VV:63
 135d: d1           JR      $136F
 135e: 64 5a 20     OFFI    PC,$20
@@ -2961,8 +2990,8 @@ Table func x9
 13be: cc           JR      $13CB
 13bf: 70 1f 75 ff  LBCD    $FF75
 13c3: 70 1e e6 2f  SBCD    $2FE6
-13c7: 7d df        CALF    $0DDF
-13c9: 7e d1        CALF    $0ED1
+13c7: 7d df        CALF    $0DDF     //
+13c9: 7e d1        CALF    $0ED1     //
 13cb: 79 cb        CALF    $09CB
 13cd: 7d 9d        CALF    $0D9D
 13cf: 71 70 00     MVIW    VV:70,$00
@@ -3208,7 +3237,7 @@ Func from 06be
 153b: 79 e8        CALF    $09E8
 153d: 7c 3f        CALF    $0C3F
 153f: 63 33        STAW    VV:33
-1541: 7a 0a        CALF    $0A0A
+1541: 7a 0a        CALF    $0A0A     //
 1543: f7           JR      $153B
 1544: 58 20        BIT     0,VV:20
 1546: 4e 40        JRE     $1588
@@ -3928,11 +3957,11 @@ Func from 041f
 1a09: 01 50        LDAW    VV:50
 1a0b: 1d           MOV     E,A
 1a0c: 69 f3        MVI     A,$F3
-1a0e: 7b 5c        CALF    $0B5C
+1a0e: 7b 5c        CALF    $0B5C     //
 1a10: 01 3b        LDAW    VV:3B
 1a12: 55 33 10     OFFIW   VV:33,$10
 1a15: 17 04        ORI     A,$04
-1a17: 7b 5c        CALF    $0B5C
+1a17: 7b 5c        CALF    $0B5C     //
 1a19: 63 50        STAW    VV:50
 1a1b: 64 06 00     MVI     MKH,$00
 1a1e: b8           RET
@@ -3965,16 +3994,16 @@ Func from 0530,
 1a4e: 01 50        LDAW    VV:50
 1a50: 1d           MOV     E,A
 1a51: 69 f2        MVI     A,$F2
-1a53: 7b 5c        CALF    $0B5C
+1a53: 7b 5c        CALF    $0B5C     //
 1a55: 01 77        LDAW    VV:77
 1a57: 07 7f        ANI     A,$7F
-1a59: 7b 5c        CALF    $0B5C
+1a59: 7b 5c        CALF    $0B5C     //
 1a5b: 01 78        LDAW    VV:78
 1a5d: 48 25        SLL     A
 1a5f: 55 77 80     OFFIW   VV:77,$80
 1a62: 17 01        ORI     A,$01
 1a64: 07 7f        ANI     A,$7F
-1a66: 7b 5c        CALF    $0B5C
+1a66: 7b 5c        CALF    $0B5C     //
 1a68: 63 50        STAW    VV:50
 1a6a: 64 06 00     MVI     MKH,$00
 1a6d: b8           RET
@@ -3992,7 +4021,7 @@ func from 0512,
 1a83: 75 52 00     EQIW    VV:52,$00
 1a86: c7           JR      $1A8E
 1a87: 70 2e e6 2f  SDED    $2FE6
-1a8b: 7d df        CALF    $0DDF
+1a8b: 7d df        CALF    $0DDF     //
 1a8d: b8           RET
 
 1a8e: b2           PUSH    DE
@@ -4965,7 +4994,7 @@ Func from 1ccf, 1d7c
 1ff2: 64 66 68     SUI     MKH,$68
 1ff5: 6a 6c        MVI     B,$6C
 1ff7: 6e 70        MVI     H,$70
-1ff9: 72           SOFTI
+1ff9: 72           SOFTI             // Software interrupt: branch to 0x0060
 1ffa: 74 76 78     SBI     H,$78
 1ffd: 7a 7c        CALF    $0A7C
 1fff: 7e 54        CALF    $0E00

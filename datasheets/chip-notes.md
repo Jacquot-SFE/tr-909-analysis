@@ -127,3 +127,13 @@ Registers:
    * JMP: Jump, full 16-bit operand
    * JB: Jump to addr in BC (1 byte instr)
    * JEA: Jump to addr in EA (2 byte instr)
+
+## Calling
+
+Calling sets up a return address to be popped by a ret.
+
+* CALL: call routine with 16 bits immed data.  3 byte, 16 state
+* CALB: (unused here) call to address in BC.  2 byte, 17 state
+* CALT: call routine thru table: 32 16bit addresses loc'd at 0x0080..0x9f.  **Shortest**  1 byte, 16 state
+* CALF: call routine at 0x0800 | (0x03ff & operand) **Fastest** call: 2 byte, 13 state**
+* SOFTI
