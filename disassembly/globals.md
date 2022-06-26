@@ -26,6 +26,7 @@ What globals are there?  How do they appear to be used?
 |28|0ba8||init to 0f|
 |2b|0baa||init to 0f|
 |31|0319||init to 0|
+|33|0a14|bits||
 |34|0a3e|||
 |35|0140|||
 |3c|0302||Init to 0x0a|
