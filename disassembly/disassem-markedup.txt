@@ -22,13 +22,13 @@ Ext int 1 is DIN clk
 
 0010: b0           PUSH    VA        // Store VA
 0011: b4           PUSH    EA        // Store EA
-0012: 59 63        BIT     1,VV:63   // Test bit 1 of vv:63
+0012: 59 63        BIT     1,VV:63   // Test bit 1 of vv:63, skip next if it's set
 0014: 4e af        JRE     $00C5     // (cond) to C5
 0016: 4e a4        JRE     $00BC     // (?) to BC
 
 IRQ3: Timer/counter
 
-0018: 5f 67        BIT     7,VV:67  // Check bit 7 of VV+67
+0018: 5f 67        BIT     7,VV:67  // Test bit 7 of vv:67, skip next if it's set
 001a: 4e ca        JRE     $00E6    // Jmp to e6
 001c: aa           EI               // Enable interrupts
 001d: 62           RETI             // Return from interrupt
@@ -87,7 +87,7 @@ Table func x5
 005f: 2d           LDAX    (HL+)
 
 Soft IRQ: called from 0x1ff9
-0060: 5a 64        BIT     2,VV:64
+0060: 5a 64        BIT     2,VV:64   // Test bit 2 of vv:64, skip next if it's set
 0065: 2b           LDAX    (HL)
 0062: 45 64 03     ONIW    VV:64,$03
 0066: 1a           MOV     B,A
@@ -111,6 +111,7 @@ Table func x7
 007f: ff           JR      $007F     // Deadloop?
 
 // Is this call table? Ref man says it's at 128H?  (is that really 0d128?)
+// The contents sure look like valid addresses
 Func from timer ISR
 0080: 2b      T    LDAX    (HL)      // 0x0 002b
 0081: 00      A    NOP
@@ -180,7 +181,7 @@ Jmp from External interrupt (DIN Clk) if vv:63 && 0x01
 00cf: 48 6c        SKNIT   OV
 00d1: d1           JR      $00E3
 00d2: 08           MOV     A,EAH
-00d3: 58 5b        BIT     0,VV:5B
+00d3: 58 5b        BIT     0,VV:5B   // Test bit 0 of vv:5b, skip next if it's set
 00d5: cb           JR      $00E1
 00d6: 37 03        LTI     A,$03
 00d8: d6           JR      $00EF
@@ -199,7 +200,7 @@ Jmp from Timer counter interrupt
 00e7: b4           PUSH    EA        // Push EA
 00e8: 55 63 03     OFFIW   VV:63,$03 // Immediate and with 0x03 - set Z cond
 00eb: df           JR      $010B     // If zero, Jump to 010b
-00ec: 58 5b        BIT     0,VV:5B
+00ec: 58 5b        BIT     0,VV:5B   // Test bit 1 of vv:63, skip next if it's set
 00ee: c5           JR      $00F4
 00ef: 30 5b        DCRW    VV:5B
 00f1: 8b           CALT    ($0096)   // tbl to x12a8
@@ -208,7 +209,7 @@ Jmp from Timer counter interrupt
 Jmp from ee:
 00f4: 71 5b 01     MVIW    VV:5B,$01
 00f7: 69 f8        MVI     A,$F8
-00f9: 5c 64        BIT     4,VV:64
+00f9: 5c 64        BIT     4,VV:64   // Test bit 4 of vv:64, skip next if it's set
 00fb: 7d 08        CALF    $0D08     //
 00fd: 8b           CALT    ($0096)   // tbl to x12a8
 00fe: 00           NOP
@@ -251,7 +252,7 @@ jmp from eb:
 0138: 24 00 40     LXI     DE,$4000  // load imm DE with x4000
 013b: 2a           LDAX    (DE)      // Read thru 4000
 013c: 64 00 02     MVI     PA,$02    // Scan row 2
-013f: 5f 64        BIT     7,VV:64   //
+013f: 5f 64        BIT     7,VV:64   // Test bit 7 of vv:64, skip next if it's set
 0141: 4e 33        JRE     $0176     // Cond jump to 176
 0143: 05 64 7f     ANIW    VV:64,$7F // And vv:64 - keep 7 LSBs
 0146: 74 98 17     ORAW    VV:17     // Or A with vv:17
@@ -291,7 +292,7 @@ Jmp from 0141:
 0185: 34 18 ff     LXI     HL,$FF18  //
 0188: 7a e0        CALF    $0AE0     //
 018a: 55 1c 30     OFFIW   VV:1C,$30
-018d: 5e 66        BIT     6,VV:66
+018d: 5e 66        BIT     6,VV:66   // Test bit 6 of vv:66, skip next if it's set
 018f: ca           JR      $019A
 0190: 6f 1c        MVI     L,$1C
 0192: 07 30        ANI     A,$30
@@ -314,7 +315,7 @@ Jmp from 0174
 01af: 1b           MOV     C,A
 01b0: 6a 01        MVI     B,$01
 01b2: 21           JB
-01b3: 5b 65        BIT     3,VV:65
+01b3: 5b 65        BIT     3,VV:65   // Test bit 3 of vv:65, skip next if it's set
 01b5: cc           JR      $01C2
 01b6: 15 64 02     ORIW    VV:64,$02
 01b9: 30 5d        DCRW    VV:5D
@@ -324,7 +325,7 @@ Jmp from 0174
 01c2: 71 6a d3     MVIW    VV:6A,$D3
 01c5: 6f 25        MVI     L,$25
 01c7: 8c           CALT    ($0098)   // tbl to 0059
-01c8: 5b 32        BIT     3,VV:32
+01c8: 5b 32        BIT     3,VV:32   // Test bit 3 of vv:32, skip next if it's set
 01ca: 7d 55        CALF    $0D55     //
 // This looks like LED scanner
 01cc: 4d c0        MOV     PA,A      // LED Pulls
@@ -354,11 +355,11 @@ Jmp from 0174
 0202: 01 2f        LDAW    VV:2F
 0204: 4d c0        MOV     PA,A      // LED Pulls
 0206: 64 19 30     ORI     PB,$30    // LED sels
-0209: 5f 64        BIT     7,VV:64
+0209: 5f 64        BIT     7,VV:64   // Test bit 7 of vv:64, skip next if it's set
 020b: 96           CALT    ($00AC)   // tbl to 13fc
-020c: 5f 66        BIT     7,VV:66
+020c: 5f 66        BIT     7,VV:66   // Test bit 7 of vv:66, skip next if it's set
 020e: cc           JR      $021B
-020f: 5f 64        BIT     7,VV:64
+020f: 5f 64        BIT     7,VV:64   // Test bit 7 of vv:64, skip next if it's set
 0211: c5           JR      $0217
 0212: 6f 1c        MVI     L,$1C
 0214: 7b 28        CALF    $0B28     //
@@ -368,7 +369,7 @@ Jmp from 0174
 021b: 34 80 1f     LXI     HL,$1F80
 021e: 6c ff        MVI     D,$FF
 0220: 69 00        MVI     A,$00
-0222: 5f 64        BIT     7,VV:64
+0222: 5f 64        BIT     7,VV:64   // Test bit 7 of vv:64, skip next if it's set
 0224: 4e 20        JRE     $0246
 0226: 25 5c f0     GTIW    VV:5C,$F0
 0229: 30 5c        DCRW    VV:5C
@@ -378,7 +379,7 @@ Jmp from 0174
 0231: 74 98 0f     ORAW    VV:0F
 0234: 71 0f 00     MVIW    VV:0F,$00
 0237: 1a           MOV     B,A
-0238: 5e 66        BIT     6,VV:66
+0238: 5e 66        BIT     6,VV:66   // Test bit 6 of vv:66, skip next if it's set
 023a: 4e 22        JRE     $025E
 023c: 01 1c        LDAW    VV:1C
 023e: 57 30        OFFI    A,$30
@@ -574,7 +575,7 @@ Jump from 037c, 037e
 0383: 40 f4 1d     CALL    $1DF4     // Call ?? It just rets?
 0386: c8           JR      $038F     // Jump R??? fwd ~5
 Jump from 0382, 038e
-0387: 59 22        BIT     1,VV:22   // Test bit 1, 22 off of VV.
+0387: 59 22        BIT     1,VV:22   // Test bit 1 of vv:22, skip next if it's set
 0389: c5           JR      $038F     // Jump R??? fwd ~3
 038a: 69 08        MVI     A,$08     // Load Imm A with 0x08
 038c: 63 26        STAW    VV:26     // St A to VV+26
@@ -628,7 +629,7 @@ Jmp from 0386
 03f0: 05 65 3f     ANIW    VV:65,$3F
 03f3: 01 31        LDAW    VV:31
 03f5: 63 30        STAW    VV:30
-03f7: 5e 23        BIT     6,VV:23
+03f7: 5e 23        BIT     6,VV:23   // Test bit 6 of vv:23, skip next if it's set
 03f9: dc           JR      $0416
 03fa: 74 1d 08     ORI     E,$08
 03fd: 2a           LDAX    (DE)
@@ -649,13 +650,13 @@ Jmp from 0386
 0417: 7d df        CALF    $0DDF     //
 0419: 7a 46        CALF    $0A46     //
 041b: 7e d1        CALF    $0ED1     //
-041d: 5e 69        BIT     6,VV:69
+041d: 5e 69        BIT     6,VV:69   // Test bit 6 of vv:69, skip next if it's set
 041f: 40 03 1a     CALL    $1A03     //
 0422: 55 22 1e     OFFIW   VV:22,$1E
 0425: fc           JR      $0422
 0426: 71 21 00     MVIW    VV:21,$00
 0429: 71 24 00     MVIW    VV:24,$00
-042c: 58 20        BIT     0,VV:20
+042c: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 042e: cd           JR      $043C
 042f: 05 66 bf     ANIW    VV:66,$BF
 0432: 05 24 1b     ANIW    VV:24,$1B
@@ -663,7 +664,7 @@ Jmp from 0386
 0436: 7a 0a        CALF    $0A0A     //
 0438: 4f 96        JRE     $03D0
 043a: 4e a0        JRE     $04DC
-043c: 5d 20        BIT     5,VV:20
+043c: 5d 20        BIT     5,VV:20   // Test bit 5 of vv:20, skip next if it's set
 043e: 4e 37        JRE     $0477
 0440: 05 66 bf     ANIW    VV:66,$BF
 0443: 98           CALT    ($00B0)   // tbl to 14cb
@@ -693,7 +694,7 @@ Jmp from 0386
 0471: 64 06 00     MVI     MKH,$00
 0474: 01 3c        LDAW    VV:3C
 0476: da           JR      $0491
-0477: 5c 20        BIT     4,VV:20
+0477: 5c 20        BIT     4,VV:20   // Test bit 4 of vv:20, skip next if it's set
 0479: 4e 24        JRE     $049F
 047b: 05 66 bf     ANIW    VV:66,$BF
 047e: 98           CALT    ($00B0)   // tbl to 14cb
@@ -703,7 +704,7 @@ Jmp from 0386
 0485: 15 66 04     ORIW    VV:66,$04
 0488: 71 74 01     MVIW    VV:74,$01
 048b: 01 41        LDAW    VV:41
-048d: 5a 66        BIT     2,VV:66
+048d: 5a 66        BIT     2,VV:66   // Test bit 2 of vv:66, skip next if it's set
 048f: 69 ff        MVI     A,$FF
 0491: 44 00 00     LXI     EA,$0000
 0494: 41           INR     A
@@ -718,7 +719,7 @@ Jmp from 0386
 04a6: c3           JR      $04AA
 04a7: 7e d1        CALF    $0ED1     //
 04a9: d3           JR      $04BD
-04aa: 58 24        BIT     0,VV:24
+04aa: 58 24        BIT     0,VV:24   // Test bit 0 of vv:24, skip next if it's set
 04ac: cf           JR      $04BC
 04ad: 71 24 00     MVIW    VV:24,$00
 04b0: 55 63 03     OFFIW   VV:63,$03
@@ -728,10 +729,10 @@ Jmp from 0386
 04b9: 01 30        LDAW    VV:30
 04bb: 3a           STAX    (DE)
 04bc: df           JR      $04DC
-04bd: 58 24        BIT     0,VV:24
+04bd: 58 24        BIT     0,VV:24   // Test bit 0 of vv:24, skip next if it's set
 04bf: dc           JR      $04DC
 04c0: 71 24 00     MVIW    VV:24,$00
-04c3: 5e 33        BIT     6,VV:33
+04c3: 5e 33        BIT     6,VV:33   // Test bit 6 of vv:33, skip next if it's set
 04c5: c8           JR      $04CE
 04c6: 05 33 bf     ANIW    VV:33,$BF
 04c9: 05 2e fe     ANIW    VV:2E,$FE
@@ -742,13 +743,13 @@ Jmp from 0386
 04d3: 15 33 40     ORIW    VV:33,$40
 04d6: 15 2e 01     ORIW    VV:2E,$01
 04d9: 54 d0 03     JMP     $03D0
-04dc: 5e 33        BIT     6,VV:33
+04dc: 5e 33        BIT     6,VV:33   // Test bit 6 of vv:33, skip next if it's set
 04de: c6           JR      $04E5
 04df: 4c e1        MOV     A,CR1
 04e1: 37 40        LTI     A,$40
 04e3: e2           JR      $04C6
 04e4: d0           JR      $04F5
-04e5: 58 20        BIT     0,VV:20
+04e5: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 04e7: c9           JR      $04F1
 04e8: 85           CALT    ($008A)   // tbl to 11d6
 04e9: 4e ba        JRE     $05A5
@@ -772,7 +773,7 @@ Jmp from 0386
 050f: 55 67 04     OFFIW   VV:67,$04
 0512: 40 6e 1a     CALL    $1A6E     //
 0515: 4e 20        JRE     $0537
-0517: 58 24        BIT     0,VV:24
+0517: 58 24        BIT     0,VV:24   // Test bit 0 of vv:24, skip next if it's set
 0519: dd           JR      $0537
 051a: 71 24 00     MVIW    VV:24,$00
 051d: 01 68        LDAW    VV:68
@@ -822,7 +823,7 @@ Jmp from 0386
 056e: 74 bd        DLT     EA,BC
 0570: c9           JR      $057A
 0571: 70 1f 75 ff  LBCD    $FF75
-0575: 5d 2e        BIT     5,VV:2E
+0575: 5d 2e        BIT     5,VV:2E   // Test bit 5 of vv:2e, skip next if it's set
 0577: 40 df 13     CALL    $13DF     //
 057a: 9a           CALT    ($00B4)   // tbl to 1026
 057b: 29           LDAX    (BC)
@@ -838,9 +839,9 @@ Jmp from 0386
 058b: 94           CALT    ($00A8)   // tbl to 1450
 058c: c6           JR      $0593
 058d: 7e d1        CALF    $0ED1     //
-058f: 58 20        BIT     0,VV:20
+058f: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 0591: 7a fe        CALF    $0AFE     //
-0593: 5e 33        BIT     6,VV:33
+0593: 5e 33        BIT     6,VV:33   // Test bit 6 of vv:33, skip next if it's set
 0595: c7           JR      $059D
 0596: 4c e1        MOV     A,CR1
 0598: 37 40        LTI     A,$40
@@ -874,10 +875,10 @@ Jmp from 0386
 05d6: 40 ed 0e     CALL    $0EED     //
 05d9: 00           NOP
 05da: 7e c7        CALF    $0EC7     //
-05dc: 5c 33        BIT     4,VV:33
+05dc: 5c 33        BIT     4,VV:33   // Test bit 4 of vv:33, skip next if it's set
 05de: 69 5a        MVI     A,$5A
 05e0: 69 a5        MVI     A,$A5
-05e2: 70 79 ef 2f  MOV     ($2FEF),A
+05e2: 70 79 ef 2f  MOV     ($2FEF),A // 2fef is ext ram?
 05e6: 55 22 1e     OFFIW   VV:22,$1E
 05e9: fc           JR      $05E6
 05ea: 71 21 00     MVIW    VV:21,$00
@@ -896,7 +897,7 @@ Jmp from 0386
 0603: ca           JR      $060E
 0604: 40 55 10     CALL    $1055     //
 0607: c6           JR      $060E
-0608: 58 23        BIT     0,VV:23
+0608: 58 23        BIT     0,VV:23   // Test bit 0 of vv:23, skip next if it's set
 060a: 7e d1        CALF    $0ED1     //
 060c: c1           JR      $060E
 060d: 97           CALT    ($00AE)   // tbl to 1418
@@ -927,7 +928,7 @@ Jmp from 0386
 0634: c8           JR      $063D
 0635: 40 55 10     CALL    $1055     //
 0638: c4           JR      $063D
-0639: 58 23        BIT     0,VV:23
+0639: 58 23        BIT     0,VV:23   // Test bit 0 of vv:23, skip next if it's set
 063b: 7e d1        CALF    $0ED1     //
 063d: 40 ed 0e     CALL    $0EED     //
 0640: c5           JR      $0646
@@ -939,7 +940,7 @@ Jmp from 0386
 064b: 00           NOP
 064c: f4           JR      $0641
 064d: 40 8c 10     CALL    $108C     //
-0650: 58 20        BIT     0,VV:20
+0650: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 0652: 54 d0 03     JMP     $03D0
 0655: 4f 4e        JRE     $05A5
 0657: 05 63 0f     ANIW    VV:63,$0F
@@ -948,7 +949,7 @@ Jmp from 0386
 065f: 55 2e 02     OFFIW   VV:2E,$02
 0662: 7b b6        CALF    $0BB6     //
 0664: 05 2e f3     ANIW    VV:2E,$F3
-0667: 58 20        BIT     0,VV:20
+0667: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 0669: c9           JR      $0673
 066a: 97           CALT    ($00AE)   // tbl to 1418
 066b: 85           CALT    ($008A)   // tbl to 11d6
@@ -998,7 +999,7 @@ Jmp from 0386
 06b0: 69 00        MVI     A,$00
 06b2: 40 3a 12     CALL    $123A     //
 06b5: 05 66 3f     ANIW    VV:66,$3F
-06b8: 58 20        BIT     0,VV:20
+06b8: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 06ba: cf           JR      $06CA
 06bb: 97           CALT    ($00AE)   // tbl to 1418
 06bc: 7b ad        CALF    $0BAD     //
@@ -1020,7 +1021,7 @@ Jmp from 0386
 06da: 7b a4        CALF    $0BA4     //
 06dc: 91           CALT    ($00A2)   // tbl to 1359
 06dd: 4f d6        JRE     $06B5
-06df: 5d 66        BIT     5,VV:66
+06df: 5d 66        BIT     5,VV:66   // Test bit 5 of vv:66, skip next if it's set
 06e1: 4e f4        JRE     $07D7
 06e3: 47 01        ONI     A,$01
 06e5: c2           JR      $06E8
@@ -1033,9 +1034,9 @@ Jmp from 0386
 06ed: 57 04        OFFI    A,$04
 06ef: 4e 21        JRE     $0712
 06f1: 7a a7        CALF    $0AA7     //
-06f3: 58 20        BIT     0,VV:20
+06f3: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 06f5: ce           JR      $0704
-06f6: 5e 23        BIT     6,VV:23
+06f6: 5e 23        BIT     6,VV:23   // Test bit 6 of vv:23, skip next if it's set
 06f8: cf           JR      $0708
 06f9: 05 66 1f     ANIW    VV:66,$1F
 06fc: 15 65 08     ORIW    VV:65,$08
@@ -1095,13 +1096,13 @@ Jmp from 0386
 0766: 47 01        ONI     A,$01
 0768: 4e 60        JRE     $07CA
 076a: 80           CALT    ($0080)   // tbl to 002b
-076b: 59 33        BIT     1,VV:33
+076b: 59 33        BIT     1,VV:33   // Test bit 2 of vv:33, skip next if it's set
 076d: 69 fe        MVI     A,$FE
 076f: 69 fd        MVI     A,$FD
 0771: 70 8b        ANAX    (HL)
 0773: 3b           STAX    (HL)
 0774: 4e 54        JRE     $07CA
-0776: 59 33        BIT     1,VV:33
+0776: 59 33        BIT     1,VV:33   // Test bit 1 of vv:33, skip next if it's set
 0778: d2           JR      $078B
 0779: 15 66 80     ORIW    VV:66,$80
 077c: 01 15        LDAW    VV:15
@@ -1140,10 +1141,10 @@ Jmp from 0386
 07b8: 70 8b        ANAX    (HL)
 07ba: 60 9c        ORA     A,D
 07bc: 3b           STAX    (HL)
-07bd: 58 24        BIT     0,VV:24
+07bd: 58 24        BIT     0,VV:24   // Test bit 0 of vv:24, skip next if it's set
 07bf: ca           JR      $07CA
 07c0: 80           CALT    ($0080)   // tbl to 002b
-07c1: 59 33        BIT     1,VV:33
+07c1: 59 33        BIT     1,VV:33   // Test bit 1 of vv:33, skip next if it's set
 07c3: 69 01        MVI     A,$01
 07c5: 69 02        MVI     A,$02
 07c7: 70 9b        ORAX    (HL)
@@ -1188,7 +1189,7 @@ Jmp from 0386
 080d: 98           CALT    ($00B0)   // tbl to 14cb
 080e: 4e 43        JRE     $0853
 0810: 15 65 02     ORIW    VV:65,$02
-0813: 5d 20        BIT     5,VV:20
+0813: 5d 20        BIT     5,VV:20   // Test bit 5 of vv:20, skip next if it's set
 0815: ce           JR      $0824
 0816: 63 42        STAW    VV:42
 0818: 1a           MOV     B,A
@@ -1259,9 +1260,9 @@ Jmp from 0386
 088c: 7d 62        CALF    $0D62     //
 088e: 70 1e 29 ff  SBCD    $FF29
 0892: 7a a7        CALF    $0AA7     //
-0894: 58 20        BIT     0,VV:20
+0894: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 0896: de           JR      $08B5
-0897: 5d 23        BIT     5,VV:23
+0897: 5d 23        BIT     5,VV:23   // Test bit 5 of vv:23, skip next if it's set
 0899: df           JR      $08B9
 089a: 05 65 f7     ANIW    VV:65,$F7
 089d: 15 66 20     ORIW    VV:66,$20
@@ -1291,18 +1292,18 @@ Table func from 0084?
 08cf: 01 42        LDAW    VV:42
 08d1: 63 61        STAW    VV:61
 08d3: 55 2e 08     OFFIW   VV:2E,$08
-08d6: 5d 2e        BIT     5,VV:2E
+08d6: 5d 2e        BIT     5,VV:2E   // Test bit 5 of vv:2e, skip next if it's set
 08d8: c6           JR      $08DF
 08d9: 71 05 2d     MVIW    VV:05,$2D
 08dc: 15 09 02     ORIW    VV:09,$02
-08df: 5d 47        BIT     5,VV:47
+08df: 5d 47        BIT     5,VV:47   // Test bit 5 of vv:47, skip next if it's set
 08e1: 4e 51        JRE     $0934
 08e3: 4e 23        JRE     $0908
 08e5: 20 32        INRW    VV:32
-08e7: 5d 47        BIT     5,VV:47
+08e7: 5d 47        BIT     5,VV:47   // Test bit 5 of vv:47, skip next if it's set
 08e9: 4e 25        JRE     $0910
 08eb: 55 2e 08     OFFIW   VV:2E,$08
-08ee: 5d 2e        BIT     5,VV:2E
+08ee: 5d 2e        BIT     5,VV:2E   // Test bit 5 of vv:2e, skip next if it's set
 08f0: d7           JR      $0908
 08f1: 01 32        LDAW    VV:32
 08f3: 07 0f        ANI     A,$0F
@@ -1316,31 +1317,31 @@ Table func from 0084?
 0901: c8           JR      $090A
 0902: 71 05 0f     MVIW    VV:05,$0F
 0905: 15 09 02     ORIW    VV:09,$02
-0908: 5c 47        BIT     4,VV:47
+0908: 5c 47        BIT     4,VV:47   // Test bit 4 of vv:47, skip next if it's set
 090a: 69 0f        MVI     A,$0F
 090c: 69 07        MVI     A,$07
 090e: 4e 3b        JRE     $094B
 0910: 55 2e 08     OFFIW   VV:2E,$08
-0913: 5d 2e        BIT     5,VV:2E
+0913: 5d 2e        BIT     5,VV:2E   // Test bit 5 of vv:2e, skip next if it's set
 0915: d1           JR      $0927
 0916: 01 32        LDAW    VV:32
 0918: 07 07        ANI     A,$07
-091a: 5c 47        BIT     4,VV:47
+091a: 5c 47        BIT     4,VV:47   // Test bit 4 of vv:47, skip next if it's set
 091c: 07 03        ANI     A,$03
 091e: 77 00        EQI     A,$00
 0920: c6           JR      $0927
 0921: 71 05 0f     MVIW    VV:05,$0F
 0924: 15 09 02     ORIW    VV:09,$02
-0927: 58 32        BIT     0,VV:32
+0927: 58 32        BIT     0,VV:32   // Test bit 0 of vv:32, skip next if it's set
 0929: ca           JR      $0934
-092a: 5c 47        BIT     4,VV:47
+092a: 5c 47        BIT     4,VV:47   // Test bit 4 of vv:47, skip next if it's set
 092c: 69 17        MVI     A,$17
 092e: 69 0b        MVI     A,$0B
 0930: 74 e0 43     SUBW    VV:43
 0933: d7           JR      $094B
 0934: 75 61 00     EQIW    VV:61,$00
 0937: c7           JR      $093F
-0938: 5c 47        BIT     4,VV:47
+0938: 5c 47        BIT     4,VV:47   // Test bit 4 of vv:47, skip next if it's set
 093a: 69 0b        MVI     A,$0B
 093c: 69 05        MVI     A,$05
 093e: cc           JR      $094B
@@ -1397,7 +1398,7 @@ Table func from 0084?
 Fixed area func from 0587, 05a0, 08a2, 08be, 099d, 0cb0, 0d3a, 0df2, 152b, 1b1a
 099d: 34 26 ff     LXI     HL,$FF26
 09a0: 2d           LDAX    (HL+)
-09a1: 5b 38        BIT     3,VV:38
+09a1: 5b 38        BIT     3,VV:38   // Test bit 3 of vv:38, skip next if it's set
 09a3: 74 88 6f     ANAW    VV:6F
 09a6: 3d           STAX    (HL+)
 09a7: 32           INX     HL
@@ -1473,7 +1474,7 @@ Fixed area call from 0436, 1541
 0a0a: 45 24 18     ONIW    VV:24,$18
 0a0d: b9           RETS
 
-0a0e: 5b 24        BIT     3,VV:24
+0a0e: 5b 24        BIT     3,VV:24   // Test bit 3 of vv:24, skip next if it's set
 
 Fixed area call from 03ce
 0a10: 69 20        MVI     A,$20
@@ -1489,7 +1490,7 @@ Fixed area func from 11e0
 
 Fixed area func from 11c2, 159c
 0a1f: 05 2e af     ANIW    VV:2E,$AF
-0a22: 5c 33        BIT     4,VV:33
+0a22: 5c 33        BIT     4,VV:33   // Test bit 4 of vv:33, skip next if it's set
 0a24: c4           JR      $0A29
 0a25: 15 2e 40     ORIW    VV:2E,$40
 0a28: b8           RET
@@ -1530,11 +1531,11 @@ Fixed area call from 0419, 0589, 05b1, 0c57, 0df6
 0a57: ac           LDAX    (HL+A)
 0a58: 60 9a        ORA     A,B
 0a5a: 63 2c        STAW    VV:2C
-0a5c: 5f 63        BIT     7,VV:63
+0a5c: 5f 63        BIT     7,VV:63   // Test bit 7 of vv:63, skip next if it's set
 0a5e: 07 e0        ANI     A,$E0
 0a60: c6           JR      $0A67
 0a61: 63 2c        STAW    VV:2C
-0a63: 5d 63        BIT     5,VV:63
+0a63: 5d 63        BIT     5,VV:63   // Test bit 5 of vv:63, skip next if it's set
 0a65: 69 00        MVI     A,$00
 0a67: 63 2d        STAW    VV:2D
 0a69: b8           RET
@@ -1589,7 +1590,7 @@ Fixed area func from 1535
 0aa6: b8           RET
 
 Fixed area func from 06f1, 0892
-0aa7: 59 21        BIT     1,VV:21
+0aa7: 59 21        BIT     1,VV:21   // Test bit 1 of vv:21, skip next if it's set
 0aa9: b8           RET
 
 0aaa: 71 21 00     MVIW    VV:21,$00
@@ -1656,7 +1657,7 @@ Param: FA is address of ?? (ff10, ff18)
 0afd: b8           RET
 
 Fixed area func from 050d, 0591, 06cd, 0708
-0afe: 5a 24        BIT     2,VV:24
+0afe: 5a 24        BIT     2,VV:24   // Test bit 2 of vv:24, skip next if it's set
 0b00: b8           RET
 
 0b01: 71 24 00     MVIW    VV:24,$00
@@ -1667,7 +1668,7 @@ Fixed area func from 050d, 0591, 06cd, 0708
 
 Fixed area func from 06ac, 06ff, 08a7
 0b0b: 05 2e f3     ANIW    VV:2E,$F3
-0b0e: 5d 66        BIT     5,VV:66
+0b0e: 5d 66        BIT     5,VV:66   // Test bit 5 of vv:66, skip next if it's set
 0b10: c4           JR      $0B15
 0b11: 15 2e 08     ORIW    VV:2E,$08
 0b14: b8           RET
@@ -1693,7 +1694,7 @@ Fixed area call from 0214, 0990
 0b2f: 74 98 59     ORAW    VV:59
 0b32: 63 59        STAW    VV:59
 0b34: 6b 2c        MVI     C,$2C
-0b36: 58 69        BIT     0,VV:69
+0b36: 58 69        BIT     0,VV:69   // Test bit 0 of vv:69, skip next if it's set
 0b38: 74 6a 00     NEI     B,$00
 0b3b: b8           RET
 
@@ -1774,11 +1775,11 @@ Func from 0348, 0681, 06a0, 06da, 0706, 08b7, 0c59, 100e
 0bac: b8           RET               // Return
 
 Fixed area func from 06bc
-0bad: 5f 24        BIT     7,VV:24
+0bad: 5f 24        BIT     7,VV:24   // Test bit 7 of vv:24, skip next if it's set
 0baf: b8           RET
 
 0bb0: 71 24 00     MVIW    VV:24,$00
-0bb3: 59 2e        BIT     1,VV:2E
+0bb3: 59 2e        BIT     1,VV:2E   // Test bit 1 of vv:2e, skip next if it's set
 0bb5: c7           JR      $0BBD
 
 Fixed area func from 0662, 1210
@@ -1792,12 +1793,12 @@ Fixed area func from 0662, 1210
 0bc8: b8           RET
 
 Fixed area func from 07ff, 0809
-0bc9: 5b 20        BIT     3,VV:20
+0bc9: 5b 20        BIT     3,VV:20   // Test bit 3 of vv:20, skip next if it's set
 0bcb: 4e 2d        JRE     $0BFA
 0bcd: 40 33 12     CALL    $1233     //
 0bd0: 24 26 ff     LXI     DE,$FF26
 0bd3: 69 00        MVI     A,$00
-0bd5: 59 66        BIT     1,VV:66
+0bd5: 59 66        BIT     1,VV:66   // Test bit 1 of vv:66, skip next if it's set
 0bd7: c6           JR      $0BDE
 0bd8: 15 2e 01     ORIW    VV:2E,$01
 
@@ -1806,7 +1807,7 @@ Fixed area func from 08af
 0bdc: 3c           STAX    (DE+)
 0bdd: cc           JR      $0BEA
 0bde: 05 2e fe     ANIW    VV:2E,$FE
-0be1: 58 66        BIT     0,VV:66
+0be1: 58 66        BIT     0,VV:66   // Test bit 0 of vv:66, skip next if it's set
 0be3: cc           JR      $0BF0
 0be4: 01 6c        LDAW    VV:6C
 0be6: 3c           STAX    (DE+)
@@ -1827,7 +1828,7 @@ Fixed area func from 08af
 0bf8: 3c           STAX    (DE+)
 0bf9: b8           RET
 
-0bfa: 5c 20        BIT     4,VV:20
+0bfa: 5c 20        BIT     4,VV:20   // Test bit 4 of vv:20, skip next if it's set
 0bfc: b9           RETS
 
 0bfd: 98           CALT    ($00B0)   // tbl to 14cb
@@ -1884,7 +1885,7 @@ Fixed are func from 09cb, 0ad7, 153d, 1b0c,
 0c46: b8           RET
 
 Fixed area func from 1318, 149b, 14b7
-0c47: 5f 2e        BIT     7,VV:2E
+0c47: 5f 2e        BIT     7,VV:2E   // Test bit 7 of vv:2e, skip next if it's set
 0c49: b8           RET
 
 0c4a: 69 0c        MVI     A,$0C
@@ -1910,12 +1911,12 @@ Fixed area call from 04eb, 066e, 06c5
 0c6c: 84           CALT    ($0088)   // tbl to 0a2d
 0c6d: b8           RET
 
-0c6e: 5e 23        BIT     6,VV:23
+0c6e: 5e 23        BIT     6,VV:23   // Test bit 6 of vv:23, skip next if it's set
 0c70: c4           JR      $0C75
 0c71: 05 66 df     ANIW    VV:66,$DF
 0c74: b8           RET
 
-0c75: 5d 23        BIT     5,VV:23
+0c75: 5d 23        BIT     5,VV:23   // Test bit 5 of vv:23, skip next if it's set
 0c77: b9           RETS
 
 0c78: 15 66 20     ORIW    VV:66,$20
@@ -1931,11 +1932,11 @@ Fixed area func from 1386, 139e, 13ac, 17da
 0c8a: b8           RET
 
 Fixed area func from 05fc, 067a
-0c8b: 5c 66        BIT     4,VV:66
+0c8b: 5c 66        BIT     4,VV:66   // Test bit 4 of vv:66, skip next if it's set
 0c8d: c7           JR      $0C95
 0c8e: 98           CALT    ($00B0)   // tbl to 14cb
 0c8f: 4e 6b        JRE     $0CFC
-0c91: 59 65        BIT     1,VV:65
+0c91: 59 65        BIT     1,VV:65   // Test bit 1 of vv:65, skip next if it's set
 0c93: b8           RET
 
 0c94: d7           JR      $0CAC
@@ -1949,7 +1950,7 @@ Fixed area func from 06d6
 0c9b: 55 66 10     OFFIW   VV:66,$10
 0c9e: d6           JR      $0CB5
 0c9f: 65 23 01     NEIW    VV:23,$01
-0ca2: 59 65        BIT     1,VV:65
+0ca2: 59 65        BIT     1,VV:65   // Test bit 1 of vv:65, skip next if it's set
 0ca4: c2           JR      $0CA7
 0ca5: 7d 15        CALF    $0D15     //
 0ca7: 98           CALT    ($00B0)   // tbl to 14cb
@@ -1974,7 +1975,7 @@ Fixed area func from 0c55, 159a,
 0cc3: 7d 15        CALF    $0D15     //
 0cc5: b8           RET
 
-0cc6: 59 33        BIT     1,VV:33
+0cc6: 59 33        BIT     1,VV:33   // Test bit 1 of vv:33, skip next if it's set
 0cc8: 7d 15        CALF    $0D15     //
 0cca: 7c 30        CALF    $0C30     //
 0ccc: 7d 00        CALF    $0D00     //
@@ -1983,7 +1984,7 @@ Fixed area func from 0c55, 159a,
 0cd3: 7d 00        CALF    $0D00     //
 0cd5: 7c 30        CALF    $0C30     //
 0cd7: 80           CALT    ($0080)   // tbl to 002b
-0cd8: 59 33        BIT     1,VV:33
+0cd8: 59 33        BIT     1,VV:33   // Test bit 1 of vv:33, skip next if it's set
 0cda: 69 01        MVI     A,$01
 0cdc: 69 02        MVI     A,$02
 0cde: 16 ff        XRI     A,$FF
@@ -2223,10 +2224,10 @@ Fixed area func from 0ea7
 0e0c: b8           RET
 
 Fixed area func from 060e, 0646
-0e0d: 58 24        BIT     0,VV:24
+0e0d: 58 24        BIT     0,VV:24   // Test bit 0 of vv:24, skip next if it's set
 0e0f: b8           RET
 0e10: 71 24 00     MVIW    VV:24,$00
-0e13: 58 68        BIT     0,VV:68
+0e13: 58 68        BIT     0,VV:68   // Test bit 0 of vv:68, skip next if it's set
 0e15: d1           JR      $0E27
 0e16: 01 35        LDAW    VV:35
 0e18: 63 7f        STAW    VV:7F
@@ -2239,7 +2240,7 @@ Fixed area func from 060e, 0646
 0e23: 7e b9        CALF    $0EB9     //
 0e25: b8           RET
 0e26: f3           JR      $0E1A
-0e27: 59 68        BIT     1,VV:68
+0e27: 59 68        BIT     1,VV:68   // Test bit 1 of vv:68, skip next if it's set
 0e29: 4e 25        JRE     $0E50
 0e2b: 40 61 10     CALL    $1061     //
 0e2e: 99           CALT    ($00B2)   // tbl to 101d
@@ -2369,7 +2370,7 @@ Fixed area func from 0e69, 0e86, 0f22, 0f58, 0f77, 1096
 0eec: d3           JR      $0F00
 
 Func from 109b, 05d6, 0610, 063d
-0eed: 58 67        BIT     0,VV:67
+0eed: 58 67        BIT     0,VV:67   // Test bit 0 of vv:67, skip next if it's set
 0eef: b8           RET
 0ef0: 70 3f 77 ff  LHLD    $FF77
 0ef4: 70 2f 7b ff  LDED    $FF7B
@@ -2384,7 +2385,7 @@ Func from 109b, 05d6, 0610, 063d
 0f05: 07 fc        ANI     A,$FC
 0f07: 70 9a        ORAX    (DE)
 0f09: 3a           STAX    (DE)
-0f0a: 59 67        BIT     1,VV:67
+0f0a: 59 67        BIT     1,VV:67   // Test bit 1 of vv:67, skip next if it's set
 0f0c: c3           JR      $0F10
 0f0d: 32           INX     HL
 0f0e: 22           INX     DE
@@ -2397,7 +2398,7 @@ Func from 109b, 05d6, 0610, 063d
 0f15: c4           JR      $0F1A
 0f16: 05 67 fc     ANIW    VV:67,$FC
 0f19: b9           RETS
-0f1a: 5e 64        BIT     6,VV:64
+0f1a: 5e 64        BIT     6,VV:64   // Test bit 6 of vv:64, skip next if it's set
 0f1c: e3           JR      $0F00
 0f1d: 65 d1 00     NEIW    VV:D1,$00
 0f20: 4f de        JRE     $0F00
@@ -2431,7 +2432,7 @@ Func from 03e2, 05b3, 1035,
 0f48: b8           RET
 
 Func from 0508, 05fe, 0648,
-0f49: 5c 24        BIT     4,VV:24
+0f49: 5c 24        BIT     4,VV:24   // Test bit 4 of vv:24, skip next if it's set
 0f4b: d5           JR      $0F61
 0f4c: 99           CALT    ($00B2)   // tbl to 101d
 0f4d: 7d b7        CALF    $0DB7     //
@@ -2447,7 +2448,7 @@ Func from 0508, 05fe, 0648,
 0f5d: 9a           CALT    ($00B4)   // tbl to 1026
 0f5e: 7d e5        CALF    $0DE5     //
 0f60: da           JR      $0F7B
-0f61: 5d 24        BIT     5,VV:24
+0f61: 5d 24        BIT     5,VV:24   // Test bit 5 of vv:24, skip next if it's set
 0f63: b9           RETS
 0f64: 99           CALT    ($00B2)   // tbl to 101d
 0f65: 24 75 ff     LXI     DE,$FF75
@@ -2470,9 +2471,9 @@ Func from 0508, 05fe, 0648,
 0f83: b8           RET
 
 func from 04f5, 05f3, 0625
-0f84: 58 20        BIT     0,VV:20
+0f84: 58 20        BIT     0,VV:20   // Test bit 0 of vv:20, skip next if it's set
 0f86: b9           RETS
-0f87: 5a 23        BIT     2,VV:23
+0f87: 5a 23        BIT     2,VV:23   // Test bit 2 of vv:23, skip next if it's set
 0f89: d4           JR      $0F9E
 0f8a: 71 24 00     MVIW    VV:24,$00
 0f8d: 15 68 08     ORIW    VV:68,$08
@@ -2486,7 +2487,7 @@ func from 04f5, 05f3, 0625
 0f9e: 98           CALT    ($00B0)   // tbl to 14cb
 0f9f: b8           RET
 0fa0: 15 65 02     ORIW    VV:65,$02
-0fa3: 5a 68        BIT     2,VV:68
+0fa3: 5a 68        BIT     2,VV:68   // Test bit 2 of vv:68, skip next if it's set
 0fa5: 4e 2f        JRE     $0FD6
 0fa7: 45 68 09     ONIW    VV:68,$09
 0faa: 37 0a        LTI     A,$0A
@@ -2533,9 +2534,9 @@ Fixed area func from 1c09, 1d9e
 0fef: 0b           MOV     A,C
 0ff0: 63 68        STAW    VV:68
 0ff2: 57 70        OFFI    A,$70
-0ff4: 5f 63        BIT     7,VV:63
+0ff4: 5f 63        BIT     7,VV:63   // Test bit 7 of vv:63, skip next if it's set
 0ff6: b8           RET
-0ff7: 5e 33        BIT     6,VV:33
+0ff7: 5e 33        BIT     6,VV:33   // Test bit 6 of vv:33, skip next if it's set
 0ff9: c4           JR      $0FFE
 0ffa: 05 68 8f     ANIW    VV:68,$8F
 0ffd: b8           RET
@@ -2548,7 +2549,7 @@ Fixed area func from 1c09, 1d9e
 100a: 63 7d        STAW    VV:7D
 100c: 63 7e        STAW    VV:7E
 100e: 7b a4        CALF    $0BA4     //
-1010: 5d 68        BIT     5,VV:68
+1010: 5d 68        BIT     5,VV:68   // Test bit 5 of vv:68, skip next if it's set
 1012: b8           RET
 1013: 01 71        LDAW    VV:71
 1015: 63 7d        STAW    VV:7D
@@ -5064,7 +5065,7 @@ Func from 1ccf, 1d7c
 1fdd: 3a           STAX    (DE)
 1fde: 3c           STAX    (DE+)
 1fdf: 3e           STAX    (DE-)
-1fe0: 40 42 44     CALL    $4442     // ????? call to ?
+1fe0: 40 42 44     CALL    $4442     // ????? call to not ROM?
 1fe3: 46 48        ADI     A,$48
 1fe5: 4a 4c        MVIX    DE,$4C
 1fe7: 4e 50        JRE     $2039

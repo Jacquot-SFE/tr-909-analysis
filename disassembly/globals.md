@@ -21,10 +21,13 @@ What globals are there?  How do they appear to be used?
 ...inc from 18...
 |1e|030b||Init to 0x18|
 |1f|014d||Scanner state?|
+|20|042c|bits||
+|23|03f7|bits||
 |24|14ae|bits| important state??|
 |25|0ba6||init to 0f|
 |28|0ba8||init to 0f|
 |2b|0baa||init to 0f|
+|2e|0575|bits||
 |31|0319||init to 0|
 |33|0a14|bits||
 |34|0a3e|||
@@ -32,6 +35,7 @@ What globals are there?  How do they appear to be used?
 |3c|0302||Init to 0x0a|
 |40|0017 |Word, counter | timer interrupt |
 |41|02ff||Init to 0x09|
+|47|08df|bits||
 |4b|15bd|txbyte|staging transmit status byte?|
 |4C|0313||init to 0|
 |4D|0315||init to 0|
@@ -40,11 +44,14 @@ What globals are there?  How do they appear to be used?
 |50|031e||init to 0xa0|
 |59|0b28|||
 |5a|0020, |Counter|IRQ4 - AD complete|
+|5b|00d3|bits||
 |60|0d9d|||
 |61|0da0|||
 |62|19e3|Counter?|Seems to init to 4?  Or x17|
 |63|0012, 00e8, |bits|IRQ2,3...|
 |64|013f|bits|scanner related?|
+|65|01b3|bits||
+|66|018d|bits||
 |67|0018, |Bits?|IRQ3 Interval counter|
 |69|1a03|bits|?|
 |6a|030e||init to 0xb3|
