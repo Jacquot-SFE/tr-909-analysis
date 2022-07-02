@@ -23,7 +23,7 @@ Ext int 1 is DIN clk
 0010: b0           PUSH    VA        // Store VA
 0011: b4           PUSH    EA        // Store EA
 0012: 59 63        BIT     1,VV:63   // Test bit 1 of vv:63, skip next if it's set
-0014: 4e af        JRE     $00C5     // (cond) to C5
+0014: 4e af        JRE     $00C5     // (bit set?) to C5
 0016: 4e a4        JRE     $00BC     // (?) to BC
 
 IRQ3: Timer/counter
@@ -59,7 +59,7 @@ Table func from 0080?
 0038: b8           RET
 
 0039: 6a 64        MVI     B,$64
-003b: 48 3e        DIV     B
+003b: 48 3e        DIV     B        // Divide EA by x64
 003d: 09           MOV     A,EAL
 003e: 67 00        NEI     A,$00
 0040: 69 0f        MVI     A,$0F
@@ -81,11 +81,10 @@ Table func from 0080?
 Table func x4
 0059: 2d           LDAX    (HL+)
 005a: 4d c0        MOV     PA,A
-005c: 64 19 20     ORI     PB,$20
+005c: 64 19 20     ORI     PB,$20    // Drive latch en to 7 seg
 
 Table func x5
 005f: 2d           LDAX    (HL+)
-
 Soft IRQ: called from 0x1ff9
 0060: 5a 64        BIT     2,VV:64   // Test bit 2 of vv:64, skip next if it's set
 0065: 2b           LDAX    (HL)
@@ -242,7 +241,7 @@ jmp from eb:
 0129: 4f dc        JRE     $0107
 // Jmp dest from
 // This looks like the scanner
-012b: 64 09 c0     ANI     PB,$C0    // LED columns
+012b: 64 09 c0     ANI     PB,$C0    // LED columns - set tape out's hi
 012e: 64 00 01     MVI     PA,$01    // Scan row 1
 0131: 71 5a 09     MVIW    VV:5A,$09 //
 0134: b0           PUSH    VA
@@ -328,33 +327,33 @@ Jmp from 0174
 01c8: 5b 32        BIT     3,VV:32   // Test bit 3 of vv:32, skip next if it's set
 01ca: 7d 55        CALF    $0D55     //
 // This looks like LED scanner
-01cc: 4d c0        MOV     PA,A      // LED Pulls
-01ce: 64 19 01     ORI     PB,$01    // LED Sels
+01cc: 4d c0        MOV     PA,A      // LED pattern
+01ce: 64 19 01     ORI     PB,$01    // LED Sels - col1 (1-8) - using or to not disturb tape bits (c0)
 01d1: 4e 39        JRE     $020C
 01d3: 71 6a f0     MVIW    VV:6A,$F0
 01d6: 6f 28        MVI     L,$28
 01d8: 8c           CALT    ($0098)   // tbl to 0059
 01d9: 55 32 08     OFFIW   VV:32,$08
 01dc: 7d 55        CALF    $0D55     //
-01de: 4d c0        MOV     PA,A      // LED Pulls
-01e0: 64 19 02     ORI     PB,$02    // LED Sels
+01de: 4d c0        MOV     PA,A      // LED Pattern
+01e0: 64 19 02     ORI     PB,$02    // LED Sels - col2 (9-16) -
 01e3: 4e 27        JRE     $020C
 01e5: 71 6a ff     MVIW    VV:6A,$FF
 01e8: 01 2e        LDAW    VV:2E
-01ea: 4d c0        MOV     PA,A      // LED Pulls
-01ec: 64 19 28     ORI     PB,$28    // LED Sels
+01ea: 4d c0        MOV     PA,A      // LED Pattern
+01ec: 64 19 28     ORI     PB,$28    // LED Sels - 7-seg disp?
 01ef: dc           JR      $020C
 01f0: 71 6a e5     MVIW    VV:6A,$E5
 01f3: 05 64 f9     ANIW    VV:64,$F9
 01f6: 6f 2b        MVI     L,$2B
 01f8: 8c           CALT    ($0098)   // tbl to 0059
 01f9: 4d c0        MOV     PA,A      // LED pulls
-01fb: 64 19 04     ORI     PB,$04    // LED Sels
+01fb: 64 19 04     ORI     PB,$04    // LED Sels - col3 - track/pat btns
 01fe: cd           JR      $020C
 01ff: 71 6a b3     MVIW    VV:6A,$B3
 0202: 01 2f        LDAW    VV:2F
 0204: 4d c0        MOV     PA,A      // LED Pulls
-0206: 64 19 30     ORI     PB,$30    // LED sels
+0206: 64 19 30     ORI     PB,$30    // LED sels - 7-seg?
 0209: 5f 64        BIT     7,VV:64   // Test bit 7 of vv:64, skip next if it's set
 020b: 96           CALT    ($00AC)   // tbl to 13fc
 020c: 5f 66        BIT     7,VV:66   // Test bit 7 of vv:66, skip next if it's set
@@ -521,8 +520,9 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 0332: 4d d1        MOV     MCC,A     // Mode control C gets 0x1B: T1 in,T0 out,!SCK, TX,RX out, others GPIO
 // Serial port
 0334: 69 4e        MVI     A,$4E     // Mv imm A gets 0x4e
-0336: 4d ca        MOV     SML,A     // Mv SML (Serial mode low) gets A (0x4e)
-0338: 64 81 0e     MVI     SMH,$0E   // Mv SMH (Ser Mode High) gets 0x0e:
+0336: 4d ca        MOV     SML,A     // Serial mode low: gets A (0x4e): async, 1 stop, 8 bits, x16 clks
+0338: 64 81 0e     MVI     SMH,$0E   // Ser Mode High: gets 0x0e: tx+rx enable, internal clk=(xtal/24)
+                                     // 12mhz/24/16 = 31250, 8,n,1 !!
 // Timer/event counter
 033b: 69 0c        MVI     A,$0C     // Mv Imm A gets 0x0c
 033d: 4d cc        MOV     ETMM,A    // Mv A to ETMM (Timer event ctr mode)
@@ -3479,18 +3479,18 @@ Serial ISR:
 
 162f: 10           EXA               // Swap (A)(V)(EA) (Setup interrupt context)
 1630: 11           EXX               // Swap (B)(C)(D)(E)(H)(L)
-1631: 64 5e 04     OFFI    MKH,$04   // Masks INTST (ser tx irq?)
+1631: 64 5e 04     OFFI    MKH,$04   // Skip next if MKH && 04 is zero ()
 1634: c3           JR      $1638     // Jmp fwd
-1635: 48 49        SKIT    FSR       //
+1635: 48 49        SKIT    FSR       // Skip next if int flag is set: FSR is Ser Rx Full
 1637: f0           JR      $1628     // Jmp R??? back ~10
 From 1634:
-1638: 4c d9        MOV     A,RXB     // Get RXBuffer into a
-163a: 48 6b        SKNIT   ER        // Skip if IRF, reset IRF
+1638: 4c d9        MOV     A,RXB     // Get RXBuffer into A
+163a: 48 6b        SKNIT   ER        // Skip next if ser rx irq set
 163c: 4e b6        JRE     $16F4     // Skip way fwd
 163e: 1c           MOV     D,A
-163f: 27 f7        GTI     A,$F7
+163f: 27 f7        GTI     A,$F7     // Skip next if received byte G.T. F7
 1641: c9           JR      $164B
-1642: 67 f8        NEI     A,$F8
+1642: 67 f8        NEI     A,$F8     // Skip next if not eq F8
 1644: 55 63 01     OFFIW   VV:63,$01
 1647: 7d 08        CALF    $0D08     //
 1649: 4e 31        JRE     $167C
@@ -3945,8 +3945,8 @@ jmp from below (18fb)
 197f: 6c 70        MVI     D,$70
 1981: b2           PUSH    DE
 1982: 40 fd 19     CALL    $19FD     //
-1985: 48 69        SKNIT   FSR
-1987: 4c d9        MOV     A,RXB
+1985: 48 69        SKNIT   FSR       // Skip next if ser rx not set
+1987: 4c d9        MOV     A,RXB     // read ser rx int A
 1989: 6c f0        MVI     D,$F0
 198b: 9d           CALT    ($00BA)   // tbl to 19d2
 198c: 6c 41        MVI     D,$41
@@ -3961,15 +3961,15 @@ jmp from below (18fb)
 
 Table func 13
 199f: 40 e1 19     CALL    $19E1     //
-19a2: 48 49        SKIT    FSR
+19a2: 48 49        SKIT    FSR       // Skip next if ser rx is set
 19a4: fa           JR      $199F
-19a5: 4c d9        MOV     A,RXB
-19a7: 1c           MOV     D,A
-19a8: 47 80        ONI     A,$80
-19aa: b8           RET
+19a5: 4c d9        MOV     A,RXB     // Read Ser Rx into A
+19a7: 1c           MOV     D,A       // Mov A to D
+19a8: 47 80        ONI     A,$80     // look for MIDI status bit - skip next if not zero.
+19aa: b8           RET               // Ret if it's MIDI data byte
 
-19ab: 37 f8        LTI     A,$F8
-19ad: f1           JR      $199F
+19ab: 37 f8        LTI     A,$F8     // L.T.imm:Skip next if  less than F8?
+19ad: f1           JR      $199F     // Handle MIDI Sys-RT
 19ae: a3           POP     HL
 19af: 05 69 7e     ANIW    VV:69,$7E
 19b2: 0c           MOV     A,D
@@ -3978,9 +3978,9 @@ Table func 13
 
 Func from 1861, 189f, 18b3, 1910, 1979
 19b6: 40 e1 19     CALL    $19E1     //
-19b9: 48 49        SKIT    FSR
+19b9: 48 49        SKIT    FSR       // Skip next if ser rx is set
 19bb: fa           JR      $19B6
-19bc: 4c d9        MOV     A,RXB
+19bc: 4c d9        MOV     A,RXB     // Read RX Buffer into A
 19be: 77 f7        EQI     A,$F7
 19c0: 47 80        ONI     A,$80
 19c2: b8
@@ -4262,7 +4262,7 @@ Func from 1a36, 1a9a
 1b93: 64 07 ff     MVI     MKL,$FF
 1b96: 64 06 ff     MVI     MKH,$FF
 1b99: 64 00 01     MVI     PA,$01    // Scan sel 01
-1b9c: 64 01 10     MVI     PB,$10    // LEDs sel
+1b9c: 64 01 10     MVI     PB,$10    // LEDs sel - col5 -scale 1..4
 1b9f: 15 67 80     ORIW    VV:67,$80
 1ba2: 69 23        MVI     A,$23
 1ba4: 4d d1        MOV     MCC,A     // MCC of 23: tx,rx, C1 input
@@ -4589,7 +4589,7 @@ Func from 1d36
 1dd7: 54 7a 1b     JMP     $1B7A
 
 Func from 1ccf, 1d7c
-1dda: 4c c1        MOV     A,PB
+1dda: 4c c1        MOV     A,PB      // Get tape sync bits?
 1ddc: 07 c0        ANI     A,$C0
 1dde: 30 62        DCRW    VV:62     // decrement vv:62
 1de0: c5           JR      $1DE6     //
@@ -4604,7 +4604,7 @@ Func from 1ccf, 1d7c
 1df2: 4f 9e        JRE     $1D92
 1df4: b8           RET
 
-
+// Empty
 1df5: ff           JR      $1DF5
 1df6: ff           JR      $1DF6
 1df7: ff           JR      $1DF7
@@ -5000,6 +5000,8 @@ Func from 1ccf, 1d7c
 1f7d: ff           JR      $1F7D
 1f7e: ff           JR      $1F7E
 1f7f: ff           JR      $1F7F
+
+// Is this some sort of table?
 1f80: 04 04 04     LXI     SP,$0404
 1f83: 04 06 06     LXI     SP,$0606
 1f86: 06           illegal
