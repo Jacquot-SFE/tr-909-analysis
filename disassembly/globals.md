@@ -20,18 +20,20 @@ What globals are there?  How do they appear to be used?
 |18|0185||passed as HL Ptr to func?|
 ...inc from 18...
 |1e|030b||Init to 0x18|
-|1f|014d||Scanner state?|
+|1f|014d|bits|Scanner state?|
 |20|042c|bits||
 |23|03f7|bits||
 |24|14ae|bits| important state??|
 |25|0ba6||init to 0f|
 |28|0ba8||init to 0f|
+|29|119e|bits||
 |2b|0baa||init to 0f|
 |2e|0575|bits||
 |31|0319||init to 0|
 |33|0a14|bits||
 |34|0a3e|||
 |35|0140|||
+|3b|104e|bits||
 |3c|0302||Init to 0x0a|
 |40|0017 |Word, counter | timer interrupt |
 |41|02ff||Init to 0x09|
@@ -42,13 +44,15 @@ What globals are there?  How do they appear to be used?
 |4e|0317||init to 0|
 |4f|031b||init to 0xA0|
 |50|031e||init to 0xa0|
+|53|11da|bits||
 |59|0b28|||
 |5a|0020, |Counter|IRQ4 - AD complete|
 |5b|00d3|bits||
-|60|0d9d|||
+|5c|1fed|bits||
+|60|0d9d|bits||
 |61|0da0|||
 |62|19e3|Counter?|Seems to init to 4?  Or x17|
-|63|0012, 00e8, |bits|IRQ2,3...|
+|63|0012, 00e8, 10ad|bits|IRQ2,3...|
 |64|013f|bits|scanner related?|
 |65|01b3|bits||
 |66|018d|bits||
