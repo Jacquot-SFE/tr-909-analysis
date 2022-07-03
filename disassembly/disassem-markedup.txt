@@ -39,7 +39,7 @@ IRQ4: Intein ()/ AD complete
 
 0020: 30 5a        DCRW    VV:5A    // Decrement 5a from VV. - skip on borrow
 0022: c3           JR      $0026    // no borrow: Jmp fwd 2
-0023: 54 2b 01     JMP     $012B    // Jump way below
+0023: 54 2b 01     JMP     $012B    // Jump way below - LED scanner entry?
 From 0022
 0026: aa           EI               // Enable interrupts
 0027: 62           RETI             // Return from interrupt
@@ -248,8 +248,8 @@ jmp from eb:
 0135: b1           PUSH    BC
 0136: b2           PUSH    DE
 0137: b3           PUSH    HL
-0138: 24 00 40     LXI     DE,$4000  // load imm DE with x4000
-013b: 2a           LDAX    (DE)      // Read thru 4000
+0138: 24 00 40     LXI     DE,$4000  // load imm DE with x4000  // Is this button scan??  Startup held buttons?
+013b: 2a           LDAX    (DE)      // Read A thru 4000 - switches 1-8
 013c: 64 00 02     MVI     PA,$02    // Scan row 2
 013f: 5f 64        BIT     7,VV:64   // Test bit 7 of vv:64, skip next if it's set
 0141: 4e 33        JRE     $0176     // Cond jump to 176
@@ -257,7 +257,7 @@ jmp from eb:
 0146: 74 98 17     ORAW    VV:17     // Or A with vv:17
 0149: 63 17        STAW    VV:17     // Store A to vv:17 - tracking most recent state?
 014b: 1a           MOV     B,A
-014c: 2a           LDAX    (DE)      // Read thru DE (4000)
+014c: 2a           LDAX    (DE)      // Read thru DE (4000) row 2
 014d: 63 1f        STAW    VV:1F     // Store to vv:1f
 014f: 64 00 04     MVI     PA,$04    // Scan row 3
 0152: 34 10 ff     LXI     HL,$FF10  // Call param:
@@ -277,7 +277,7 @@ jmp from eb:
 016d: 07 c6        ANI     A,$C6
 016f: 70 9b        ORAX    (HL)
 0171: 3d           STAX    (HL+)
-0172: 2a           LDAX    (DE)
+0172: 2a           LDAX    (DE)      // Read row 4: cle,trk1-4, pat1-3
 0173: 3b           STAX    (HL)
 0174: 4e 33        JRE     $01A9
 Jmp from 0141:
@@ -295,9 +295,9 @@ Jmp from 0141:
 018f: ca           JR      $019A
 0190: 6f 1c        MVI     L,$1C
 0192: 07 30        ANI     A,$30
-0194: 70 9b        ORAX    (HL)
+0194: 70 9b        ORAX    (HL)      // HL is ff18...ie vv:18
 0196: 3d           STAX    (HL+)
-0197: 70 9b        ORAX    (HL)
+0197: 70 9b        ORAX    (HL)      // ff19
 0199: 3d           STAX    (HL+)
 019a: 01 23        LDAW    VV:23
 019c: 16 ff        XRI     A,$FF
@@ -308,7 +308,7 @@ Jmp from 0141:
 01a4: 74 98 24     ORAW    VV:24
 01a7: 63 24        STAW    VV:24
 Jmp from 0174
-01a9: 64 1e 01     ORI     MKH,$01
+01a9: 64 1e 01     ORI     MKH,$01   // Enable ADC IRQ
 01ac: aa           EI
 01ad: 01 6a        LDAW    VV:6A
 01af: 1b           MOV     C,A
@@ -456,7 +456,7 @@ Jmp from 0174
 02c5: a2           POP     DE
 02c6: a1           POP     BC
 02c7: a0           POP     VA
-02c8: 64 0e fe     ANI     MKH,$FE
+02c8: 64 0e fe     ANI     MKH,$FE   // Clear ADC IRQ mask
 02cb: aa           EI
 02cc: 62           RETI
 
@@ -527,8 +527,8 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 033b: 69 0c        MVI     A,$0C     // Mv Imm A gets 0x0c
 033d: 4d cc        MOV     ETMM,A    // Mv A to ETMM (Timer event ctr mode)
 033f: 64 83 a0     MVI     EOM,$A0   // Mv 0xa0 to EOM (timer/evt ctr output mode)
-0342: 64 06 04     MVI     MKH,$04   // Mv 0x04 to MKH (t/cnt Mask high)
-0345: 64 07 bf     MVI     MKL,$BF   // Mv 0xBF to MKL (t/cnt Mask low)
+0342: 64 06 04     MVI     MKH,$04   // Enable ADC & Ser IRQs
+0345: 64 07 bf     MVI     MKL,$BF   // Enable Ext1 - DIN sync clk IRQ
 
 
 0348: 7b a4        CALF    $0BA4     // Call
@@ -691,7 +691,7 @@ Jmp from 0386
 046b: 69 00        MVI     A,$00
 046d: 7b 5c        CALF    $0B5C     //
 046f: 63 50        STAW    VV:50
-0471: 64 06 00     MVI     MKH,$00
+0471: 64 06 00     MVI     MKH,$00   // Enable all MKH IRQs??
 0474: 01 3c        LDAW    VV:3C
 0476: da           JR      $0491
 0477: 5c 20        BIT     4,VV:20   // Test bit 4 of vv:20, skip next if it's set
@@ -1711,7 +1711,7 @@ Fixed area call from 0214, 0990
 0b4d: 01 0b        LDAW    VV:0B
 0b4f: 7b 5c        CALF    $0B5C     //
 0b51: 63 50        STAW    VV:50
-0b53: 64 06 00     MVI     MKH,$00
+0b53: 64 06 00     MVI     MKH,$00   // Enable all MKH IRQs??
 0b56: 74 6a 00     NEI     B,$00
 0b59: b8           RET
 
@@ -1760,7 +1760,7 @@ Fixed area func from 0b73, 0b80
 0b95: 69 00        MVI     A,$00
 0b97: 7b 5c        CALF    $0B5C     //
 0b99: 63 50        STAW    VV:50
-0b9b: 64 06 00     MVI     MKH,$00
+0b9b: 64 06 00     MVI     MKH,$00   // Enable all MKH IRQs??
 0b9e: 74 6a 00     NEI     B,$00
 0ba1: b8           RET
 
@@ -1890,7 +1890,7 @@ Fixed area func from 1318, 149b, 14b7
 
 0c4a: 69 0c        MVI     A,$0C
 0c4c: 4d cc        MOV     ETMM,A
-0c4e: 64 07 bf     MVI     MKL,$BF
+0c4e: 64 07 bf     MVI     MKL,$BF   // Enable Ext 1
 0c51: 05 2e 7f     ANIW    VV:2E,$7F
 0c54: b8           RET
 
@@ -2017,14 +2017,17 @@ Func from 0ccc, 0cd3
 
 Func From 00be, 00fb, 12ce, 1393, 13a7, 1647
 Something with MIDI Tx?
+Takes a param: MIDI byte in A
+If vv:4b is empty, put A in it, set MKH, return.
+Else (:4b occupied), put it in vv:40
 0d08: 75 4b 00     EQIW    VV:4B,$00 // Is vv:4b 0?
 0d0b: c6           JR      $0D12     // nonzero branch +6
 0d0c: 63 4b        STAW    VV:4B     // Store AW to vv:4b
-0d0e: 64 0e fb     ANI     MKH,$FB   // Set Mask Hi to xFB
+0d0e: 64 0e fb     ANI     MKH,$FB   // And IRQ MaskHi w/ xFB - enables serial transmit
 0d11: b8           RET
 
 0d12: 63 d0        STAW    VV:D0
-0d14: f9           JR      $0D0E
+0d14: f9           JR      $0D0E     // jmp back ~4 (to set MKH & return)
 
 Fixed area func from 0ca5, 0cc3, 0cc8
 0d15: 01 39        LDAW    VV:39
@@ -2994,8 +2997,8 @@ Table func x8
 131d: 71 6e 00     MVIW    VV:6E,$00
 1320: 71 24 00     MVIW    VV:24,$00
 1323: 71 0a 00     MVIW    VV:0A,$00
-1326: 64 4e 04     ONI     MKH,$04
-1329: fc           JR      $1326
+1326: 64 4e 04     ONI     MKH,$04   // skip next if ser tx is disabled
+1329: fc           JR      $1326     // Wait for ser tx to be disabled (interlock for message completion?)
 132a: 7b 64        CALF    $0B64     //
 132c: 05 64 f7     ANIW    VV:64,$F7
 132f: 58 63        BIT     0,VV:63   // Test bit 0 of vv:63, skip next if it's set
@@ -3202,11 +3205,11 @@ Func from 14a0
 1480: 47 01        ONI     A,$01
 1482: c7           JR      $148A
 1483: 15 63 02     ORIW    VV:63,$02
-1486: 64 0f f7     ANI     MKL,$F7
+1486: 64 0f f7     ANI     MKL,$F7   // Enable INT1
 1489: d3           JR      $149D
 148a: 47 02        ONI     A,$02
 148c: c8           JR      $1495
-148d: 64 1f 08     ORI     MKL,$08
+148d: 64 1f 08     ORI     MKL,$08   // Disable INT1
 1490: 69 0c        MVI     A,$0C
 1492: 4d cc        MOV     ETMM,A
 1494: c8           JR      $149D
@@ -3234,7 +3237,7 @@ Func from 0501, 067c
 14ba: 55 63 03     OFFIW   VV:63,$03
 14bd: b8           RET
 
-14be: 64 07 ef     MVI     MKL,$EF
+14be: 64 07 ef     MVI     MKL,$EF   // Enable Int2
 14c1: 15 2e 80     ORIW    VV:2E,$80
 14c4: 15 64 01     ORIW    VV:64,$01
 14c7: 71 5b 00     MVIW    VV:5B,$00
@@ -3421,7 +3424,7 @@ Func from 18b7, 1628
 15d8: ca           JR      $15E3
 15d9: 05 69 ef     ANIW    VV:69,$EF
 15dc: 15 69 20     ORIW    VV:69,$20
-15df: 64 1e 04     ORI     MKH,$04
+15df: 64 1e 04     ORI     MKH,$04   // Enable ser tx irq
 15e2: b8           RET
 
 15e3: 48 4a        SKIT    FST
@@ -3479,7 +3482,7 @@ Serial ISR:
 
 162f: 10           EXA               // Swap (A)(V)(EA) (Setup interrupt context)
 1630: 11           EXX               // Swap (B)(C)(D)(E)(H)(L)
-1631: 64 5e 04     OFFI    MKH,$04   // Skip next if MKH && 04 is zero ()
+1631: 64 5e 04     OFFI    MKH,$04   // Skip next if ser tx is enabled
 1634: c3           JR      $1638     // Jmp fwd
 1635: 48 49        SKIT    FSR       // Skip next if int flag is set: FSR is Ser Rx Full
 1637: f0           JR      $1628     // Jmp R??? back ~10
@@ -3490,8 +3493,8 @@ From 1634:
 163e: 1c           MOV     D,A
 163f: 27 f7        GTI     A,$F7     // Skip next if received byte G.T. F7
 1641: c9           JR      $164B
-1642: 67 f8        NEI     A,$F8     // Skip next if not eq F8
-1644: 55 63 01     OFFIW   VV:63,$01
+1642: 67 f8        NEI     A,$F8     // Skip next if not eq F8 - timing clock
+1644: 55 63 01     OFFIW   VV:63,$01 //
 1647: 7d 08        CALF    $0D08     //
 1649: 4e 31        JRE     $167C
 164b: 57 80        OFFI    A,$80     // Clear MSB of A
@@ -3591,14 +3594,14 @@ From 1634:
 16ec: c4           JR      $16F1
 16ed: 01 4d        LDAW    VV:4D
 16ef: 63 4e        STAW    VV:4E
-16f1: 64 0e fb     ANI     MKH,$FB
+16f1: 64 0e fb     ANI     MKH,$FB   // clear serial tx mask - enable tx irq
 
 Jmp from way above
 
-16f4: 11           EXX
-16f5: 10           EXA
-16f6: aa           EI
-16f7: 62           RETI
+16f4: 11           EXX               // Exchange extended registers (BC DE HL)
+16f5: 10           EXA               // Exchange V, A, EA
+16f6: aa           EI                // Enable interrupts
+16f7: 62           RETI              // Return from interrupt
 
 
 
@@ -3842,7 +3845,7 @@ Func from 00c0, 17c0
 18b3: 40 b6 19     CALL    $19B6     //
 18b6: c3           JR      $18BA
 18b7: 40 a7 15     CALL    $15A7     //
-18ba: 64 4e 04     ONI     MKH,$04
+18ba: 64 4e 04     ONI     MKH,$04   // Skip next if serial tx interrupt masked
 18bd: f9           JR      $18B7
 18be: 40 fd 19     CALL    $19FD     //
 18c1: 64 00 01     MVI     PA,$01    // Load PA (scan row output) with 0x01
@@ -4018,9 +4021,9 @@ Func from 19c8, 199f, 19b6, 19c8
 19e6: 71 62 04     MVIW    VV:62,$04 // Init vv:62 to 4
 19e9: 69 10        MVI     A,$10     // Load A with 0x10
 From ~3 above
-19eb: 4d c1        MOV     PB,A      // Write LED sel val
-19ed: 70 69 00 40  MOV     A,($4000) // Load A thru ptr x4000
-19f1: 47 01        ONI     A,$01     // Or with 1?
+19eb: 4d c1        MOV     PB,A      // Write LED sel val: sel scan row 5
+19ed: 70 69 00 40  MOV     A,($4000) // Load A thru ptr x4000 - scan row 5
+19f1: 47 01        ONI     A,$01     // look for enter/accent key
 19f3: b8           RET
 
 19f4: 04 ff ff     LXI     SP,$FFFF
@@ -4038,6 +4041,7 @@ Func from 041f
 1a03: 55 69 01     OFFIW   VV:69,$01
 1a06: b8           RET
 
+// Is this a little table?  Not sure how we branch into here...
 1a07: 6c ff        MVI     D,$FF
 1a09: 01 50        LDAW    VV:50
 1a0b: 1d           MOV     E,A
@@ -4048,7 +4052,7 @@ Func from 041f
 1a15: 17 04        ORI     A,$04
 1a17: 7b 5c        CALF    $0B5C     //
 1a19: 63 50        STAW    VV:50
-1a1b: 64 06 00     MVI     MKH,$00
+1a1b: 64 06 00     MVI     MKH,$00   // Enable all MKH interrupts???
 1a1e: b8           RET
 
 Func from 0530,
@@ -4075,6 +4079,7 @@ Func from 0530,
 1a48: 55 69 01     OFFIW   VV:69,$01
 1a4b: b8           RET
 
+// Is this a little table?  Not sure how we branch into here...
 1a4c: 6c ff        MVI     D,$FF
 1a4e: 01 50        LDAW    VV:50
 1a50: 1d           MOV     E,A
@@ -4090,7 +4095,7 @@ Func from 0530,
 1a64: 07 7f        ANI     A,$7F
 1a66: 7b 5c        CALF    $0B5C     //
 1a68: 63 50        STAW    VV:50
-1a6a: 64 06 00     MVI     MKH,$00
+1a6a: 64 06 00     MVI     MKH,$00   // Unmask all interrupts?
 1a6d: b8           RET
 
 func from 0512,
@@ -4257,10 +4262,10 @@ Func from 1a36, 1a9a
 1b88: 63 7b        STAW    VV:7B
 1b8a: 63 7c        STAW    VV:7C
 1b8c: 64 85 ff     MVI     TMM,$FF
-1b8f: 64 4e 04     ONI     MKH,$04
+1b8f: 64 4e 04     ONI     MKH,$04   // Skip next if ser tx irq masked
 1b92: fc           JR      $1B8F
-1b93: 64 07 ff     MVI     MKL,$FF
-1b96: 64 06 ff     MVI     MKH,$FF
+1b93: 64 07 ff     MVI     MKL,$FF   // Mask all MKL sources (t0, t1, int1, !int2, e0,e1, ein)
+1b96: 64 06 ff     MVI     MKH,$FF   // Mask all MKH sources (ser tx,rx, ADC)
 1b99: 64 00 01     MVI     PA,$01    // Scan sel 01
 1b9c: 64 01 10     MVI     PB,$10    // LEDs sel - col5 -scale 1..4
 1b9f: 15 67 80     ORIW    VV:67,$80
@@ -4314,7 +4319,7 @@ Func from 1a36, 1a9a
 1c09: 7f b9        CALF    $0FB9     //
 1c0b: b5           DMOV    BC,EA
 1c0c: 70 1e 7d ff  SBCD    $FF7D
-1c10: 64 06 fe     MVI     MKH,$FE
+1c10: 64 06 fe     MVI     MKH,$FE   // Enable ADC irq
 1c13: 40 09 15     CALL    $1509     //
 1c16: 4f 62        JRE     $1B7A
 1c18: 70 1e 71 ff  SBCD    $FF71
@@ -4350,7 +4355,7 @@ Func from 1a36, 1a9a
 1c54: 6f 00        MVI     L,$00
 1c56: 69 0c        MVI     A,$0C
 1c58: 4d cc        MOV     ETMM,A
-1c5a: 64 07 bf     MVI     MKL,$BF
+1c5a: 64 07 bf     MVI     MKL,$BF   // enable ext1 irq
 1c5d: 64 00 03     MVI     PA,$03
 1c60: 69 ff        MVI     A,$FF
 1c62: 19           MOV     EAL,A
@@ -4562,7 +4567,7 @@ Func from 1d36
 1d96: 70 3f 7b ff  LHLD    $FF7B
 1d9a: 70 3e 7d ff  SHLD    $FF7D
 1d9e: 7f b9        CALF    $0FB9     //
-1da0: 64 06 fe     MVI     MKH,$FE
+1da0: 64 06 fe     MVI     MKH,$FE   // Enable ADC irq
 1da3: 40 09 15     CALL    $1509     //
 1da6: 69 00        MVI     A,$00
 1da8: 63 21        STAW    VV:21
@@ -4574,11 +4579,11 @@ Func from 1d36
 1db5: 69 0c        MVI     A,$0C
 1db7: 4d cc        MOV     ETMM,A
 1db9: 64 85 61     MVI     TMM,$61
-1dbc: 64 06 04     MVI     MKH,$04
+1dbc: 64 06 04     MVI     MKH,$04   // Unmask all but ser tx ??
 1dbf: 59 63        BIT     1,VV:63   // Test bit 1 of vv:63, skip next if it's set
 1dc1: 69 bf        MVI     A,$BF
 1dc3: 69 b7        MVI     A,$B7
-1dc5: 4d c7        MOV     MKL,A
+1dc5: 4d c7        MOV     MKL,A     // Enable int1 based on vv:63.1 - DIN clk
 1dc7: 48 4a        SKIT    FST
 1dc9: 00           NOP
 1dca: 69 f8        MVI     A,$F8     // Load A with MIDI Clk
@@ -4595,8 +4600,8 @@ Func from 1ccf, 1d7c
 1de0: c5           JR      $1DE6     //
 1de1: 71 62 04     MVIW    VV:62,$04 // set vv:62 to x4
 1de4: 17 10        ORI     A,$10
-1de6: 4d c1        MOV     PB,A
-1de8: 70 69 00 40  MOV     A,($4000)
+1de6: 4d c1        MOV     PB,A      // Select 7 seg (b.5)
+1de8: 70 69 00 40  MOV     A,($4000) // Read switches?
 1dec: 47 01        ONI     A,$01
 1dee: b8           RET
 
@@ -5078,7 +5083,7 @@ Func from 1ccf, 1d7c
 1fef: 5e 60        BIT     6,VV:60   // Test bit 6 of vv:60, skip next if it's set
 1ff1: 62           RETI
 
-1ff2: 64 66 68     SUI     MKH,$68
+1ff2: 64 66 68     SUI     MKH,$68   // Subtract imm from IRQ Mask H?
 1ff5: 6a 6c        MVI     B,$6C
 1ff7: 6e 70        MVI     H,$70
 1ff9: 72           SOFTI             // Software interrupt: branch to 0x0060

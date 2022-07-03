@@ -56,7 +56,7 @@ What globals are there?  How do they appear to be used?
 |60|0d9d|bits 6||
 |61|0da0|||
 |62|19e3|Bit 6? Counter?|Seems to init to 4?  Or x17|
-|63|0012, 00e8, 10ad|bits 0,1,2,3,5,6,7|IRQ2,3...|
+|63|0012, 00e8, 10ad|bits 0,1 (use DIN clk),2,3,5,6,7|IRQ2,3...|
 |64|013f|bits 2,4,6,7|scanner related?|
 |65|01b3|bits 1,3,6,7||
 |66|018d|bits 0,1,2,3,4,5,6,7||
