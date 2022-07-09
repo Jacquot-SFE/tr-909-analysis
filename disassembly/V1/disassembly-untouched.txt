@@ -1,0 +1,4484 @@
+0000: 54 cb 02     JMP     $02CB
+0003: 00           NOP     
+0004: aa           EI      
+0005: 62           RETI    
+0006: 00           NOP     
+0007: 00           NOP     
+0008: 01 02        LDAW    VV:02
+000a: 04 08 10     LXI     SP,$1008
+000d: 20 40        INRW    VV:40
+000f: 80           CALT    ($0080)
+0010: b0           PUSH    VA
+0011: b4           PUSH    EA
+0012: 59 63        BIT     1,VV:63
+0014: 4e af        JRE     $00C5
+0016: 4e a4        JRE     $00BC
+0018: 5f 67        BIT     7,VV:67
+001a: 4e ca        JRE     $00E6
+001c: aa           EI      
+001d: 62           RETI    
+001e: 00           NOP     
+001f: 00           NOP     
+0020: 30 5a        DCRW    VV:5A
+0022: c3           JR      $0026
+0023: 54 29 01     JMP     $0129
+0026: aa           EI      
+0027: 62           RETI    
+0028: 54 db 15     JMP     $15DB
+002b: 0e           MOV     A,H
+002c: 07 0c        ANI     A,$0C
+002e: 7d 86        CALF    $0D86
+0030: 74 0e 70     ANI     H,$70
+0033: 60 9e        ORA     A,H
+0035: 17 0c        ORI     A,$0C
+0037: 1e           MOV     H,A
+0038: b8           RET     
+0039: 6a 64        MVI     B,$64
+003b: 48 3e        DIV     B
+003d: 09           MOV     A,EAL
+003e: 67 00        NEI     A,$00
+0040: 69 0f        MVI     A,$0F
+0042: 63 2b        STAW    VV:2B
+0044: 0a           MOV     A,B
+0045: 19           MOV     EAL,A
+0046: 6a 0a        MVI     B,$0A
+0048: 48 3e        DIV     B
+004a: 09           MOV     A,EAL
+004b: 77 00        EQI     A,$00
+004d: c5           JR      $0053
+004e: 35 2b 0a     LTIW    VV:2B,$0A
+0051: 69 0f        MVI     A,$0F
+0053: 63 28        STAW    VV:28
+0055: 0a           MOV     A,B
+0056: 63 25        STAW    VV:25
+0058: b8           RET     
+0059: 2d           LDAX    (HL+)
+005a: 4d c0        MOV     PA,A
+005c: 64 19 20     ORI     PB,$20
+005f: 2d           LDAX    (HL+)
+0060: 5a 64        BIT     2,VV:64
+0062: 45 64 03     ONIW    VV:64,$03
+0065: 2b           LDAX    (HL)
+0066: 1a           MOV     B,A
+0067: b8           RET     
+0068: 70 3f 32 ff  LHLD    $FF32
+006c: 0e           MOV     A,H
+006d: 74 1e 0f     ORI     H,$0F
+0070: 07 0c        ANI     A,$0C
+0072: 74 0f f0     ANI     L,$F0
+0075: 60 9f        ORA     A,L
+0077: 48 21        SLR     A
+0079: 17 80        ORI     A,$80
+007b: 1f           MOV     L,A
+007c: b8           RET     
+007d: ff           JR      $007D
+007e: fb           JR      $007A
+007f: ff           JR      $007F
+0080: 2b           LDAX    (HL)
+0081: 00           NOP     
+0082: 39           STAX    (BC)
+0083: 00           NOP     
+0084: c1           JR      $0086
+0085: 08           MOV     A,EAH
+0086: bb 09        STAX    (DE+$09)
+0088: 25 0a c3     GTIW    VV:0A,$C3
+008b: 11           EXX     
+008c: 03           DCX     SP
+008d: 12           INX     BC
+008e: 08           MOV     A,EAH
+008f: 12           INX     BC
+0090: 1a           MOV     B,A
+0091: 12           INX     BC
+0092: 7e 12        CALF    $0E12
+0094: 20 12        INRW    VV:12
+0096: 95           CALT    ($00AA)
+0097: 12           INX     BC
+0098: 59 00        BIT     1,VV:00
+009a: 5f 00        BIT     7,VV:00
+009c: 68 00        MVI     V,$00
+009e: 6c 00        MVI     D,$00
+00a0: bd           STAX    (HL+B)
+00a1: 12           INX     BC
+00a2: 16 13        XRI     A,$13
+00a4: 15 12 0a     ORIW    VV:12,$0A
+00a7: 12           INX     BC
+00a8: 0f           MOV     A,L
+00a9: 14 f1 13     LXI     BC,$13F1
+00ac: bb 13        STAX    (DE+$13)
+00ae: 37 14        LTI     A,$14
+00b0: 8a           CALT    ($0094)
+00b1: 14 0a 10     LXI     BC,$100A
+00b4: 13           DCX     BC
+00b5: 10           EXA     
+00b6: 39           STAX    (BC)
+00b7: 19           MOV     EAL,A
+00b8: 61           DAA     
+00b9: 19           MOV     EAL,A
+00ba: 6c 19        MVI     D,$19
+00bc: 69 f8        MVI     A,$F8
+00be: 7c fd        CALF    $0CFD
+00c0: 40 92 17     CALL    $1792
+00c3: 4e 40        JRE     $0105
+00c5: 48 c0        DMOV    EA,ECNT
+00c7: 69 00        MVI     A,$00
+00c9: 4d cc        MOV     ETMM,A
+00cb: 69 04        MVI     A,$04
+00cd: 4d cc        MOV     ETMM,A
+00cf: 48 6c        SKNIT   OV
+00d1: d1           JR      $00E3
+00d2: 08           MOV     A,EAH
+00d3: 58 5b        BIT     0,VV:5B
+00d5: cb           JR      $00E1
+00d6: 37 03        LTI     A,$03
+00d8: d6           JR      $00EF
+00d9: 77 02        EQI     A,$02
+00db: c7           JR      $00E3
+00dc: 09           MOV     A,EAL
+00dd: 27 a8        GTI     A,$A8
+00df: c3           JR      $00E3
+00e0: ce           JR      $00EF
+00e1: 77 01        EQI     A,$01
+00e3: 4e 20        JRE     $0105
+00e5: ce           JR      $00F4
+00e6: b0           PUSH    VA
+00e7: b4           PUSH    EA
+00e8: 55 63 03     OFFIW   VV:63,$03
+00eb: dd           JR      $0109
+00ec: 58 5b        BIT     0,VV:5B
+00ee: c5           JR      $00F4
+00ef: 30 5b        DCRW    VV:5B
+00f1: 8b           CALT    ($0096)
+00f2: 00           NOP     
+00f3: c9           JR      $00FD
+00f4: 71 5b 01     MVIW    VV:5B,$01
+00f7: 8b           CALT    ($0096)
+00f8: 00           NOP     
+00f9: 69 f8        MVI     A,$F8
+00fb: 7c fd        CALF    $0CFD
+00fd: 01 44        LDAW    VV:44
+00ff: 19           MOV     EAL,A
+0100: 01 45        LDAW    VV:45
+0102: 18           MOV     EAH,A
+0103: 48 d3        DMOV    ETM1,EA
+0105: a4           POP     EA
+0106: a0           POP     VA
+0107: aa           EI      
+0108: 62           RETI    
+0109: 65 5b ff     NEIW    VV:5B,$FF
+010c: f8           JR      $0105
+010d: 30 5b        DCRW    VV:5B
+010f: c7           JR      $0117
+0110: 15 64 20     ORIW    VV:64,$20
+0113: 71 5b 00     MVIW    VV:5B,$00
+0116: ee           JR      $0105
+0117: 01 3d        LDAW    VV:3D
+0119: 19           MOV     EAL,A
+011a: 01 3e        LDAW    VV:3E
+011c: 18           MOV     EAH,A
+011d: 65 5b 00     NEIW    VV:5B,$00
+0120: 44 ff ff     LXI     EA,$FFFF
+0123: 48 d3        DMOV    ETM1,EA
+0125: 8b           CALT    ($0096)
+0126: 00           NOP     
+0127: 4f dc        JRE     $0105
+0129: 64 09 c0     ANI     PB,$C0
+012c: 64 00 01     MVI     PA,$01
+012f: 71 5a 09     MVIW    VV:5A,$09
+0132: b0           PUSH    VA
+0133: b1           PUSH    BC
+0134: b2           PUSH    DE
+0135: b3           PUSH    HL
+0136: 24 00 40     LXI     DE,$4000
+0139: 2a           LDAX    (DE)
+013a: 64 00 02     MVI     PA,$02
+013d: 5f 64        BIT     7,VV:64
+013f: 4e 33        JRE     $0174
+0141: 05 64 7f     ANIW    VV:64,$7F
+0144: 74 98 17     ORAW    VV:17
+0147: 63 17        STAW    VV:17
+0149: 1a           MOV     B,A
+014a: 2a           LDAX    (DE)
+014b: 63 1f        STAW    VV:1F
+014d: 64 00 04     MVI     PA,$04
+0150: 34 10 ff     LXI     HL,$FF10
+0153: 7a d8        CALF    $0AD8
+0155: 6f 20        MVI     L,$20
+0157: 2b           LDAX    (HL)
+0158: 16 ff        XRI     A,$FF
+015a: 1a           MOV     B,A
+015b: 4c c2        MOV     A,PC
+015d: 07 04        ANI     A,$04
+015f: 70 9a        ORAX    (DE)
+0161: 3d           STAX    (HL+)
+0162: 64 00 08     MVI     PA,$08
+0165: 57 3b        OFFI    A,$3B
+0167: 07 3b        ANI     A,$3B
+0169: 60 8a        ANA     A,B
+016b: 07 c6        ANI     A,$C6
+016d: 70 9b        ORAX    (HL)
+016f: 3d           STAX    (HL+)
+0170: 2a           LDAX    (DE)
+0171: 3b           STAX    (HL)
+0172: 4e 33        JRE     $01A7
+0174: 15 64 80     ORIW    VV:64,$80
+0177: 63 17        STAW    VV:17
+0179: 2a           LDAX    (DE)
+017a: 74 98 1f     ORAW    VV:1F
+017d: 63 1f        STAW    VV:1F
+017f: 1a           MOV     B,A
+0180: 64 00 10     MVI     PA,$10
+0183: 34 18 ff     LXI     HL,$FF18
+0186: 7a d8        CALF    $0AD8
+0188: 55 1c 30     OFFIW   VV:1C,$30
+018b: 5e 66        BIT     6,VV:66
+018d: ca           JR      $0198
+018e: 6f 1c        MVI     L,$1C
+0190: 07 30        ANI     A,$30
+0192: 70 9b        ORAX    (HL)
+0194: 3d           STAX    (HL+)
+0195: 70 9b        ORAX    (HL)
+0197: 3d           STAX    (HL+)
+0198: 01 23        LDAW    VV:23
+019a: 16 ff        XRI     A,$FF
+019c: 1a           MOV     B,A
+019d: 2a           LDAX    (DE)
+019e: 63 23        STAW    VV:23
+01a0: 60 8a        ANA     A,B
+01a2: 74 98 24     ORAW    VV:24
+01a5: 63 24        STAW    VV:24
+01a7: 64 1e 01     ORI     MKH,$01
+01aa: aa           EI      
+01ab: 01 6a        LDAW    VV:6A
+01ad: 1b           MOV     C,A
+01ae: 6a 01        MVI     B,$01
+01b0: 21           JB      
+01b1: 5b 65        BIT     3,VV:65
+01b3: cc           JR      $01C0
+01b4: 15 64 02     ORIW    VV:64,$02
+01b7: 30 5d        DCRW    VV:5D
+01b9: c6           JR      $01C0
+01ba: 71 5d 03     MVIW    VV:5D,$03
+01bd: 15 64 04     ORIW    VV:64,$04
+01c0: 71 6a d1     MVIW    VV:6A,$D1
+01c3: 6f 25        MVI     L,$25
+01c5: 8c           CALT    ($0098)
+01c6: 5b 32        BIT     3,VV:32
+01c8: 7d 43        CALF    $0D43
+01ca: 4d c0        MOV     PA,A
+01cc: 64 19 01     ORI     PB,$01
+01cf: 4e 39        JRE     $020A
+01d1: 71 6a ee     MVIW    VV:6A,$EE
+01d4: 6f 28        MVI     L,$28
+01d6: 8c           CALT    ($0098)
+01d7: 55 32 08     OFFIW   VV:32,$08
+01da: 7d 43        CALF    $0D43
+01dc: 4d c0        MOV     PA,A
+01de: 64 19 02     ORI     PB,$02
+01e1: 4e 27        JRE     $020A
+01e3: 71 6a fd     MVIW    VV:6A,$FD
+01e6: 01 2e        LDAW    VV:2E
+01e8: 4d c0        MOV     PA,A
+01ea: 64 19 28     ORI     PB,$28
+01ed: dc           JR      $020A
+01ee: 71 6a e3     MVIW    VV:6A,$E3
+01f1: 05 64 f9     ANIW    VV:64,$F9
+01f4: 6f 2b        MVI     L,$2B
+01f6: 8c           CALT    ($0098)
+01f7: 4d c0        MOV     PA,A
+01f9: 64 19 04     ORI     PB,$04
+01fc: cd           JR      $020A
+01fd: 71 6a b1     MVIW    VV:6A,$B1
+0200: 01 2f        LDAW    VV:2F
+0202: 4d c0        MOV     PA,A
+0204: 64 19 30     ORI     PB,$30
+0207: 5f 64        BIT     7,VV:64
+0209: 96           CALT    ($00AC)
+020a: 5f 66        BIT     7,VV:66
+020c: cc           JR      $0219
+020d: 5f 64        BIT     7,VV:64
+020f: c5           JR      $0215
+0210: 6f 1c        MVI     L,$1C
+0212: 7b 20        CALF    $0B20
+0214: c4           JR      $0219
+0215: 6f 14        MVI     L,$14
+0217: 7b 11        CALF    $0B11
+0219: 34 80 1f     LXI     HL,$1F80
+021c: 6c ff        MVI     D,$FF
+021e: 69 00        MVI     A,$00
+0220: 5f 64        BIT     7,VV:64
+0222: 4e 20        JRE     $0244
+0224: 25 5c f0     GTIW    VV:5C,$F0
+0227: 30 5c        DCRW    VV:5C
+0229: c5           JR      $022F
+022a: 01 0e        LDAW    VV:0E
+022c: 71 0e 00     MVIW    VV:0E,$00
+022f: 74 98 0f     ORAW    VV:0F
+0232: 71 0f 00     MVIW    VV:0F,$00
+0235: 1a           MOV     B,A
+0236: 5e 66        BIT     6,VV:66
+0238: 4e 22        JRE     $025C
+023a: 01 1c        LDAW    VV:1C
+023c: 57 30        OFFI    A,$30
+023e: 74 0a cf     ANI     B,$CF
+0241: 60 1a        ORA     B,A
+0243: d8           JR      $025C
+0244: 75 5c 00     EQIW    VV:5C,$00
+0247: c5           JR      $024D
+0248: 01 0c        LDAW    VV:0C
+024a: 71 0c 00     MVIW    VV:0C,$00
+024d: 74 98 0d     ORAW    VV:0D
+0250: 71 0d 00     MVIW    VV:0D,$00
+0253: 55 66 40     OFFIW   VV:66,$40
+0256: 74 98 14     ORAW    VV:14
+0259: 1a           MOV     B,A
+025a: 4e 44        JRE     $02A0
+025c: 6d 04        MVI     E,$04
+025e: 86           CALT    ($008C)
+025f: 15 08 20     ORIW    VV:08,$20
+0262: 88           CALT    ($0090)
+0263: 15 09 02     ORIW    VV:09,$02
+0266: 23           DCX     DE
+0267: 88           CALT    ($0090)
+0268: 15 09 40     ORIW    VV:09,$40
+026b: 6f c0        MVI     L,$C0
+026d: 48 02        SLRC    B
+026f: d3           JR      $0283
+0270: 48 02        SLRC    B
+0272: ca           JR      $027D
+0273: 69 40        MVI     A,$40
+0275: 93           CALT    ($00A6)
+0276: 05 09 f7     ANIW    VV:09,$F7
+0279: 15 09 04     ORIW    VV:09,$04
+027c: cf           JR      $028C
+027d: 69 50        MVI     A,$50
+027f: 93           CALT    ($00A6)
+0280: c8           JR      $0289
+0281: 22           INX     DE
+0282: c9           JR      $028C
+0283: 48 02        SLRC    B
+0285: fb           JR      $0281
+0286: 69 32        MVI     A,$32
+0288: 93           CALT    ($00A6)
+0289: 15 09 0c     ORIW    VV:09,$0C
+028c: 48 02        SLRC    B
+028e: c7           JR      $0296
+028f: 69 40        MVI     A,$40
+0291: 93           CALT    ($00A6)
+0292: 15 09 10     ORIW    VV:09,$10
+0295: 23           DCX     DE
+0296: 48 02        SLRC    B
+0298: d9           JR      $02B2
+0299: 69 40        MVI     A,$40
+029b: 93           CALT    ($00A6)
+029c: 15 09 20     ORIW    VV:09,$20
+029f: d2           JR      $02B2
+02a0: 6d 00        MVI     E,$00
+02a2: 86           CALT    ($008C)
+02a3: 15 08 02     ORIW    VV:08,$02
+02a6: 86           CALT    ($008C)
+02a7: 15 08 04     ORIW    VV:08,$04
+02aa: 86           CALT    ($008C)
+02ab: 15 08 08     ORIW    VV:08,$08
+02ae: 86           CALT    ($008C)
+02af: 15 08 10     ORIW    VV:08,$10
+02b2: ba           DI      
+02b3: 34 00 ff     LXI     HL,$FF00
+02b6: 24 01 40     LXI     DE,$4001
+02b9: 6b 09        MVI     C,$09
+02bb: 31           BLOCK   
+02bc: 71 08 00     MVIW    VV:08,$00
+02bf: 05 09 08     ANIW    VV:09,$08
+02c2: a3           POP     HL
+02c3: a2           POP     DE
+02c4: a1           POP     BC
+02c5: a0           POP     VA
+02c6: 64 0e fe     ANI     MKH,$FE
+02c9: aa           EI      
+02ca: 62           RETI    
+02cb: 68 ff        MVI     V,$FF
+02cd: 10           EXA     
+02ce: 68 ff        MVI     V,$FF
+02d0: 04 ff ff     LXI     SP,$FFFF
+02d3: 69 08        MVI     A,$08
+02d5: 4d d0        MOV     MM,A
+02d7: 69 00        MVI     A,$00
+02d9: 4d c0        MOV     PA,A
+02db: 4d c1        MOV     PB,A
+02dd: 4d c5        MOV     PF,A
+02df: 4d d2        MOV     MA,A
+02e1: 4d d3        MOV     MB,A
+02e3: 4d c8        MOV     ANM,A
+02e5: 64 02 ff     MVI     PC,$FF
+02e8: 34 00 ff     LXI     HL,$FF00
+02eb: 3d           STAX    (HL+)
+02ec: 74 7f 00     EQI     L,$00
+02ef: fb           JR      $02EB
+02f0: 34 fe 2f     LXI     HL,$2FFE
+02f3: 3d           STAX    (HL+)
+02f4: 3b           STAX    (HL)
+02f5: 34 fe 3f     LXI     HL,$3FFE
+02f8: 3d           STAX    (HL+)
+02f9: 3b           STAX    (HL)
+02fa: 40 c8 14     CALL    $14C8
+02fd: 71 41 09     MVIW    VV:41,$09
+0300: 71 3c 0a     MVIW    VV:3C,$0A
+0303: 71 74 01     MVIW    VV:74,$01
+0306: 71 16 10     MVIW    VV:16,$10
+0309: 71 1e 18     MVIW    VV:1E,$18
+030c: 71 6a b1     MVIW    VV:6A,$B1
+030f: 69 80        MVI     A,$80
+0311: 63 4c        STAW    VV:4C
+0313: 63 4d        STAW    VV:4D
+0315: 63 4e        STAW    VV:4E
+0317: 63 31        STAW    VV:31
+0319: 71 4f a0     MVIW    VV:4F,$A0
+031c: 71 50 a0     MVIW    VV:50,$A0
+031f: 69 d0        MVI     A,$D0
+0321: 4d da        MOV     TM0,A
+0323: 69 02        MVI     A,$02
+0325: 4d db        MOV     TM1,A
+0327: 64 85 61     MVI     TMM,$61
+032a: 69 ee        MVI     A,$EE
+032c: 4d d4        MOV     MC,A
+032e: 69 1b        MVI     A,$1B
+0330: 4d d1        MOV     MCC,A
+0332: 69 4e        MVI     A,$4E
+0334: 4d ca        MOV     SML,A
+0336: 64 81 0e     MVI     SMH,$0E
+0339: 69 0c        MVI     A,$0C
+033b: 4d cc        MOV     ETMM,A
+033d: 64 83 a0     MVI     EOM,$A0
+0340: 64 06 04     MVI     MKH,$04
+0343: 64 07 bf     MVI     MKL,$BF
+0346: 7b 9c        CALF    $0B9C
+0348: 4c e1        MOV     A,CR1
+034a: 37 40        LTI     A,$40
+034c: dd           JR      $036A
+034d: 34 fe 7f     LXI     HL,$7FFE
+0350: 2d           LDAX    (HL+)
+0351: 77 96        EQI     A,$96
+0353: d6           JR      $036A
+0354: 2b           LDAX    (HL)
+0355: 77 69        EQI     A,$69
+0357: d2           JR      $036A
+0358: 34 00 60     LXI     HL,$6000
+035b: 2b           LDAX    (HL)
+035c: 1a           MOV     B,A
+035d: 69 ff        MVI     A,$FF
+035f: 3b           STAX    (HL)
+0360: 70 eb        NEAX    (HL)
+0362: c5           JR      $0368
+0363: 40 00 60     CALL    $6000
+0366: aa           EI      
+0367: d5           JR      $037D
+0368: 0a           MOV     A,B
+0369: 3b           STAX    (HL)
+036a: 34 07 40     LXI     HL,$4007
+036d: 69 00        MVI     A,$00
+036f: 3d           STAX    (HL+)
+0370: 3d           STAX    (HL+)
+0371: 32           INX     HL
+0372: 69 3c        MVI     A,$3C
+0374: 3b           STAX    (HL)
+0375: aa           EI      
+0376: 14 3a 02     LXI     BC,$023A
+0379: 53           DCR     C
+037a: fe           JR      $0379
+037b: 52           DCR     B
+037c: fc           JR      $0379
+037d: 75 22 22     EQIW    VV:22,$22
+0380: c4           JR      $0385
+0381: 40 2e 1f     CALL    $1F2E
+0384: c8           JR      $038D
+0385: 59 22        BIT     1,VV:22
+0387: c5           JR      $038D
+0388: 69 01        MVI     A,$01
+038a: 63 26        STAW    VV:26
+038c: f8           JR      $0385
+038d: 15 69 40     ORIW    VV:69,$40
+0390: 71 53 ff     MVIW    VV:53,$FF
+0393: 70 69 ef 2f  MOV     A,($2FEF)
+0397: 77 5a        EQI     A,$5A
+0399: c4           JR      $039E
+039a: 44 ff 2b     LXI     EA,$2BFF
+039d: c6           JR      $03A4
+039e: 77 a5        EQI     A,$A5
+03a0: d8           JR      $03B9
+03a1: 44 ff 3b     LXI     EA,$3BFF
+03a4: 08           MOV     A,EAH
+03a5: 63 33        STAW    VV:33
+03a7: 99           CALT    ($00B2)
+03a8: 74 bd        DLT     EA,BC
+03aa: ce           JR      $03B9
+03ab: 24 7f 03     LXI     DE,$037F
+03ae: 74 c6        DADD    EA,DE
+03b0: 74 af        DGT     EA,HL
+03b2: c6           JR      $03B9
+03b3: a7           DMOV    EA,HL
+03b4: 74 bd        DLT     EA,BC
+03b6: 40 79 10     CALL    $1079
+03b9: 75 33 30     EQIW    VV:33,$30
+03bc: c9           JR      $03C6
+03bd: 71 33 20     MVIW    VV:33,$20
+03c0: 40 1c 10     CALL    $101C
+03c3: 7a 0a        CALF    $0A0A
+03c5: c8           JR      $03CE
+03c6: 71 33 30     MVIW    VV:33,$30
+03c9: 40 1c 10     CALL    $101C
+03cc: 7a 08        CALF    $0A08
+03ce: 05 63 0f     ANIW    VV:63,$0F
+03d1: 15 63 80     ORIW    VV:63,$80
+03d4: 05 65 fe     ANIW    VV:65,$FE
+03d7: 40 1c 10     CALL    $101C
+03da: 15 66 40     ORIW    VV:66,$40
+03dd: 71 0a 00     MVIW    VV:0A,$00
+03e0: 40 1b 0f     CALL    $0F1B
+03e3: 7d a5        CALF    $0DA5
+03e5: 74 bd        DLT     EA,BC
+03e7: c6           JR      $03EE
+03e8: 99           CALT    ($00B2)
+03e9: 13           DCX     BC
+03ea: 9a           CALT    ($00B4)
+03eb: 15 65 01     ORIW    VV:65,$01
+03ee: 05 65 3f     ANIW    VV:65,$3F
+03f1: 01 31        LDAW    VV:31
+03f3: 63 30        STAW    VV:30
+03f5: 5e 23        BIT     6,VV:23
+03f7: dc           JR      $0414
+03f8: 74 1d 08     ORI     E,$08
+03fb: 2a           LDAX    (DE)
+03fc: 67 00        NEI     A,$00
+03fe: 69 01        MVI     A,$01
+0400: 67 ff        NEI     A,$FF
+0402: 69 fe        MVI     A,$FE
+0404: 1a           MOV     B,A
+0405: 01 30        LDAW    VV:30
+0407: 60 aa        GTA     A,B
+0409: c4           JR      $040E
+040a: 15 65 40     ORIW    VV:65,$40
+040d: c3           JR      $0411
+040e: 15 65 80     ORIW    VV:65,$80
+0411: 0a           MOV     A,B
+0412: 63 30        STAW    VV:30
+0414: 95           CALT    ($00AA)
+0415: 7d cd        CALF    $0DCD
+0417: 7a 3e        CALF    $0A3E
+0419: 7e bf        CALF    $0EBF
+041b: 5e 69        BIT     6,VV:69
+041d: 40 9d 19     CALL    $199D
+0420: 55 22 1e     OFFIW   VV:22,$1E
+0423: fc           JR      $0420
+0424: 71 21 00     MVIW    VV:21,$00
+0427: 71 24 00     MVIW    VV:24,$00
+042a: 58 20        BIT     0,VV:20
+042c: cd           JR      $043A
+042d: 05 66 bf     ANIW    VV:66,$BF
+0430: 05 24 1b     ANIW    VV:24,$1B
+0433: 97           CALT    ($00AE)
+0434: 7a 02        CALF    $0A02
+0436: 4f 96        JRE     $03CE
+0438: 4e 9d        JRE     $04D7
+043a: 5d 20        BIT     5,VV:20
+043c: 4e 37        JRE     $0475
+043e: 05 66 bf     ANIW    VV:66,$BF
+0441: 98           CALT    ($00B0)
+0442: 4e 2e        JRE     $0472
+0444: 63 3c        STAW    VV:3C
+0446: 15 65 02     ORIW    VV:65,$02
+0449: 55 69 01     OFFIW   VV:69,$01
+044c: 4e 24        JRE     $0472
+044e: 6c ff        MVI     D,$FF
+0450: 01 50        LDAW    VV:50
+0452: 1d           MOV     E,A
+0453: 01 3c        LDAW    VV:3C
+0455: 46 b0        ADI     A,$B0
+0457: 1a           MOV     B,A
+0458: 7b 54        CALF    $0B54
+045a: 69 7c        MVI     A,$7C
+045c: 7b 54        CALF    $0B54
+045e: 69 00        MVI     A,$00
+0460: 7b 54        CALF    $0B54
+0462: 0a           MOV     A,B
+0463: 7b 54        CALF    $0B54
+0465: 69 7f        MVI     A,$7F
+0467: 7b 54        CALF    $0B54
+0469: 69 00        MVI     A,$00
+046b: 7b 54        CALF    $0B54
+046d: 63 50        STAW    VV:50
+046f: 64 06 00     MVI     MKH,$00
+0472: 01 3c        LDAW    VV:3C
+0474: d7           JR      $048C
+0475: 5c 20        BIT     4,VV:20
+0477: 4e 21        JRE     $049A
+0479: 05 66 bf     ANIW    VV:66,$BF
+047c: 98           CALT    ($00B0)
+047d: c8           JR      $0486
+047e: 63 41        STAW    VV:41
+0480: 15 65 02     ORIW    VV:65,$02
+0483: 15 66 04     ORIW    VV:66,$04
+0486: 01 41        LDAW    VV:41
+0488: 5a 66        BIT     2,VV:66
+048a: 69 ff        MVI     A,$FF
+048c: 44 00 00     LXI     EA,$0000
+048f: 41           INR     A
+0490: 19           MOV     EAL,A
+0491: 81           CALT    ($0082)
+0492: 71 21 00     MVIW    VV:21,$00
+0495: 71 24 00     MVIW    VV:24,$00
+0498: 4f a0        JRE     $043A
+049a: 15 66 40     ORIW    VV:66,$40
+049d: 05 24 f7     ANIW    VV:24,$F7
+04a0: 94           CALT    ($00A8)
+04a1: c3           JR      $04A5
+04a2: 7e bf        CALF    $0EBF
+04a4: d3           JR      $04B8
+04a5: 58 24        BIT     0,VV:24
+04a7: cf           JR      $04B7
+04a8: 71 24 00     MVIW    VV:24,$00
+04ab: 55 63 03     OFFIW   VV:63,$03
+04ae: c8           JR      $04B7
+04af: 7d a5        CALF    $0DA5
+04b1: 74 1d 08     ORI     E,$08
+04b4: 01 30        LDAW    VV:30
+04b6: 3a           STAX    (DE)
+04b7: df           JR      $04D7
+04b8: 58 24        BIT     0,VV:24
+04ba: dc           JR      $04D7
+04bb: 71 24 00     MVIW    VV:24,$00
+04be: 5e 33        BIT     6,VV:33
+04c0: c8           JR      $04C9
+04c1: 05 33 bf     ANIW    VV:33,$BF
+04c4: 05 2e fe     ANIW    VV:2E,$FE
+04c7: 4f 05        JRE     $03CE
+04c9: 4c e1        MOV     A,CR1
+04cb: 37 40        LTI     A,$40
+04cd: d2           JR      $04E0
+04ce: 15 33 40     ORIW    VV:33,$40
+04d1: 15 2e 01     ORIW    VV:2E,$01
+04d4: 54 ce 03     JMP     $03CE
+04d7: 5e 33        BIT     6,VV:33
+04d9: c6           JR      $04E0
+04da: 4c e1        MOV     A,CR1
+04dc: 37 40        LTI     A,$40
+04de: e2           JR      $04C1
+04df: d0           JR      $04F0
+04e0: 58 20        BIT     0,VV:20
+04e2: c9           JR      $04EC
+04e3: 85           CALT    ($008A)
+04e4: 4e ba        JRE     $05A0
+04e6: 7c 64        CALF    $0C64
+04e8: 54 9e 06     JMP     $069E
+04eb: c4           JR      $04F0
+04ec: 84           CALT    ($0088)
+04ed: 54 4f 06     JMP     $064F
+04f0: 7f 71        CALF    $0F71
+04f2: df           JR      $0512
+04f3: 65 68 00     NEIW    VV:68,$00
+04f6: c5           JR      $04FC
+04f7: 71 68 00     MVIW    VV:68,$00
+04fa: 7d cd        CALF    $0DCD
+04fc: 40 6d 14     CALL    $146D
+04ff: 85           CALT    ($008A)
+0500: 54 ce 03     JMP     $03CE
+0503: 40 36 0f     CALL    $0F36
+0506: 7d cd        CALF    $0DCD
+0508: 7a f6        CALF    $0AF6
+050a: 55 67 04     OFFIW   VV:67,$04
+050d: 40 08 1a     CALL    $1A08
+0510: 4e 20        JRE     $0532
+0512: 58 24        BIT     0,VV:24
+0514: dd           JR      $0532
+0515: 71 24 00     MVIW    VV:24,$00
+0518: 01 68        LDAW    VV:68
+051a: 57 70        OFFI    A,$70
+051c: 54 14 1b     JMP     $1B14
+051f: 47 0c        ONI     A,$0C
+0521: d0           JR      $0532
+0522: 71 68 00     MVIW    VV:68,$00
+0525: 40 4e 10     CALL    $104E
+0528: 99           CALT    ($00B2)
+0529: b5           DMOV    BC,EA
+052a: 9a           CALT    ($00B4)
+052b: 40 b9 19     CALL    $19B9
+052e: 7d cd        CALF    $0DCD
+0530: 7e bf        CALF    $0EBF
+0532: 55 65 01     OFFIW   VV:65,$01
+0535: 54 2a 04     JMP     $042A
+0538: 91           CALT    ($00A2)
+0539: 54 2a 04     JMP     $042A
+053c: 65 70 00     NEIW    VV:70,$00
+053f: c9           JR      $0549
+0540: 30 70        DCRW    VV:70
+0542: 20 60        INRW    VV:60
+0544: 00           NOP     
+0545: 90           CALT    ($00A0)
+0546: f5           JR      $053C
+0547: 4e 52        JRE     $059B
+0549: 47 01        ONI     A,$01
+054b: c3           JR      $054F
+054c: 82           CALT    ($0084)
+054d: 4e 37        JRE     $0586
+054f: 47 04        ONI     A,$04
+0551: c4           JR      $0556
+0552: 7b 5c        CALF    $0B5C
+0554: 4e 30        JRE     $0586
+0556: 47 02        ONI     A,$02
+0558: 4e 2c        JRE     $0586
+055a: 01 38        LDAW    VV:38
+055c: 74 b8 37     LTAW    VV:37
+055f: c5           JR      $0565
+0560: 41           INR     A
+0561: 79 cf        CALF    $09CF
+0563: 4e 21        JRE     $0586
+0565: 99           CALT    ($00B2)
+0566: 12           INX     BC
+0567: 7d a5        CALF    $0DA5
+0569: 74 bd        DLT     EA,BC
+056b: c9           JR      $0575
+056c: 70 1f 75 ff  LBCD    $FF75
+0570: 5d 2e        BIT     5,VV:2E
+0572: 40 a4 13     CALL    $13A4
+0575: 9a           CALT    ($00B4)
+0576: 29           LDAX    (BC)
+0577: 7d e7        CALF    $0DE7
+0579: 29           LDAX    (BC)
+057a: 7d 82        CALF    $0D82
+057c: 1a           MOV     B,A
+057d: 1b           MOV     C,A
+057e: 7a 66        CALF    $0A66
+0580: 79 c3        CALF    $09C3
+0582: 79 95        CALF    $0995
+0584: 7a 3e        CALF    $0A3E
+0586: 94           CALT    ($00A8)
+0587: c6           JR      $058E
+0588: 7e bf        CALF    $0EBF
+058a: 58 20        BIT     0,VV:20
+058c: 7a f6        CALF    $0AF6
+058e: 5e 33        BIT     6,VV:33
+0590: c7           JR      $0598
+0591: 4c e1        MOV     A,CR1
+0593: 37 40        LTI     A,$40
+0595: 15 21 20     ORIW    VV:21,$20
+0598: 90           CALT    ($00A0)
+0599: 4f ae        JRE     $0549
+059b: 79 95        CALF    $0995
+059d: 54 2a 04     JMP     $042A
+05a0: 05 63 0f     ANIW    VV:63,$0F
+05a3: 15 63 40     ORIW    VV:63,$40
+05a6: 05 66 3f     ANIW    VV:66,$3F
+05a9: 7a 3e        CALF    $0A3E
+05ab: 40 1b 0f     CALL    $0F1B
+05ae: 69 03        MVI     A,$03
+05b0: 7d a7        CALF    $0DA7
+05b2: 34 77 ff     LXI     HL,$FF77
+05b5: 48 95        STEAX   (HL++)
+05b7: 70 2f 75 ff  LDED    $FF75
+05bb: 74 b6        DSUBNB  EA,DE
+05bd: c3           JR      $05C1
+05be: 15 67 01     ORIW    VV:67,$01
+05c1: 48 95        STEAX   (HL++)
+05c3: b6           DMOV    DE,EA
+05c4: 40 12 0f     CALL    $0F12
+05c7: 48 93        STEAX   (HL)
+05c9: 74 e6        DSUB    EA,DE
+05cb: 99           CALT    ($00B2)
+05cc: b7           DMOV    HL,EA
+05cd: 9a           CALT    ($00B4)
+05ce: 40 db 0e     CALL    $0EDB
+05d1: 00           NOP     
+05d2: 7e b5        CALF    $0EB5
+05d4: 5c 33        BIT     4,VV:33
+05d6: 69 5a        MVI     A,$5A
+05d8: 69 a5        MVI     A,$A5
+05da: 70 79 ef 2f  MOV     ($2FEF),A
+05de: 55 22 1e     OFFIW   VV:22,$1E
+05e1: fc           JR      $05DE
+05e2: 71 21 00     MVIW    VV:21,$00
+05e5: 71 24 00     MVIW    VV:24,$00
+05e8: 85           CALT    ($008A)
+05e9: 4e 5a        JRE     $0645
+05eb: 40 71 0f     CALL    $0F71
+05ee: d6           JR      $0605
+05ef: 05 68 80     ANIW    VV:68,$80
+05f2: 84           CALT    ($0088)
+05f3: 00           NOP     
+05f4: 7c 80        CALF    $0C80
+05f6: 40 36 0f     CALL    $0F36
+05f9: 00           NOP     
+05fa: 94           CALT    ($00A8)
+05fb: ca           JR      $0606
+05fc: 40 42 10     CALL    $1042
+05ff: c6           JR      $0606
+0600: 58 23        BIT     0,VV:23
+0602: 7e bf        CALF    $0EBF
+0604: c1           JR      $0606
+0605: 97           CALT    ($00AE)
+0606: 7d fb        CALF    $0DFB
+0608: 40 db 0e     CALL    $0EDB
+060b: 00           NOP     
+060c: 91           CALT    ($00A2)
+060d: 4f d9        JRE     $05E8
+060f: 47 01        ONI     A,$01
+0611: c2           JR      $0614
+0612: 82           CALT    ($0084)
+0613: c9           JR      $061D
+0614: 47 02        ONI     A,$02
+0616: c2           JR      $0619
+0617: 83           CALT    ($0086)
+0618: c4           JR      $061D
+0619: 57 04        OFFI    A,$04
+061b: 7b 5c        CALF    $0B5C
+061d: 40 71 0f     CALL    $0F71
+0620: d4           JR      $0635
+0621: 05 68 80     ANIW    VV:68,$80
+0624: 98           CALT    ($00B0)
+0625: c2           JR      $0628
+0626: 7a 66        CALF    $0A66
+0628: 84           CALT    ($0088)
+0629: 7a 62        CALF    $0A62
+062b: 94           CALT    ($00A8)
+062c: c8           JR      $0635
+062d: 40 42 10     CALL    $1042
+0630: c4           JR      $0635
+0631: 58 23        BIT     0,VV:23
+0633: 7e bf        CALF    $0EBF
+0635: 40 db 0e     CALL    $0EDB
+0638: c5           JR      $063E
+0639: 90           CALT    ($00A0)
+063a: 4f d3        JRE     $060F
+063c: 4f aa        JRE     $05E8
+063e: 7d fb        CALF    $0DFB
+0640: 40 36 0f     CALL    $0F36
+0643: 00           NOP     
+0644: f4           JR      $0639
+0645: 40 79 10     CALL    $1079
+0648: 58 20        BIT     0,VV:20
+064a: 54 ce 03     JMP     $03CE
+064d: 4f 51        JRE     $05A0
+064f: 05 63 0f     ANIW    VV:63,$0F
+0652: 15 63 20     ORIW    VV:63,$20
+0655: 7c 4d        CALF    $0C4D
+0657: 55 2e 02     OFFIW   VV:2E,$02
+065a: 7b ae        CALF    $0BAE
+065c: 05 2e f3     ANIW    VV:2E,$F3
+065f: 58 20        BIT     0,VV:20
+0661: c9           JR      $066B
+0662: 97           CALT    ($00AE)
+0663: 85           CALT    ($008A)
+0664: 4f 3a        JRE     $05A0
+0666: 7c 64        CALF    $0C64
+0668: 4e 34        JRE     $069E
+066a: d0           JR      $067B
+066b: 85           CALT    ($008A)
+066c: 54 ce 03     JMP     $03CE
+066f: 84           CALT    ($0088)
+0670: 4f dd        JRE     $064F
+0672: 7c 80        CALF    $0C80
+0674: 40 6d 14     CALL    $146D
+0677: 94           CALT    ($00A8)
+0678: c2           JR      $067B
+0679: 7b 9c        CALF    $0B9C
+067b: 91           CALT    ($00A2)
+067c: e2           JR      $065F
+067d: 47 01        ONI     A,$01
+067f: c2           JR      $0682
+0680: 82           CALT    ($0084)
+0681: c9           JR      $068B
+0682: 47 02        ONI     A,$02
+0684: c2           JR      $0687
+0685: 83           CALT    ($0086)
+0686: c4           JR      $068B
+0687: 57 04        OFFI    A,$04
+0689: 7b 5c        CALF    $0B5C
+068b: 98           CALT    ($00B0)
+068c: c2           JR      $068F
+068d: 7a 66        CALF    $0A66
+068f: 84           CALT    ($0088)
+0690: c1           JR      $0692
+0691: c4           JR      $0696
+0692: 63 2d        STAW    VV:2D
+0694: 7a 62        CALF    $0A62
+0696: 94           CALT    ($00A8)
+0697: c2           JR      $069A
+0698: 7b 9c        CALF    $0B9C
+069a: 90           CALT    ($00A0)
+069b: e1           JR      $067D
+069c: 4f c1        JRE     $065F
+069e: 05 63 0f     ANIW    VV:63,$0F
+06a1: 15 63 10     ORIW    VV:63,$10
+06a4: 7b 03        CALF    $0B03
+06a6: 7c 4d        CALF    $0C4D
+06a8: 69 00        MVI     A,$00
+06aa: 40 27 12     CALL    $1227
+06ad: 05 66 3f     ANIW    VV:66,$3F
+06b0: 58 20        BIT     0,VV:20
+06b2: cf           JR      $06C2
+06b3: 97           CALT    ($00AE)
+06b4: 7b a5        CALF    $0BA5
+06b6: 40 d2 14     CALL    $14D2
+06b9: 85           CALT    ($008A)
+06ba: 54 a0 05     JMP     $05A0
+06bd: 7c 64        CALF    $0C64
+06bf: 4f dd        JRE     $069E
+06c1: d2           JR      $06D4
+06c2: 05 24 7f     ANIW    VV:24,$7F
+06c5: 7a f6        CALF    $0AF6
+06c7: 85           CALT    ($008A)
+06c8: 54 ce 03     JMP     $03CE
+06cb: 84           CALT    ($0088)
+06cc: 4f 81        JRE     $064F
+06ce: 7c 90        CALF    $0C90
+06d0: 94           CALT    ($00A8)
+06d1: c2           JR      $06D4
+06d2: 7b 9c        CALF    $0B9C
+06d4: 91           CALT    ($00A2)
+06d5: 4f d6        JRE     $06AD
+06d7: 5d 66        BIT     5,VV:66
+06d9: 4e f4        JRE     $07CF
+06db: 47 01        ONI     A,$01
+06dd: c2           JR      $06E0
+06de: 82           CALT    ($0084)
+06df: c9           JR      $06E9
+06e0: 47 02        ONI     A,$02
+06e2: c2           JR      $06E5
+06e3: 83           CALT    ($0086)
+06e4: c4           JR      $06E9
+06e5: 57 04        OFFI    A,$04
+06e7: 4e 21        JRE     $070A
+06e9: 7a 9f        CALF    $0A9F
+06eb: 58 20        BIT     0,VV:20
+06ed: ce           JR      $06FC
+06ee: 5e 23        BIT     6,VV:23
+06f0: cf           JR      $0700
+06f1: 05 66 1f     ANIW    VV:66,$1F
+06f4: 15 65 08     ORIW    VV:65,$08
+06f7: 7b 03        CALF    $0B03
+06f9: 54 b1 08     JMP     $08B1
+06fc: 94           CALT    ($00A8)
+06fd: c2           JR      $0700
+06fe: 7b 9c        CALF    $0B9C
+0700: 7a f6        CALF    $0AF6
+0702: 90           CALT    ($00A0)
+0703: 4f d6        JRE     $06DB
+0705: 05 66 3f     ANIW    VV:66,$3F
+0708: 4f a3        JRE     $06AD
+070a: 70 3f 32 ff  LHLD    $FF32
+070e: 75 22 01     EQIW    VV:22,$01
+0711: 4e 5b        JRE     $076E
+0713: 05 66 3f     ANIW    VV:66,$3F
+0716: 01 15        LDAW    VV:15
+0718: 74 98 17     ORAW    VV:17
+071b: 16 ff        XRI     A,$FF
+071d: 74 5e 02     OFFI    H,$02
+0720: d2           JR      $0733
+0721: 1c           MOV     D,A
+0722: 70 8b        ANAX    (HL)
+0724: 1a           MOV     B,A
+0725: 07 55        ANI     A,$55
+0727: 48 25        SLL     A
+0729: 1b           MOV     C,A
+072a: 0a           MOV     A,B
+072b: 07 aa        ANI     A,$AA
+072d: 48 21        SLR     A
+072f: 60 9b        ORA     A,C
+0731: 60 9c        ORA     A,D
+0733: 70 8b        ANAX    (HL)
+0735: 3b           STAX    (HL)
+0736: 74 1e 01     ORI     H,$01
+0739: 01 1d        LDAW    VV:1D
+073b: 74 98 1f     ORAW    VV:1F
+073e: 16 ff        XRI     A,$FF
+0740: 74 5e 02     OFFI    H,$02
+0743: d2           JR      $0756
+0744: 1c           MOV     D,A
+0745: 70 8b        ANAX    (HL)
+0747: 1a           MOV     B,A
+0748: 07 11        ANI     A,$11
+074a: 48 25        SLL     A
+074c: 1b           MOV     C,A
+074d: 0a           MOV     A,B
+074e: 07 22        ANI     A,$22
+0750: 48 21        SLR     A
+0752: 60 9b        ORA     A,C
+0754: 60 9c        ORA     A,D
+0756: 70 8b        ANAX    (HL)
+0758: 3b           STAX    (HL)
+0759: 01 24        LDAW    VV:24
+075b: 74 98 23     ORAW    VV:23
+075e: 47 01        ONI     A,$01
+0760: 4e 60        JRE     $07C2
+0762: 80           CALT    ($0080)
+0763: 59 33        BIT     1,VV:33
+0765: 69 fe        MVI     A,$FE
+0767: 69 fd        MVI     A,$FD
+0769: 70 8b        ANAX    (HL)
+076b: 3b           STAX    (HL)
+076c: 4e 54        JRE     $07C2
+076e: 59 33        BIT     1,VV:33
+0770: d2           JR      $0783
+0771: 15 66 80     ORIW    VV:66,$80
+0774: 01 15        LDAW    VV:15
+0776: 70 9b        ORAX    (HL)
+0778: 3b           STAX    (HL)
+0779: 74 1e 01     ORI     H,$01
+077c: 01 1d        LDAW    VV:1D
+077e: 70 9b        ORAX    (HL)
+0780: 3b           STAX    (HL)
+0781: 4e 32        JRE     $07B5
+0783: 15 66 40     ORIW    VV:66,$40
+0786: 01 15        LDAW    VV:15
+0788: 1c           MOV     D,A
+0789: 07 55        ANI     A,$55
+078b: 48 25        SLL     A
+078d: 1a           MOV     B,A
+078e: 0c           MOV     A,D
+078f: 07 aa        ANI     A,$AA
+0791: 48 21        SLR     A
+0793: 60 9a        ORA     A,B
+0795: 16 ff        XRI     A,$FF
+0797: 70 8b        ANAX    (HL)
+0799: 60 9c        ORA     A,D
+079b: 3b           STAX    (HL)
+079c: 74 1e 01     ORI     H,$01
+079f: 01 1d        LDAW    VV:1D
+07a1: 1c           MOV     D,A
+07a2: 07 11        ANI     A,$11
+07a4: 48 25        SLL     A
+07a6: 1a           MOV     B,A
+07a7: 0c           MOV     A,D
+07a8: 07 22        ANI     A,$22
+07aa: 48 21        SLR     A
+07ac: 60 9a        ORA     A,B
+07ae: 16 ff        XRI     A,$FF
+07b0: 70 8b        ANAX    (HL)
+07b2: 60 9c        ORA     A,D
+07b4: 3b           STAX    (HL)
+07b5: 58 24        BIT     0,VV:24
+07b7: ca           JR      $07C2
+07b8: 80           CALT    ($0080)
+07b9: 59 33        BIT     1,VV:33
+07bb: 69 01        MVI     A,$01
+07bd: 69 02        MVI     A,$02
+07bf: 70 9b        ORAX    (HL)
+07c1: 3b           STAX    (HL)
+07c2: 71 15 00     MVIW    VV:15,$00
+07c5: 71 1d 00     MVIW    VV:1D,$00
+07c8: 71 24 00     MVIW    VV:24,$00
+07cb: 7b 5c        CALF    $0B5C
+07cd: 4f 1a        JRE     $06E9
+07cf: 15 65 08     ORIW    VV:65,$08
+07d2: 47 01        ONI     A,$01
+07d4: de           JR      $07F3
+07d5: 82           CALT    ($0084)
+07d6: 75 22 01     EQIW    VV:22,$01
+07d9: dd           JR      $07F7
+07da: 70 3f 32 ff  LHLD    $FF32
+07de: 89           CALT    ($0092)
+07df: c1           JR      $07E1
+07e0: cc           JR      $07ED
+07e1: 70 8b        ANAX    (HL)
+07e3: 60 ec        NEA     A,D
+07e5: d1           JR      $07F7
+07e6: 0c           MOV     A,D
+07e7: 16 ff        XRI     A,$FF
+07e9: 70 8b        ANAX    (HL)
+07eb: 3b           STAX    (HL)
+07ec: ca           JR      $07F7
+07ed: 70 8b        ANAX    (HL)
+07ef: 60 fc        EQA     A,D
+07f1: c5           JR      $07F7
+07f2: f4           JR      $07E7
+07f3: 47 02        ONI     A,$02
+07f5: c7           JR      $07FD
+07f6: 83           CALT    ($0086)
+07f7: 7b c1        CALF    $0BC1
+07f9: 4e 8f        JRE     $088A
+07fb: 4e 4e        JRE     $084B
+07fd: 57 04        OFFI    A,$04
+07ff: 7b 5c        CALF    $0B5C
+0801: 7b c1        CALF    $0BC1
+0803: 4e 85        JRE     $088A
+0805: 98           CALT    ($00B0)
+0806: 4e 43        JRE     $084B
+0808: 15 65 02     ORIW    VV:65,$02
+080b: 5d 20        BIT     5,VV:20
+080d: ce           JR      $081C
+080e: 63 42        STAW    VV:42
+0810: 1a           MOV     B,A
+0811: 8e           CALT    ($009C)
+0812: 2b           LDAX    (HL)
+0813: 07 f0        ANI     A,$F0
+0815: 60 9a        ORA     A,B
+0817: 3b           STAX    (HL)
+0818: 7d 8b        CALF    $0D8B
+081a: 4e 2f        JRE     $084B
+081c: 74 a8 42     GTAW    VV:42
+081f: c2           JR      $0822
+0820: 4e 29        JRE     $084B
+0822: 70 3f 32 ff  LHLD    $FF32
+0826: 74 0f f0     ANI     L,$F0
+0829: 60 47        ADD     L,A
+082b: 89           CALT    ($0092)
+082c: ce           JR      $083B
+082d: 70 8b        ANAX    (HL)
+082f: 60 fc        EQA     A,D
+0831: c5           JR      $0837
+0832: 16 ff        XRI     A,$FF
+0834: 70 8b        ANAX    (HL)
+0836: d3           JR      $084A
+0837: 0c           MOV     A,D
+0838: 70 9b        ORAX    (HL)
+083a: cf           JR      $084A
+083b: 16 ff        XRI     A,$FF
+083d: 70 8b        ANAX    (HL)
+083f: 1a           MOV     B,A
+0840: 0c           MOV     A,D
+0841: 70 8b        ANAX    (HL)
+0843: 60 b5        SUBNB   A,E
+0845: fd           JR      $0843
+0846: 60 8c        ANA     A,D
+0848: 60 9a        ORA     A,B
+084a: 3b           STAX    (HL)
+084b: 05 2e fe     ANIW    VV:2E,$FE
+084e: 70 3f 32 ff  LHLD    $FF32
+0852: 74 0f f0     ANI     L,$F0
+0855: 89           CALT    ($0092)
+0856: 4e 26        JRE     $087E
+0858: 44 00 00     LXI     EA,$0000
+085b: 09           MOV     A,EAL
+085c: 07 0f        ANI     A,$0F
+085e: 74 a8 42     GTAW    VV:42
+0861: c2           JR      $0864
+0862: 32           INX     HL
+0863: c9           JR      $086D
+0864: 48 2a        CLC     
+0866: 2d           LDAX    (HL+)
+0867: 16 ff        XRI     A,$FF
+0869: 60 cc        ONA     A,D
+086b: 48 2b        STC     
+086d: 48 b0        DRLR    EA
+086f: 0f           MOV     A,L
+0870: 57 0f        OFFI    A,$0F
+0872: e9           JR      $085C
+0873: 09           MOV     A,EAL
+0874: 63 26        STAW    VV:26
+0876: 63 27        STAW    VV:27
+0878: 08           MOV     A,EAH
+0879: 63 29        STAW    VV:29
+087b: 63 2a        STAW    VV:2A
+087d: cc           JR      $088A
+087e: 7d 50        CALF    $0D50
+0880: 70 1e 26 ff  SBCD    $FF26
+0884: 7d 50        CALF    $0D50
+0886: 70 1e 29 ff  SBCD    $FF29
+088a: 7a 9f        CALF    $0A9F
+088c: 58 20        BIT     0,VV:20
+088e: de           JR      $08AD
+088f: 5d 23        BIT     5,VV:23
+0891: df           JR      $08B1
+0892: 05 65 f7     ANIW    VV:65,$F7
+0895: 15 66 20     ORIW    VV:66,$20
+0898: 7a 7e        CALF    $0A7E
+089a: 79 95        CALF    $0995
+089c: 05 2e fe     ANIW    VV:2E,$FE
+089f: 7b 03        CALF    $0B03
+08a1: 71 15 00     MVIW    VV:15,$00
+08a4: 71 1d 00     MVIW    VV:1D,$00
+08a7: 71 24 00     MVIW    VV:24,$00
+08aa: 54 00 07     JMP     $0700
+08ad: 94           CALT    ($00A8)
+08ae: c2           JR      $08B1
+08af: 7b 9c        CALF    $0B9C
+08b1: 90           CALT    ($00A0)
+08b2: 4f 1e        JRE     $07D2
+08b4: 7a 7e        CALF    $0A7E
+08b6: 79 95        CALF    $0995
+08b8: 05 2e fe     ANIW    VV:2E,$FE
+08bb: 05 65 f7     ANIW    VV:65,$F7
+08be: 54 ad 06     JMP     $06AD
+08c1: 30 61        DCRW    VV:61
+08c3: d9           JR      $08DD
+08c4: 05 32 f0     ANIW    VV:32,$F0
+08c7: 01 42        LDAW    VV:42
+08c9: 63 61        STAW    VV:61
+08cb: 55 2e 08     OFFIW   VV:2E,$08
+08ce: 5d 2e        BIT     5,VV:2E
+08d0: c6           JR      $08D7
+08d1: 71 05 2d     MVIW    VV:05,$2D
+08d4: 15 09 02     ORIW    VV:09,$02
+08d7: 5d 47        BIT     5,VV:47
+08d9: 4e 51        JRE     $092C
+08db: 4e 23        JRE     $0900
+08dd: 20 32        INRW    VV:32
+08df: 5d 47        BIT     5,VV:47
+08e1: 4e 25        JRE     $0908
+08e3: 55 2e 08     OFFIW   VV:2E,$08
+08e6: 5d 2e        BIT     5,VV:2E
+08e8: d7           JR      $0900
+08e9: 01 32        LDAW    VV:32
+08eb: 07 0f        ANI     A,$0F
+08ed: 67 06        NEI     A,$06
+08ef: ca           JR      $08FA
+08f0: 55 47 10     OFFIW   VV:47,$10
+08f3: d0           JR      $0904
+08f4: 67 03        NEI     A,$03
+08f6: c3           JR      $08FA
+08f7: 77 09        EQI     A,$09
+08f9: c8           JR      $0902
+08fa: 71 05 0f     MVIW    VV:05,$0F
+08fd: 15 09 02     ORIW    VV:09,$02
+0900: 5c 47        BIT     4,VV:47
+0902: 69 0f        MVI     A,$0F
+0904: 69 07        MVI     A,$07
+0906: 4e 3b        JRE     $0943
+0908: 55 2e 08     OFFIW   VV:2E,$08
+090b: 5d 2e        BIT     5,VV:2E
+090d: d1           JR      $091F
+090e: 01 32        LDAW    VV:32
+0910: 07 07        ANI     A,$07
+0912: 5c 47        BIT     4,VV:47
+0914: 07 03        ANI     A,$03
+0916: 77 00        EQI     A,$00
+0918: c6           JR      $091F
+0919: 71 05 0f     MVIW    VV:05,$0F
+091c: 15 09 02     ORIW    VV:09,$02
+091f: 58 32        BIT     0,VV:32
+0921: ca           JR      $092C
+0922: 5c 47        BIT     4,VV:47
+0924: 69 17        MVI     A,$17
+0926: 69 0b        MVI     A,$0B
+0928: 74 e0 43     SUBW    VV:43
+092b: d7           JR      $0943
+092c: 75 61 00     EQIW    VV:61,$00
+092f: c7           JR      $0937
+0930: 5c 47        BIT     4,VV:47
+0932: 69 0b        MVI     A,$0B
+0934: 69 05        MVI     A,$05
+0936: cc           JR      $0943
+0937: 01 46        LDAW    VV:46
+0939: 46 0c        ADI     A,$0C
+093b: 55 47 10     OFFIW   VV:47,$10
+093e: 48 21        SLR     A
+0940: 63 43        STAW    VV:43
+0942: 51           DCR     A
+0943: 63 60        STAW    VV:60
+0945: 41           INR     A
+0946: 48 21        SLR     A
+0948: 63 40        STAW    VV:40
+094a: 01 32        LDAW    VV:32
+094c: 7c 30        CALF    $0C30
+094e: 63 6e        STAW    VV:6E
+0950: 15 66 08     ORIW    VV:66,$08
+0953: 70 3f 32 ff  LHLD    $FF32
+0957: 24 0a ff     LXI     DE,$FF0A
+095a: 80           CALT    ($0080)
+095b: 2b           LDAX    (HL)
+095c: 47 01        ONI     A,$01
+095e: c5           JR      $0964
+095f: 4c e3        MOV     A,CR3
+0961: 7d 84        CALF    $0D84
+0963: c2           JR      $0966
+0964: 69 00        MVI     A,$00
+0966: 3c           STAX    (DE+)
+0967: 2b           LDAX    (HL)
+0968: 47 02        ONI     A,$02
+096a: c7           JR      $0972
+096b: 4c e3        MOV     A,CR3
+096d: 7d 84        CALF    $0D84
+096f: 46 40        ADI     A,$40
+0971: c2           JR      $0974
+0972: 69 40        MVI     A,$40
+0974: 3c           STAX    (DE+)
+0975: 01 33        LDAW    VV:33
+0977: 07 fc        ANI     A,$FC
+0979: 1e           MOV     H,A
+097a: 6b aa        MVI     C,$AA
+097c: 79 a9        CALF    $09A9
+097e: 74 1e 01     ORI     H,$01
+0981: 6b 02        MVI     C,$02
+0983: 79 a9        CALF    $09A9
+0985: 74 1e 02     ORI     H,$02
+0988: 7b 20        CALF    $0B20
+098a: 74 0e fe     ANI     H,$FE
+098d: 7b 11        CALF    $0B11
+098f: 01 3f        LDAW    VV:3F
+0991: 46 05        ADI     A,$05
+0993: 63 5c        STAW    VV:5C
+0995: 34 26 ff     LXI     HL,$FF26
+0998: 2d           LDAX    (HL+)
+0999: 5b 38        BIT     3,VV:38
+099b: 74 88 6f     ANAW    VV:6F
+099e: 3d           STAX    (HL+)
+099f: 32           INX     HL
+09a0: 2d           LDAX    (HL+)
+09a1: 55 38 08     OFFIW   VV:38,$08
+09a4: 74 88 6f     ANAW    VV:6F
+09a7: 3b           STAX    (HL)
+09a8: b8           RET     
+09a9: 2a           LDAX    (DE)
+09aa: 1a           MOV     B,A
+09ab: 2b           LDAX    (HL)
+09ac: 60 8b        ANA     A,C
+09ae: 48 21        SLR     A
+09b0: 70 8b        ANAX    (HL)
+09b2: 3c           STAX    (DE+)
+09b3: 16 ff        XRI     A,$FF
+09b5: 70 8b        ANAX    (HL)
+09b7: 60 9a        ORA     A,B
+09b9: 3c           STAX    (DE+)
+09ba: b8           RET     
+09bb: 01 38        LDAW    VV:38
+09bd: 74 b8 37     LTAW    VV:37
+09c0: c2           JR      $09C3
+09c1: 41           INR     A
+09c2: cc           JR      $09CF
+09c3: 7c 37        CALF    $0C37
+09c5: 63 33        STAW    VV:33
+09c7: 7a 62        CALF    $0A62
+09c9: 01 36        LDAW    VV:36
+09cb: 63 37        STAW    VV:37
+09cd: 01 35        LDAW    VV:35
+09cf: 63 38        STAW    VV:38
+09d1: 7c 30        CALF    $0C30
+09d3: 16 ff        XRI     A,$FF
+09d5: 63 6f        STAW    VV:6F
+09d7: 01 38        LDAW    VV:38
+09d9: 7d 79        CALF    $0D79
+09db: 63 32        STAW    VV:32
+09dd: 71 6e 00     MVIW    VV:6E,$00
+09e0: 8e           CALT    ($009C)
+09e1: 2b           LDAX    (HL)
+09e2: 07 0f        ANI     A,$0F
+09e4: 63 42        STAW    VV:42
+09e6: 05 65 df     ANIW    VV:65,$DF
+09e9: 2d           LDAX    (HL+)
+09ea: 57 80        OFFI    A,$80
+09ec: 15 65 20     ORIW    VV:65,$20
+09ef: 07 30        ANI     A,$30
+09f1: 63 47        STAW    VV:47
+09f3: 2b           LDAX    (HL)
+09f4: 07 07        ANI     A,$07
+09f6: 63 46        STAW    VV:46
+09f8: 2b           LDAX    (HL)
+09f9: 07 70        ANI     A,$70
+09fb: 7d 82        CALF    $0D82
+09fd: 63 3f        STAW    VV:3F
+09ff: 7a c1        CALF    $0AC1
+0a01: b8           RET     
+0a02: 45 24 18     ONIW    VV:24,$18
+0a05: b9           RETS    
+0a06: 5b 24        BIT     3,VV:24
+0a08: 69 20        MVI     A,$20
+0a0a: 69 30        MVI     A,$30
+0a0c: 05 33 4f     ANIW    VV:33,$4F
+0a0f: 74 98 33     ORAW    VV:33
+0a12: 63 33        STAW    VV:33
+0a14: 71 24 00     MVIW    VV:24,$00
+0a17: 05 2e af     ANIW    VV:2E,$AF
+0a1a: 5c 33        BIT     4,VV:33
+0a1c: c4           JR      $0A21
+0a1d: 15 2e 40     ORIW    VV:2E,$40
+0a20: b8           RET     
+0a21: 15 2e 10     ORIW    VV:2E,$10
+0a24: b8           RET     
+0a25: 45 22 e0     ONIW    VV:22,$E0
+0a28: b9           RETS    
+0a29: 01 22        LDAW    VV:22
+0a2b: 57 80        OFFI    A,$80
+0a2d: c6           JR      $0A34
+0a2e: 47 40        ONI     A,$40
+0a30: 69 00        MVI     A,$00
+0a32: 69 04        MVI     A,$04
+0a34: 69 08        MVI     A,$08
+0a36: 63 34        STAW    VV:34
+0a38: 01 35        LDAW    VV:35
+0a3a: 1a           MOV     B,A
+0a3b: 1b           MOV     C,A
+0a3c: 7a 66        CALF    $0A66
+0a3e: 34 09 00     LXI     HL,$0009
+0a41: 01 34        LDAW    VV:34
+0a43: 7d 86        CALF    $0D86
+0a45: 46 04        ADI     A,$04
+0a47: ac           LDAX    (HL+A)
+0a48: 1a           MOV     B,A
+0a49: 45 63 c0     ONIW    VV:63,$C0
+0a4c: cc           JR      $0A59
+0a4d: 01 3b        LDAW    VV:3B
+0a4f: ac           LDAX    (HL+A)
+0a50: 60 9a        ORA     A,B
+0a52: 63 2c        STAW    VV:2C
+0a54: 5f 63        BIT     7,VV:63
+0a56: 07 e0        ANI     A,$E0
+0a58: c6           JR      $0A5F
+0a59: 63 2c        STAW    VV:2C
+0a5b: 5d 63        BIT     5,VV:63
+0a5d: 69 00        MVI     A,$00
+0a5f: 63 2d        STAW    VV:2D
+0a61: b8           RET     
+0a62: 70 1f 35 ff  LBCD    $FF35
+0a66: 53           DCR     C
+0a67: c1           JR      $0A69
+0a68: c4           JR      $0A6D
+0a69: 0b           MOV     A,C
+0a6a: 7a cc        CALF    $0ACC
+0a6c: f9           JR      $0A66
+0a6d: 43           INR     C
+0a6e: 00           NOP     
+0a6f: 0b           MOV     A,C
+0a70: 63 35        STAW    VV:35
+0a72: c1           JR      $0A74
+0a73: 42           INR     B
+0a74: 0a           MOV     A,B
+0a75: 37 0f        LTI     A,$0F
+0a77: c3           JR      $0A7B
+0a78: 7a cc        CALF    $0ACC
+0a7a: f8           JR      $0A73
+0a7b: 0a           MOV     A,B
+0a7c: 63 36        STAW    VV:36
+0a7e: 70 1f 35 ff  LBCD    $FF35
+0a82: 24 26 ff     LXI     DE,$FF26
+0a85: 69 00        MVI     A,$00
+0a87: 7b d3        CALF    $0BD3
+0a89: 6d 26        MVI     E,$26
+0a8b: 0b           MOV     A,C
+0a8c: 57 08        OFFI    A,$08
+0a8e: 6d 29        MVI     E,$29
+0a90: 7c 30        CALF    $0C30
+0a92: 70 9a        ORAX    (DE)
+0a94: 3c           STAX    (DE+)
+0a95: 3e           STAX    (DE-)
+0a96: 0a           MOV     A,B
+0a97: 60 ab        GTA     A,C
+0a99: c2           JR      $0A9C
+0a9a: 43           INR     C
+0a9b: ef           JR      $0A8B
+0a9c: 79 95        CALF    $0995
+0a9e: b8           RET     
+0a9f: 59 21        BIT     1,VV:21
+0aa1: b8           RET     
+0aa2: 71 21 00     MVIW    VV:21,$00
+0aa5: 8e           CALT    ($009C)
+0aa6: 2b           LDAX    (HL)
+0aa7: 46 10        ADI     A,$10
+0aa9: 07 b0        ANI     A,$B0
+0aab: 1a           MOV     B,A
+0aac: 07 30        ANI     A,$30
+0aae: 63 47        STAW    VV:47
+0ab0: 47 20        ONI     A,$20
+0ab2: 69 0f        MVI     A,$0F
+0ab4: 69 0b        MVI     A,$0B
+0ab6: 60 9a        ORA     A,B
+0ab8: 3d           STAX    (HL+)
+0ab9: 2b           LDAX    (HL)
+0aba: 07 f0        ANI     A,$F0
+0abc: 3b           STAX    (HL)
+0abd: 79 e0        CALF    $09E0
+0abf: 7d 8b        CALF    $0D8B
+0ac1: 01 47        LDAW    VV:47
+0ac3: 7d 82        CALF    $0D82
+0ac5: 34 08 00     LXI     HL,$0008
+0ac8: ac           LDAX    (HL+A)
+0ac9: 63 2f        STAW    VV:2F
+0acb: b8           RET     
+0acc: 7d 79        CALF    $0D79
+0ace: 1f           MOV     L,A
+0acf: 7c 37        CALF    $0C37
+0ad1: 1e           MOV     H,A
+0ad2: 8f           CALT    ($009E)
+0ad3: 2b           LDAX    (HL)
+0ad4: 47 80        ONI     A,$80
+0ad6: b9           RETS    
+0ad7: b8           RET     
+0ad8: 2d           LDAX    (HL+)
+0ad9: 70 9d        ORAX    (HL+)
+0adb: 70 9d        ORAX    (HL+)
+0add: 70 9d        ORAX    (HL+)
+0adf: 16 ff        XRI     A,$FF
+0ae1: 60 8a        ANA     A,B
+0ae3: 3d           STAX    (HL+)
+0ae4: 70 9b        ORAX    (HL)
+0ae6: 3d           STAX    (HL+)
+0ae7: 2b           LDAX    (HL)
+0ae8: 41           INR     A
+0ae9: 07 03        ANI     A,$03
+0aeb: 1b           MOV     C,A
+0aec: 2b           LDAX    (HL)
+0aed: 07 f8        ANI     A,$F8
+0aef: 60 9b        ORA     A,C
+0af1: 3b           STAX    (HL)
+0af2: 1f           MOV     L,A
+0af3: 0a           MOV     A,B
+0af4: 3b           STAX    (HL)
+0af5: b8           RET     
+0af6: 5a 24        BIT     2,VV:24
+0af8: b8           RET     
+0af9: 71 24 00     MVIW    VV:24,$00
+0afc: 01 2e        LDAW    VV:2E
+0afe: 16 20        XRI     A,$20
+0b00: 63 2e        STAW    VV:2E
+0b02: b8           RET     
+0b03: 05 2e f3     ANIW    VV:2E,$F3
+0b06: 5d 66        BIT     5,VV:66
+0b08: c4           JR      $0B0D
+0b09: 15 2e 08     ORIW    VV:2E,$08
+0b0c: b8           RET     
+0b0d: 15 2e 04     ORIW    VV:2E,$04
+0b10: b8           RET     
+0b11: 01 58        LDAW    VV:58
+0b13: 16 ff        XRI     A,$FF
+0b15: 70 8b        ANAX    (HL)
+0b17: 1a           MOV     B,A
+0b18: 74 98 58     ORAW    VV:58
+0b1b: 63 58        STAW    VV:58
+0b1d: 6b 24        MVI     C,$24
+0b1f: ce           JR      $0B2E
+0b20: 01 59        LDAW    VV:59
+0b22: 16 ff        XRI     A,$FF
+0b24: 70 8b        ANAX    (HL)
+0b26: 1a           MOV     B,A
+0b27: 74 98 59     ORAW    VV:59
+0b2a: 63 59        STAW    VV:59
+0b2c: 6b 2c        MVI     C,$2C
+0b2e: 58 69        BIT     0,VV:69
+0b30: 74 6a 00     NEI     B,$00
+0b33: b8           RET     
+0b34: 6c ff        MVI     D,$FF
+0b36: 01 50        LDAW    VV:50
+0b38: 1d           MOV     E,A
+0b39: 01 3c        LDAW    VV:3C
+0b3b: 46 90        ADI     A,$90
+0b3d: 7b 54        CALF    $0B54
+0b3f: 48 02        SLRC    B
+0b41: cc           JR      $0B4E
+0b42: 0b           MOV     A,C
+0b43: 7b 54        CALF    $0B54
+0b45: 01 0b        LDAW    VV:0B
+0b47: 7b 54        CALF    $0B54
+0b49: 63 50        STAW    VV:50
+0b4b: 64 06 00     MVI     MKH,$00
+0b4e: 74 6a 00     NEI     B,$00
+0b51: b8           RET     
+0b52: 43           INR     C
+0b53: eb           JR      $0B3F
+0b54: 3c           STAX    (DE+)
+0b55: 0d           MOV     A,E
+0b56: 37 d0        LTI     A,$D0
+0b58: 69 a0        MVI     A,$A0
+0b5a: 1d           MOV     E,A
+0b5b: b8           RET     
+0b5c: 55 69 01     OFFIW   VV:69,$01
+0b5f: b8           RET     
+0b60: 65 59 00     NEIW    VV:59,$00
+0b63: c9           JR      $0B6D
+0b64: 01 59        LDAW    VV:59
+0b66: 71 59 00     MVIW    VV:59,$00
+0b69: 6b 2c        MVI     C,$2C
+0b6b: 7b 7b        CALF    $0B7B
+0b6d: 65 58 00     NEIW    VV:58,$00
+0b70: b8           RET     
+0b71: 01 58        LDAW    VV:58
+0b73: 71 58 00     MVIW    VV:58,$00
+0b76: 6b 24        MVI     C,$24
+0b78: 7b 7b        CALF    $0B7B
+0b7a: b8           RET     
+0b7b: 1a           MOV     B,A
+0b7c: 6c ff        MVI     D,$FF
+0b7e: 01 50        LDAW    VV:50
+0b80: 1d           MOV     E,A
+0b81: 01 3c        LDAW    VV:3C
+0b83: 46 90        ADI     A,$90
+0b85: 7b 54        CALF    $0B54
+0b87: 48 02        SLRC    B
+0b89: cc           JR      $0B96
+0b8a: 0b           MOV     A,C
+0b8b: 7b 54        CALF    $0B54
+0b8d: 69 00        MVI     A,$00
+0b8f: 7b 54        CALF    $0B54
+0b91: 63 50        STAW    VV:50
+0b93: 64 06 00     MVI     MKH,$00
+0b96: 74 6a 00     NEI     B,$00
+0b99: b8           RET     
+0b9a: 43           INR     C
+0b9b: eb           JR      $0B87
+0b9c: 69 0f        MVI     A,$0F
+0b9e: 63 25        STAW    VV:25
+0ba0: 63 28        STAW    VV:28
+0ba2: 63 2b        STAW    VV:2B
+0ba4: b8           RET     
+0ba5: 5f 24        BIT     7,VV:24
+0ba7: b8           RET     
+0ba8: 71 24 00     MVIW    VV:24,$00
+0bab: 59 2e        BIT     1,VV:2E
+0bad: c7           JR      $0BB5
+0bae: 05 33 fd     ANIW    VV:33,$FD
+0bb1: 05 2e fd     ANIW    VV:2E,$FD
+0bb4: c6           JR      $0BBB
+0bb5: 15 33 02     ORIW    VV:33,$02
+0bb8: 15 2e 02     ORIW    VV:2E,$02
+0bbb: 69 00        MVI     A,$00
+0bbd: 40 27 12     CALL    $1227
+0bc0: b8           RET     
+0bc1: 5b 20        BIT     3,VV:20
+0bc3: 4e 2d        JRE     $0BF2
+0bc5: 40 20 12     CALL    $1220
+0bc8: 24 26 ff     LXI     DE,$FF26
+0bcb: 69 00        MVI     A,$00
+0bcd: 59 66        BIT     1,VV:66
+0bcf: c6           JR      $0BD6
+0bd0: 15 2e 01     ORIW    VV:2E,$01
+0bd3: 3c           STAX    (DE+)
+0bd4: 3c           STAX    (DE+)
+0bd5: cc           JR      $0BE2
+0bd6: 05 2e fe     ANIW    VV:2E,$FE
+0bd9: 58 66        BIT     0,VV:66
+0bdb: cc           JR      $0BE8
+0bdc: 01 6c        LDAW    VV:6C
+0bde: 3c           STAX    (DE+)
+0bdf: 01 6d        LDAW    VV:6D
+0be1: 3c           STAX    (DE+)
+0be2: 22           INX     DE
+0be3: 69 00        MVI     A,$00
+0be5: 3c           STAX    (DE+)
+0be6: 3a           STAX    (DE)
+0be7: b8           RET     
+0be8: 3c           STAX    (DE+)
+0be9: 3c           STAX    (DE+)
+0bea: 22           INX     DE
+0beb: 01 6c        LDAW    VV:6C
+0bed: 3c           STAX    (DE+)
+0bee: 01 6d        LDAW    VV:6D
+0bf0: 3c           STAX    (DE+)
+0bf1: b8           RET     
+0bf2: 5c 20        BIT     4,VV:20
+0bf4: b9           RETS    
+0bf5: 98           CALT    ($00B0)
+0bf6: df           JR      $0C16
+0bf7: 15 65 02     ORIW    VV:65,$02
+0bfa: 67 07        NEI     A,$07
+0bfc: d9           JR      $0C16
+0bfd: 8e           CALT    ($009C)
+0bfe: 32           INX     HL
+0bff: 0b           MOV     A,C
+0c00: 37 07        LTI     A,$07
+0c02: c6           JR      $0C09
+0c03: 63 46        STAW    VV:46
+0c05: 2b           LDAX    (HL)
+0c06: 07 f0        ANI     A,$F0
+0c08: ca           JR      $0C13
+0c09: 07 07        ANI     A,$07
+0c0b: 63 3f        STAW    VV:3F
+0c0d: 7d 79        CALF    $0D79
+0c0f: 1b           MOV     C,A
+0c10: 2b           LDAX    (HL)
+0c11: 07 0f        ANI     A,$0F
+0c13: 60 9b        ORA     A,C
+0c15: 3b           STAX    (HL)
+0c16: 34 08 00     LXI     HL,$0008
+0c19: 01 46        LDAW    VV:46
+0c1b: ac           LDAX    (HL+A)
+0c1c: 63 26        STAW    VV:26
+0c1e: 63 27        STAW    VV:27
+0c20: 01 3f        LDAW    VV:3F
+0c22: ac           LDAX    (HL+A)
+0c23: 63 29        STAW    VV:29
+0c25: 63 2a        STAW    VV:2A
+0c27: b8           RET     
+0c28: 0b           MOV     A,C
+0c29: 7d 79        CALF    $0D79
+0c2b: 1f           MOV     L,A
+0c2c: 01 33        LDAW    VV:33
+0c2e: 1e           MOV     H,A
+0c2f: b8           RET     
+0c30: 34 08 00     LXI     HL,$0008
+0c33: 07 07        ANI     A,$07
+0c35: ac           LDAX    (HL+A)
+0c36: b8           RET     
+0c37: 01 33        LDAW    VV:33
+0c39: 07 72        ANI     A,$72
+0c3b: 74 98 34     ORAW    VV:34
+0c3e: b8           RET     
+0c3f: 5f 2e        BIT     7,VV:2E
+0c41: b8           RET     
+0c42: 69 0c        MVI     A,$0C
+0c44: 4d cc        MOV     ETMM,A
+0c46: 64 07 bf     MVI     MKL,$BF
+0c49: 05 2e 7f     ANIW    VV:2E,$7F
+0c4c: b8           RET     
+0c4d: 7c a3        CALF    $0CA3
+0c4f: 7a 3e        CALF    $0A3E
+0c51: 7b 9c        CALF    $0B9C
+0c53: 05 66 3f     ANIW    VV:66,$3F
+0c56: 45 22 ff     ONIW    VV:22,$FF
+0c59: 55 23 ff     OFFIW   VV:23,$FF
+0c5c: f9           JR      $0C56
+0c5d: 69 00        MVI     A,$00
+0c5f: 63 21        STAW    VV:21
+0c61: 63 24        STAW    VV:24
+0c63: b8           RET     
+0c64: 84           CALT    ($0088)
+0c65: b8           RET     
+0c66: 5e 23        BIT     6,VV:23
+0c68: c4           JR      $0C6D
+0c69: 05 66 df     ANIW    VV:66,$DF
+0c6c: b8           RET     
+0c6d: 5d 23        BIT     5,VV:23
+0c6f: b9           RETS    
+0c70: 15 66 20     ORIW    VV:66,$20
+0c73: b8           RET     
+0c74: 05 64 e7     ANIW    VV:64,$E7
+0c77: 15 64 40     ORIW    VV:64,$40
+0c7a: 48 d3        DMOV    ETM1,EA
+0c7c: 09           MOV     A,EAL
+0c7d: 63 5b        STAW    VV:5B
+0c7f: b8           RET     
+0c80: 5c 66        BIT     4,VV:66
+0c82: c7           JR      $0C8A
+0c83: 98           CALT    ($00B0)
+0c84: 4e 6b        JRE     $0CF1
+0c86: 59 65        BIT     1,VV:65
+0c88: b8           RET     
+0c89: d7           JR      $0CA1
+0c8a: 98           CALT    ($00B0)
+0c8b: b8           RET     
+0c8c: 15 66 10     ORIW    VV:66,$10
+0c8f: d1           JR      $0CA1
+0c90: 55 66 10     OFFIW   VV:66,$10
+0c93: d6           JR      $0CAA
+0c94: 65 23 01     NEIW    VV:23,$01
+0c97: 59 65        BIT     1,VV:65
+0c99: c2           JR      $0C9C
+0c9a: 7d 03        CALF    $0D03
+0c9c: 98           CALT    ($00B0)
+0c9d: b8           RET     
+0c9e: 15 66 10     ORIW    VV:66,$10
+0ca1: 7a 66        CALF    $0A66
+0ca3: 79 c3        CALF    $09C3
+0ca5: 79 95        CALF    $0995
+0ca7: 7d 8b        CALF    $0D8B
+0ca9: b8           RET     
+0caa: 98           CALT    ($00B0)
+0cab: 4e 44        JRE     $0CF1
+0cad: 55 65 02     OFFIW   VV:65,$02
+0cb0: f0           JR      $0CA1
+0cb1: 65 22 01     NEIW    VV:22,$01
+0cb4: c6           JR      $0CBB
+0cb5: 65 23 01     NEIW    VV:23,$01
+0cb8: 7d 03        CALF    $0D03
+0cba: b8           RET     
+0cbb: 59 33        BIT     1,VV:33
+0cbd: 7d 03        CALF    $0D03
+0cbf: 7c 28        CALF    $0C28
+0cc1: 7c f5        CALF    $0CF5
+0cc3: 7c 28        CALF    $0C28
+0cc5: 74 1e 01     ORI     H,$01
+0cc8: 7c f5        CALF    $0CF5
+0cca: 7c 28        CALF    $0C28
+0ccc: 80           CALT    ($0080)
+0ccd: 59 33        BIT     1,VV:33
+0ccf: 69 01        MVI     A,$01
+0cd1: 69 02        MVI     A,$02
+0cd3: 16 ff        XRI     A,$FF
+0cd5: 1a           MOV     B,A
+0cd6: 0a           MOV     A,B
+0cd7: 70 8b        ANAX    (HL)
+0cd9: 3d           STAX    (HL+)
+0cda: 74 5f 0f     OFFI    L,$0F
+0cdd: f8           JR      $0CD6
+0cde: 7c 28        CALF    $0C28
+0ce0: 8f           CALT    ($009E)
+0ce1: 55 33 02     OFFIW   VV:33,$02
+0ce4: c9           JR      $0CEE
+0ce5: 69 0f        MVI     A,$0F
+0ce7: 3d           STAX    (HL+)
+0ce8: 69 40        MVI     A,$40
+0cea: 3b           STAX    (HL)
+0ceb: 71 2f 01     MVIW    VV:2F,$01
+0cee: 15 65 02     ORIW    VV:65,$02
+0cf1: 05 66 ef     ANIW    VV:66,$EF
+0cf4: b8           RET     
+0cf5: 69 00        MVI     A,$00
+0cf7: 3d           STAX    (HL+)
+0cf8: 74 5f 0f     OFFI    L,$0F
+0cfb: fb           JR      $0CF7
+0cfc: b8           RET     
+0cfd: 63 4b        STAW    VV:4B
+0cff: 64 0e fb     ANI     MKH,$FB
+0d02: b8           RET     
+0d03: 01 39        LDAW    VV:39
+0d05: 1a           MOV     B,A
+0d06: 51           DCR     A
+0d07: c1           JR      $0D09
+0d08: c5           JR      $0D0E
+0d09: 7a cc        CALF    $0ACC
+0d0b: 07 7f        ANI     A,$7F
+0d0d: 3b           STAX    (HL)
+0d0e: 0a           MOV     A,B
+0d0f: 74 b8 3a     LTAW    VV:3A
+0d12: c8           JR      $0D1B
+0d13: 7a cc        CALF    $0ACC
+0d15: 00           NOP     
+0d16: 17 80        ORI     A,$80
+0d18: 3b           STAX    (HL)
+0d19: 42           INR     B
+0d1a: f3           JR      $0D0E
+0d1b: 7a cc        CALF    $0ACC
+0d1d: 07 7f        ANI     A,$7F
+0d1f: 3b           STAX    (HL)
+0d20: 70 1f 39 ff  LBCD    $FF39
+0d24: 7a 66        CALF    $0A66
+0d26: 79 c3        CALF    $09C3
+0d28: 79 95        CALF    $0995
+0d2a: b8           RET     
+0d2b: 71 5f 01     MVIW    VV:5F,$01
+0d2e: 7d 39        CALF    $0D39
+0d30: b8           RET     
+0d31: 30 5f        DCRW    VV:5F
+0d33: 37 f6        LTI     A,$F6
+0d35: 15 69 20     ORIW    VV:69,$20
+0d38: b8           RET     
+0d39: 27 bf        GTI     A,$BF
+0d3b: b8           RET     
+0d3c: 27 df        GTI     A,$DF
+0d3e: b9           RETS    
+0d3f: 27 f2        GTI     A,$F2
+0d41: b8           RET     
+0d42: b9           RETS    
+0d43: 01 6e        LDAW    VV:6E
+0d45: 5b 66        BIT     3,VV:66
+0d47: c3           JR      $0D4B
+0d48: 60 9a        ORA     A,B
+0d4a: b8           RET     
+0d4b: 16 ff        XRI     A,$FF
+0d4d: 60 8a        ANA     A,B
+0d4f: b8           RET     
+0d50: 6b 00        MVI     C,$00
+0d52: 0f           MOV     A,L
+0d53: 07 0f        ANI     A,$0F
+0d55: 74 a8 42     GTAW    VV:42
+0d58: c2           JR      $0D5B
+0d59: 32           INX     HL
+0d5a: db           JR      $0D76
+0d5b: 48 2a        CLC     
+0d5d: 2d           LDAX    (HL+)
+0d5e: 60 8c        ANA     A,D
+0d60: 48 1c        SKN     Z
+0d62: d3           JR      $0D76
+0d63: 60 ec        NEA     A,D
+0d65: d0           JR      $0D76
+0d66: 60 ed        NEA     A,E
+0d68: 48 2b        STC     
+0d6a: 48 33        RLR     C
+0d6c: 48 2b        STC     
+0d6e: 48 32        RLR     B
+0d70: 0f           MOV     A,L
+0d71: 57 07        OFFI    A,$07
+0d73: 4f de        JRE     $0D53
+0d75: b8           RET     
+0d76: 48 23        SLR     C
+0d78: f5           JR      $0D6E
+0d79: 48 25        SLL     A
+0d7b: 48 25        SLL     A
+0d7d: 48 25        SLL     A
+0d7f: 48 25        SLL     A
+0d81: b8           RET     
+0d82: 48 21        SLR     A
+0d84: 48 21        SLR     A
+0d86: 48 21        SLR     A
+0d88: 48 21        SLR     A
+0d8a: b8           RET     
+0d8b: 71 60 00     MVIW    VV:60,$00
+0d8e: 71 61 00     MVIW    VV:61,$00
+0d91: b8           RET     
+0d92: 7d a5        CALF    $0DA5
+0d94: a8           INX     EA
+0d95: 08           MOV     A,EAH
+0d96: 07 0f        ANI     A,$0F
+0d98: 18           MOV     EAH,A
+0d99: 48 92        STEAX   (DE)
+0d9b: 74 45 10     ADI     E,$10
+0d9e: 74 3d c0     LTI     E,$C0
+0da1: b8           RET     
+0da2: 48 82        LDEAX   (DE)
+0da4: ef           JR      $0D94
+0da5: 01 3b        LDAW    VV:3B
+0da7: 7d 79        CALF    $0D79
+0da9: 17 86        ORI     A,$86
+0dab: 1d           MOV     E,A
+0dac: 01 33        LDAW    VV:33
+0dae: 17 0f        ORI     A,$0F
+0db0: 1c           MOV     D,A
+0db1: 48 82        LDEAX   (DE)
+0db3: b2           PUSH    DE
+0db4: 74 0c 70     ANI     D,$70
+0db7: 08           MOV     A,EAH
+0db8: 60 9c        ORA     A,D
+0dba: 18           MOV     EAH,A
+0dbb: a2           POP     DE
+0dbc: b8           RET     
+0dbd: 99           CALT    ($00B2)
+0dbe: 29           LDAX    (BC)
+0dbf: 07 03        ANI     A,$03
+0dc1: 39           STAX    (BC)
+0dc2: 01 7f        LDAW    VV:7F
+0dc4: 7d 79        CALF    $0D79
+0dc6: 74 98 34     ORAW    VV:34
+0dc9: 70 99        ORAX    (BC)
+0dcb: 39           STAX    (BC)
+0dcc: b8           RET     
+0dcd: 99           CALT    ($00B2)
+0dce: 29           LDAX    (BC)
+0dcf: 7d e7        CALF    $0DE7
+0dd1: 29           LDAX    (BC)
+0dd2: c5           JR      $0DD8
+0dd3: 99           CALT    ($00B2)
+0dd4: 2b           LDAX    (HL)
+0dd5: 7d e7        CALF    $0DE7
+0dd7: 2b           LDAX    (HL)
+0dd8: 7d 82        CALF    $0D82
+0dda: 1a           MOV     B,A
+0ddb: 1b           MOV     C,A
+0ddc: 7a 66        CALF    $0A66
+0dde: 79 c3        CALF    $09C3
+0de0: 79 95        CALF    $0995
+0de2: 7d 8b        CALF    $0D8B
+0de4: 7a 3e        CALF    $0A3E
+0de6: b8           RET     
+0de7: 07 0c        ANI     A,$0C
+0de9: 67 0c        NEI     A,$0C
+0deb: 69 00        MVI     A,$00
+0ded: 63 34        STAW    VV:34
+0def: b8           RET     
+0df0: 99           CALT    ($00B2)
+0df1: a7           DMOV    EA,HL
+0df2: 74 ad        DGT     EA,BC
+0df4: c1           JR      $0DF6
+0df5: b9           RETS    
+0df6: 44 00 00     LXI     EA,$0000
+0df9: 81           CALT    ($0082)
+0dfa: b8           RET     
+0dfb: 58 24        BIT     0,VV:24
+0dfd: b8           RET     
+0dfe: 71 24 00     MVIW    VV:24,$00
+0e01: 58 68        BIT     0,VV:68
+0e03: d1           JR      $0E15
+0e04: 01 35        LDAW    VV:35
+0e06: 63 7f        STAW    VV:7F
+0e08: 7d f0        CALF    $0DF0
+0e0a: b8           RET     
+0e0b: 7d bd        CALF    $0DBD
+0e0d: 12           INX     BC
+0e0e: 9a           CALT    ($00B4)
+0e0f: 7d 92        CALF    $0D92
+0e11: 7e a7        CALF    $0EA7
+0e13: b8           RET     
+0e14: f3           JR      $0E08
+0e15: 59 68        BIT     1,VV:68
+0e17: 4e 25        JRE     $0E3E
+0e19: 40 4e 10     CALL    $104E
+0e1c: 99           CALT    ($00B2)
+0e1d: 74 b5        DSUBNB  EA,BC
+0e1f: 4e 94        JRE     $0EB5
+0e21: a8           INX     EA
+0e22: b4           PUSH    EA
+0e23: 74 c7        DADD    EA,HL
+0e25: b7           DMOV    HL,EA
+0e26: 9a           CALT    ($00B4)
+0e27: a4           POP     EA
+0e28: b7           DMOV    HL,EA
+0e29: 7d a5        CALF    $0DA5
+0e2b: 74 e7        DSUB    EA,HL
+0e2d: 08           MOV     A,EAH
+0e2e: 07 0f        ANI     A,$0F
+0e30: 18           MOV     EAH,A
+0e31: 48 92        STEAX   (DE)
+0e33: 74 45 10     ADI     E,$10
+0e36: 74 3d c0     LTI     E,$C0
+0e39: 4e 7a        JRE     $0EB5
+0e3b: 48 82        LDEAX   (DE)
+0e3d: ed           JR      $0E2B
+0e3e: 45 68 0c     ONIW    VV:68,$0C
+0e41: 4e 44        JRE     $0E87
+0e43: 71 68 00     MVIW    VV:68,$00
+0e46: 40 4e 10     CALL    $104E
+0e49: 99           CALT    ($00B2)
+0e4a: 74 ed        DNE     EA,BC
+0e4c: 4e 67        JRE     $0EB5
+0e4e: 74 b5        DSUBNB  EA,BC
+0e50: d5           JR      $0E66
+0e51: a9           DCX     EA
+0e52: b4           PUSH    EA
+0e53: a5           DMOV    EA,BC
+0e54: b6           DMOV    DE,EA
+0e55: a4           POP     EA
+0e56: b5           DMOV    BC,EA
+0e57: 7e ca        CALF    $0ECA
+0e59: 15 67 03     ORIW    VV:67,$03
+0e5c: a8           INX     EA
+0e5d: b6           DMOV    DE,EA
+0e5e: 99           CALT    ($00B2)
+0e5f: 74 c5        DADD    EA,BC
+0e61: b5           DMOV    BC,EA
+0e62: a6           DMOV    EA,DE
+0e63: 74 c7        DADD    EA,HL
+0e65: dd           JR      $0E83
+0e66: b6           DMOV    DE,EA
+0e67: 44 00 00     LXI     EA,$0000
+0e6a: 74 e6        DSUB    EA,DE
+0e6c: a9           DCX     EA
+0e6d: b4           PUSH    EA
+0e6e: a7           DMOV    EA,HL
+0e6f: b6           DMOV    DE,EA
+0e70: a5           DMOV    EA,BC
+0e71: b7           DMOV    HL,EA
+0e72: a4           POP     EA
+0e73: b5           DMOV    BC,EA
+0e74: 7e ca        CALF    $0ECA
+0e76: 15 67 01     ORIW    VV:67,$01
+0e79: a8           INX     EA
+0e7a: b6           DMOV    DE,EA
+0e7b: 99           CALT    ($00B2)
+0e7c: a5           DMOV    EA,BC
+0e7d: 74 e6        DSUB    EA,DE
+0e7f: b5           DMOV    BC,EA
+0e80: a7           DMOV    EA,HL
+0e81: 74 e6        DSUB    EA,DE
+0e83: b7           DMOV    HL,EA
+0e84: 9a           CALT    ($00B4)
+0e85: 4e 2e        JRE     $0EB5
+0e87: 55 20 01     OFFIW   VV:20,$01
+0e8a: b8           RET     
+0e8b: 01 35        LDAW    VV:35
+0e8d: 63 7f        STAW    VV:7F
+0e8f: 99           CALT    ($00B2)
+0e90: 7d a5        CALF    $0DA5
+0e92: 74 bd        DLT     EA,BC
+0e94: c6           JR      $0E9B
+0e95: 7d f1        CALF    $0DF1
+0e97: b8           RET     
+0e98: 7d 92        CALF    $0D92
+0e9a: c2           JR      $0E9D
+0e9b: 32           INX     HL
+0e9c: 9a           CALT    ($00B4)
+0e9d: 7d bd        CALF    $0DBD
+0e9f: 12           INX     BC
+0ea0: 9a           CALT    ($00B4)
+0ea1: 7e a7        CALF    $0EA7
+0ea3: b8           RET     
+0ea4: ea           JR      $0E8F
+0ea5: 20 7f        INRW    VV:7F
+0ea7: 01 7f        LDAW    VV:7F
+0ea9: 7a cc        CALF    $0ACC
+0eab: f9           JR      $0EA5
+0eac: 01 36        LDAW    VV:36
+0eae: 74 a8 7f     GTAW    VV:7F
+0eb1: c3           JR      $0EB5
+0eb2: 20 7f        INRW    VV:7F
+0eb4: b9           RETS    
+0eb5: 7d a5        CALF    $0DA5
+0eb7: 99           CALT    ($00B2)
+0eb8: 74 bd        DLT     EA,BC
+0eba: 7d d3        CALF    $0DD3
+0ebc: 71 68 00     MVIW    VV:68,$00
+0ebf: 99           CALT    ($00B2)
+0ec0: a5           DMOV    EA,BC
+0ec1: 70 2f 75 ff  LDED    $FF75
+0ec5: 74 e6        DSUB    EA,DE
+0ec7: a8           INX     EA
+0ec8: 81           CALT    ($0082)
+0ec9: b8           RET     
+0eca: 70 3e 77 ff  SHLD    $FF77
+0ece: 70 2e 7b ff  SDED    $FF7B
+0ed2: 70 1e 79 ff  SBCD    $FF79
+0ed6: b8           RET     
+0ed7: 14 00 00     LXI     BC,$0000
+0eda: d3           JR      $0EEE
+0edb: 58 67        BIT     0,VV:67
+0edd: b8           RET     
+0ede: 70 3f 77 ff  LHLD    $FF77
+0ee2: 70 2f 7b ff  LDED    $FF7B
+0ee6: 70 1f 79 ff  LBCD    $FF79
+0eea: a6           DMOV    EA,DE
+0eeb: 74 ef        DNE     EA,HL
+0eed: d6           JR      $0F04
+0eee: 2a           LDAX    (DE)
+0eef: 07 03        ANI     A,$03
+0ef1: 3a           STAX    (DE)
+0ef2: 2b           LDAX    (HL)
+0ef3: 07 fc        ANI     A,$FC
+0ef5: 70 9a        ORAX    (DE)
+0ef7: 3a           STAX    (DE)
+0ef8: 59 67        BIT     1,VV:67
+0efa: c3           JR      $0EFE
+0efb: 32           INX     HL
+0efc: 22           INX     DE
+0efd: c2           JR      $0F00
+0efe: 33           DCX     HL
+0eff: 23           DCX     DE
+0f00: 53           DCR     C
+0f01: c6           JR      $0F08
+0f02: 52           DCR     B
+0f03: c4           JR      $0F08
+0f04: 05 67 fc     ANIW    VV:67,$FC
+0f07: b9           RETS    
+0f08: 5e 64        BIT     6,VV:64
+0f0a: e3           JR      $0EEE
+0f0b: 5b 64        BIT     3,VV:64
+0f0d: 4f df        JRE     $0EEE
+0f0f: 7e ca        CALF    $0ECA
+0f11: b9           RETS    
+0f12: 44 7f 03     LXI     EA,$037F
+0f15: 01 33        LDAW    VV:33
+0f17: 17 0f        ORI     A,$0F
+0f19: 18           MOV     EAH,A
+0f1a: b8           RET     
+0f1b: 01 3b        LDAW    VV:3B
+0f1d: 51           DCR     A
+0f1e: cb           JR      $0F2A
+0f1f: 44 00 00     LXI     EA,$0000
+0f22: 01 33        LDAW    VV:33
+0f24: 07 f0        ANI     A,$F0
+0f26: 17 0c        ORI     A,$0C
+0f28: 18           MOV     EAH,A
+0f29: c3           JR      $0F2D
+0f2a: 7d a7        CALF    $0DA7
+0f2c: a8           INX     EA
+0f2d: 24 75 ff     LXI     DE,$FF75
+0f30: 48 92        STEAX   (DE)
+0f32: 99           CALT    ($00B2)
+0f33: b5           DMOV    BC,EA
+0f34: 9a           CALT    ($00B4)
+0f35: b8           RET     
+0f36: 5c 24        BIT     4,VV:24
+0f38: d5           JR      $0F4E
+0f39: 99           CALT    ($00B2)
+0f3a: 7d a5        CALF    $0DA5
+0f3c: 74 ad        DGT     EA,BC
+0f3e: 4e 2d        JRE     $0F6D
+0f40: a5           DMOV    EA,BC
+0f41: b6           DMOV    DE,EA
+0f42: 14 00 00     LXI     BC,$0000
+0f45: 7e ca        CALF    $0ECA
+0f47: 99           CALT    ($00B2)
+0f48: 12           INX     BC
+0f49: 32           INX     HL
+0f4a: 9a           CALT    ($00B4)
+0f4b: 7d d3        CALF    $0DD3
+0f4d: da           JR      $0F68
+0f4e: 5d 24        BIT     5,VV:24
+0f50: b9           RETS    
+0f51: 99           CALT    ($00B2)
+0f52: 24 75 ff     LXI     DE,$FF75
+0f55: 48 82        LDEAX   (DE)
+0f57: 74 bd        DLT     EA,BC
+0f59: d3           JR      $0F6D
+0f5a: 13           DCX     BC
+0f5b: 33           DCX     HL
+0f5c: 9a           CALT    ($00B4)
+0f5d: a7           DMOV    EA,HL
+0f5e: b6           DMOV    DE,EA
+0f5f: a5           DMOV    EA,BC
+0f60: b7           DMOV    HL,EA
+0f61: 14 00 00     LXI     BC,$0000
+0f64: 7e ca        CALF    $0ECA
+0f66: 7d cd        CALF    $0DCD
+0f68: 15 67 01     ORIW    VV:67,$01
+0f6b: 7e bf        CALF    $0EBF
+0f6d: 71 24 00     MVIW    VV:24,$00
+0f70: b8           RET     
+0f71: 58 20        BIT     0,VV:20
+0f73: b9           RETS    
+0f74: 5a 23        BIT     2,VV:23
+0f76: d4           JR      $0F8B
+0f77: 71 24 00     MVIW    VV:24,$00
+0f7a: 15 68 08     ORIW    VV:68,$08
+0f7d: 05 68 fb     ANIW    VV:68,$FB
+0f80: 7d a5        CALF    $0DA5
+0f82: 70 1f 75 ff  LBCD    $FF75
+0f86: a8           INX     EA
+0f87: 74 e5        DSUB    EA,BC
+0f89: 81           CALT    ($0082)
+0f8a: b8           RET     
+0f8b: 98           CALT    ($00B0)
+0f8c: b8           RET     
+0f8d: 15 65 02     ORIW    VV:65,$02
+0f90: 5a 68        BIT     2,VV:68
+0f92: 4e 2f        JRE     $0FC3
+0f94: 45 68 09     ONIW    VV:68,$09
+0f97: 37 0a        LTI     A,$0A
+0f99: b8           RET     
+0f9a: 41           INR     A
+0f9b: 37 0a        LTI     A,$0A
+0f9d: 69 00        MVI     A,$00
+0f9f: 34 7d ff     LXI     HL,$FF7D
+0fa2: 48 38        RLD     
+0fa4: 63 7e        STAW    VV:7E
+0fa6: 01 7e        LDAW    VV:7E
+0fa8: 67 00        NEI     A,$00
+0faa: 69 0f        MVI     A,$0F
+0fac: 63 2b        STAW    VV:2B
+0fae: 01 7d        LDAW    VV:7D
+0fb0: 7d 82        CALF    $0D82
+0fb2: 77 00        EQI     A,$00
+0fb4: c5           JR      $0FBA
+0fb5: 35 2b 0a     LTIW    VV:2B,$0A
+0fb8: 69 0f        MVI     A,$0F
+0fba: 63 28        STAW    VV:28
+0fbc: 01 7d        LDAW    VV:7D
+0fbe: 07 0f        ANI     A,$0F
+0fc0: 63 25        STAW    VV:25
+0fc2: b8           RET     
+0fc3: 67 0a        NEI     A,$0A
+0fc5: 4e cc        JRE     $1093
+0fc7: 37 0a        LTI     A,$0A
+0fc9: c8           JR      $0FD2
+0fca: 15 68 04     ORIW    VV:68,$04
+0fcd: 71 7d 00     MVIW    VV:7D,$00
+0fd0: 4f c2        JRE     $0F94
+0fd2: 66 0b        SUI     A,$0B
+0fd4: 48 a8        TABLE   
+0fd6: c5           JR      $0FDC
+0fd7: 01 02        LDAW    VV:02
+0fd9: 10           EXA     
+0fda: 20 40        INRW    VV:40
+0fdc: 0b           MOV     A,C
+0fdd: 63 68        STAW    VV:68
+0fdf: 57 70        OFFI    A,$70
+0fe1: 5f 63        BIT     7,VV:63
+0fe3: b8           RET     
+0fe4: 5e 33        BIT     6,VV:33
+0fe6: c4           JR      $0FEB
+0fe7: 05 68 8f     ANIW    VV:68,$8F
+0fea: b8           RET     
+0feb: 48 25        SLL     A
+0fed: 63 29        STAW    VV:29
+0fef: 63 2a        STAW    VV:2A
+0ff1: 69 00        MVI     A,$00
+0ff3: 63 26        STAW    VV:26
+0ff5: 63 27        STAW    VV:27
+0ff7: 63 7d        STAW    VV:7D
+0ff9: 63 7e        STAW    VV:7E
+0ffb: 7b 9c        CALF    $0B9C
+0ffd: 5d 68        BIT     5,VV:68
+0fff: b8           RET     
+1000: 01 71        LDAW    VV:71
+1002: 63 7d        STAW    VV:7D
+1004: 01 72        LDAW    VV:72
+1006: 63 7e        STAW    VV:7E
+1008: 4f 9c        JRE     $0FA6
+100a: 70 1f e6 2f  LBCD    $2FE6
+100e: 70 3f f6 2f  LHLD    $2FF6
+1012: b8           RET     
+1013: 70 1e e6 2f  SBCD    $2FE6
+1017: 70 3e f6 2f  SHLD    $2FF6
+101b: b8           RET     
+101c: 01 3b        LDAW    VV:3B
+101e: b0           PUSH    VA
+101f: 71 3b 00     MVIW    VV:3B,$00
+1022: 40 1b 0f     CALL    $0F1B
+1025: 13           DCX     BC
+1026: 40 12 0f     CALL    $0F12
+1029: b7           DMOV    HL,EA
+102a: 7d a5        CALF    $0DA5
+102c: 74 af        DGT     EA,HL
+102e: c1           JR      $1030
+102f: c3           JR      $1033
+1030: 74 bd        DLT     EA,BC
+1032: c6           JR      $1039
+1033: 74 0a 0f     ANI     B,$0F
+1036: a5           DMOV    EA,BC
+1037: 48 92        STEAX   (DE)
+1039: 20 3b        INRW    VV:3B
+103b: 5a 3b        BIT     2,VV:3B
+103d: e4           JR      $1022
+103e: a0           POP     VA
+103f: 63 3b        STAW    VV:3B
+1041: b8           RET     
+1042: 5b 23        BIT     3,VV:23
+1044: b9           RETS    
+1045: 71 24 00     MVIW    VV:24,$00
+1048: 99           CALT    ($00B2)
+1049: a7           DMOV    EA,HL
+104a: 74 e5        DSUB    EA,BC
+104c: 81           CALT    ($0082)
+104d: b8           RET     
+104e: 01 2b        LDAW    VV:2B
+1050: 37 0a        LTI     A,$0A
+1052: 69 00        MVI     A,$00
+1054: 6a 64        MVI     B,$64
+1056: 48 2e        MUL     B
+1058: b7           DMOV    HL,EA
+1059: 01 28        LDAW    VV:28
+105b: 37 0a        LTI     A,$0A
+105d: 69 00        MVI     A,$00
+105f: 6a 0a        MVI     B,$0A
+1061: 48 2e        MUL     B
+1063: 74 c7        DADD    EA,HL
+1065: 01 25        LDAW    VV:25
+1067: 70 41        EADD    EA,A
+1069: 70 3f 75 ff  LHLD    $FF75
+106d: 74 c7        DADD    EA,HL
+106f: 74 ff        DEQ     EA,HL
+1071: a9           DCX     EA
+1072: b7           DMOV    HL,EA
+1073: 7d a5        CALF    $0DA5
+1075: 74 bf        DLT     EA,HL
+1077: a7           DMOV    EA,HL
+1078: b8           RET     
+1079: 99           CALT    ($00B2)
+107a: a5           DMOV    EA,BC
+107b: b6           DMOV    DE,EA
+107c: 40 12 0f     CALL    $0F12
+107f: 74 b7        DSUBNB  EA,HL
+1081: ca           JR      $108C
+1082: b5           DMOV    BC,EA
+1083: 7e ca        CALF    $0ECA
+1085: 15 67 03     ORIW    VV:67,$03
+1088: 40 db 0e     CALL    $0EDB
+108b: 00           NOP     
+108c: 69 00        MVI     A,$00
+108e: 70 79 ef 2f  MOV     ($2FEF),A
+1092: b8           RET     
+1093: 15 68 08     ORIW    VV:68,$08
+1096: 55 64 40     OFFIW   VV:64,$40
+1099: b8           RET     
+109a: 5e 63        BIT     6,VV:63
+109c: 4e 8f        JRE     $112D
+109e: 40 14 11     CALL    $1114
+10a1: 4e 55        JRE     $10F8
+10a3: 40 4e 10     CALL    $104E
+10a6: 74 ff        DEQ     EA,HL
+10a8: 4e 57        JRE     $1101
+10aa: 70 3e 77 ff  SHLD    $FF77
+10ae: 40 14 11     CALL    $1114
+10b1: 4e 45        JRE     $10F8
+10b3: 40 4e 10     CALL    $104E
+10b6: 70 3f 77 ff  LHLD    $FF77
+10ba: 74 af        DGT     EA,HL
+10bc: 4e 43        JRE     $1101
+10be: 24 7b ff     LXI     DE,$FF7B
+10c1: 48 92        STEAX   (DE)
+10c3: a7           DMOV    EA,HL
+10c4: 99           CALT    ($00B2)
+10c5: 74 bd        DLT     EA,BC
+10c7: c6           JR      $10CE
+10c8: 48 82        LDEAX   (DE)
+10ca: 74 bd        DLT     EA,BC
+10cc: 4e 33        JRE     $1101
+10ce: 7d f0        CALF    $0DF0
+10d0: 4e 3b        JRE     $110D
+10d2: 70 2f 77 ff  LDED    $FF77
+10d6: 29           LDAX    (BC)
+10d7: 07 03        ANI     A,$03
+10d9: 1f           MOV     L,A
+10da: 2c           LDAX    (DE+)
+10db: 07 fc        ANI     A,$FC
+10dd: 60 9f        ORA     A,L
+10df: 39           STAX    (BC)
+10e0: 12           INX     BC
+10e1: 70 1e e6 2f  SBCD    $2FE6
+10e5: 70 2e 77 ff  SDED    $FF77
+10e9: 7d 92        CALF    $0D92
+10eb: 70 2f 7b ff  LDED    $FF7B
+10ef: 34 77 ff     LXI     HL,$FF77
+10f2: 48 83        LDEAX   (HL)
+10f4: 74 ae        DGT     EA,DE
+10f6: 4f d6        JRE     $10CE
+10f8: 71 21 00     MVIW    VV:21,$00
+10fb: 71 24 00     MVIW    VV:24,$00
+10fe: 54 b5 0e     JMP     $0EB5
+1101: 69 00        MVI     A,$00
+1103: 63 25        STAW    VV:25
+1105: 63 28        STAW    VV:28
+1107: 63 2b        STAW    VV:2B
+1109: 58 20        BIT     0,VV:20
+110b: ec           JR      $10F8
+110c: fc           JR      $1109
+110d: 71 24 00     MVIW    VV:24,$00
+1110: 71 21 00     MVIW    VV:21,$00
+1113: b8           RET     
+1114: 71 7d 00     MVIW    VV:7D,$00
+1117: 71 24 00     MVIW    VV:24,$00
+111a: 98           CALT    ($00B0)
+111b: c7           JR      $1123
+111c: 15 65 02     ORIW    VV:65,$02
+111f: 27 09        GTI     A,$09
+1121: 7f 9a        CALF    $0F9A
+1123: 58 20        BIT     0,VV:20
+1125: b8           RET     
+1126: 58 24        BIT     0,VV:24
+1128: f1           JR      $111A
+1129: 71 24 00     MVIW    VV:24,$00
+112c: b9           RETS    
+112d: 4c e1        MOV     A,CR1
+112f: 5e 33        BIT     6,VV:33
+1131: 37 40        LTI     A,$40
+1133: b8           RET     
+1134: 69 04        MVI     A,$04
+1136: 63 29        STAW    VV:29
+1138: 63 2a        STAW    VV:2A
+113a: 69 00        MVI     A,$00
+113c: 63 26        STAW    VV:26
+113e: 63 27        STAW    VV:27
+1140: 58 20        BIT     0,VV:20
+1142: 4e 68        JRE     $11AC
+1144: 45 1f a0     ONIW    VV:1F,$A0
+1147: f8           JR      $1140
+1148: 05 2e af     ANIW    VV:2E,$AF
+114b: 5f 1f        BIT     7,VV:1F
+114d: 69 24        MVI     A,$24
+114f: 69 84        MVI     A,$84
+1151: 63 29        STAW    VV:29
+1153: 58 20        BIT     0,VV:20
+1155: 4e 55        JRE     $11AC
+1157: 4c e1        MOV     A,CR1
+1159: 37 40        LTI     A,$40
+115b: 4e 4f        JRE     $11AC
+115d: 45 24 18     ONIW    VV:24,$18
+1160: d1           JR      $1172
+1161: 5c 24        BIT     4,VV:24
+1163: 69 41        MVI     A,$41
+1165: 69 11        MVI     A,$11
+1167: 05 2e af     ANIW    VV:2E,$AF
+116a: 74 98 2e     ORAW    VV:2E
+116d: 63 2e        STAW    VV:2E
+116f: 71 24 00     MVIW    VV:24,$00
+1172: 58 23        BIT     0,VV:23
+1174: 4f dd        JRE     $1153
+1176: 5c 2e        BIT     4,VV:2E
+1178: c4           JR      $117D
+1179: 34 00 60     LXI     HL,$6000
+117c: c7           JR      $1184
+117d: 5e 2e        BIT     6,VV:2E
+117f: 4f d2        JRE     $1153
+1181: 34 00 70     LXI     HL,$7000
+1184: 01 33        LDAW    VV:33
+1186: 07 70        ANI     A,$70
+1188: 1c           MOV     D,A
+1189: 6d 00        MVI     E,$00
+118b: 5d 29        BIT     5,VV:29
+118d: c4           JR      $1192
+118e: b3           PUSH    HL
+118f: b2           PUSH    DE
+1190: a3           POP     HL
+1191: a2           POP     DE
+1192: 14 ff 0f     LXI     BC,$0FFF
+1195: 31           BLOCK   
+1196: 52           DCR     B
+1197: fd           JR      $1195
+1198: 5d 29        BIT     5,VV:29
+119a: d1           JR      $11AC
+119b: 74 66 10     SUI     H,$10
+119e: 74 64 10     SUI     D,$10
+11a1: 14 ff 0f     LXI     BC,$0FFF
+11a4: 2d           LDAX    (HL+)
+11a5: 70 fc        EQAX    (DE+)
+11a7: cf           JR      $11B7
+11a8: 53           DCR     C
+11a9: fa           JR      $11A4
+11aa: 52           DCR     B
+11ab: f8           JR      $11A4
+11ac: 05 2e fe     ANIW    VV:2E,$FE
+11af: 7a 17        CALF    $0A17
+11b1: 04 ff ff     LXI     SP,$FFFF
+11b4: 54 ce 03     JMP     $03CE
+11b7: 69 00        MVI     A,$00
+11b9: 63 25        STAW    VV:25
+11bb: 63 28        STAW    VV:28
+11bd: 63 2b        STAW    VV:2B
+11bf: 40 c8 14     CALL    $14C8
+11c2: e9           JR      $11AC
+11c3: 35 53 08     LTIW    VV:53,$08
+11c6: d3           JR      $11DA
+11c7: 5a 53        BIT     2,VV:53
+11c9: 69 20        MVI     A,$20
+11cb: 69 30        MVI     A,$30
+11cd: 7a 0c        CALF    $0A0C
+11cf: 01 53        LDAW    VV:53
+11d1: 07 03        ANI     A,$03
+11d3: 71 53 ff     MVIW    VV:53,$FF
+11d6: 15 69 40     ORIW    VV:69,$40
+11d9: de           JR      $11F8
+11da: 45 22 1e     ONIW    VV:22,$1E
+11dd: b9           RETS    
+11de: 01 22        LDAW    VV:22
+11e0: 1a           MOV     B,A
+11e1: 69 00        MVI     A,$00
+11e3: 63 21        STAW    VV:21
+11e5: 63 24        STAW    VV:24
+11e7: 74 5a 02     OFFI    B,$02
+11ea: ca           JR      $11F5
+11eb: 74 5a 04     OFFI    B,$04
+11ee: c5           JR      $11F4
+11ef: 74 4a 08     ONI     B,$08
+11f2: 41           INR     A
+11f3: 41           INR     A
+11f4: 41           INR     A
+11f5: 05 69 bf     ANIW    VV:69,$BF
+11f8: 63 3b        STAW    VV:3B
+11fa: 55 2e 02     OFFIW   VV:2E,$02
+11fd: 7b ae        CALF    $0BAE
+11ff: 05 2e f3     ANIW    VV:2E,$F3
+1202: b8           RET     
+1203: 48 02        SLRC    B
+1205: cc           JR      $1212
+1206: 48 22        SLR     B
+1208: 69 50        MVI     A,$50
+120a: 74 c0 0a     ADDW    VV:0A
+120d: 48 21        SLR     A
+120f: ac           LDAX    (HL+A)
+1210: 3c           STAX    (DE+)
+1211: b8           RET     
+1212: 48 02        SLRC    B
+1214: c3           JR      $1218
+1215: 69 32        MVI     A,$32
+1217: f2           JR      $120A
+1218: 22           INX     DE
+1219: b9           RETS    
+121a: 48 02        SLRC    B
+121c: fb           JR      $1218
+121d: 69 50        MVI     A,$50
+121f: ea           JR      $120A
+1220: 98           CALT    ($00B0)
+1221: 4e 38        JRE     $125B
+1223: 37 08        LTI     A,$08
+1225: 4e 22        JRE     $1249
+1227: 15 66 01     ORIW    VV:66,$01
+122a: 05 66 fd     ANIW    VV:66,$FD
+122d: 55 33 02     OFFIW   VV:33,$02
+1230: 4e 22        JRE     $1254
+1232: 34 17 ff     LXI     HL,$FF17
+1235: 47 01        ONI     A,$01
+1237: c4           JR      $123C
+1238: 40 6c 12     CALL    $126C
+123b: c5           JR      $1241
+123c: 40 6c 12     CALL    $126C
+123f: 48 27        SLL     C
+1241: 2b           LDAX    (HL)
+1242: 60 cb        ONA     A,C
+1244: b8           RET     
+1245: 0a           MOV     A,B
+1246: 63 6c        STAW    VV:6C
+1248: b8           RET     
+1249: 05 66 fc     ANIW    VV:66,$FC
+124c: 59 33        BIT     1,VV:33
+124e: 57 02        OFFI    A,$02
+1250: c3           JR      $1254
+1251: 6f 1f        MVI     L,$1F
+1253: e1           JR      $1235
+1254: 34 08 00     LXI     HL,$0008
+1257: 07 07        ANI     A,$07
+1259: ac           LDAX    (HL+A)
+125a: cc           JR      $1267
+125b: 58 23        BIT     0,VV:23
+125d: b8           RET     
+125e: 15 66 02     ORIW    VV:66,$02
+1261: 59 33        BIT     1,VV:33
+1263: 69 01        MVI     A,$01
+1265: 69 02        MVI     A,$02
+1267: 63 6c        STAW    VV:6C
+1269: 63 6d        STAW    VV:6D
+126b: b8           RET     
+126c: 07 06        ANI     A,$06
+126e: 48 a8        TABLE   
+1270: c8           JR      $1279
+1271: 01 03        LDAW    VV:03
+1273: 04 0c 10     LXI     SP,$100C
+1276: 30 40        DCRW    VV:40
+1278: c0           JR      $1279
+1279: 70 1e 6c ff  SBCD    $FF6C
+127d: b8           RET     
+127e: 59 66        BIT     1,VV:66
+1280: c5           JR      $1286
+1281: 80           CALT    ($0080)
+1282: 01 6d        LDAW    VV:6D
+1284: 1c           MOV     D,A
+1285: b9           RETS    
+1286: 58 66        BIT     0,VV:66
+1288: 74 1e 01     ORI     H,$01
+128b: 01 6c        LDAW    VV:6C
+128d: 1d           MOV     E,A
+128e: 01 6d        LDAW    VV:6D
+1290: 1c           MOV     D,A
+1291: 60 ed        NEA     A,E
+1293: b9           RETS    
+1294: b8           RET     
+1295: 64 12 80     XRI     PC,$80
+1298: 30 62        DCRW    VV:62
+129a: c9           JR      $12A4
+129b: 71 62 17     MVIW    VV:62,$17
+129e: 01 64        LDAW    VV:64
+12a0: 16 01        XRI     A,$01
+12a2: 63 64        STAW    VV:64
+12a4: 5e 64        BIT     6,VV:64
+12a6: b8           RET     
+12a7: 5c 64        BIT     4,VV:64
+12a9: c7           JR      $12B1
+12aa: 58 5b        BIT     0,VV:5B
+12ac: c6           JR      $12B3
+12ad: 05 64 af     ANIW    VV:64,$AF
+12b0: b8           RET     
+12b1: 58 5b        BIT     0,VV:5B
+12b3: 69 d0        MVI     A,$D0
+12b5: 69 68        MVI     A,$68
+12b7: 4d da        MOV     TM0,A
+12b9: 15 64 08     ORIW    VV:64,$08
+12bc: b9           RETS    
+12bd: 64 5a 20     OFFI    PC,$20
+12c0: 59 63        BIT     1,VV:63
+12c2: c4           JR      $12C7
+12c3: 5b 63        BIT     3,VV:63
+12c5: c4           JR      $12CA
+12c6: cb           JR      $12D2
+12c7: 15 63 08     ORIW    VV:63,$08
+12ca: 45 21 64     ONIW    VV:21,$64
+12cd: 4e 23        JRE     $12F2
+12cf: 05 63 fb     ANIW    VV:63,$FB
+12d2: 15 64 10     ORIW    VV:64,$10
+12d5: 55 63 01     OFFIW   VV:63,$01
+12d8: c4           JR      $12DD
+12d9: 69 fc        MVI     A,$FC
+12db: 7c fd        CALF    $0CFD
+12dd: 7c 3f        CALF    $0C3F
+12df: 71 21 00     MVIW    VV:21,$00
+12e2: 71 6e 00     MVIW    VV:6E,$00
+12e5: 71 24 00     MVIW    VV:24,$00
+12e8: 71 0a 00     MVIW    VV:0A,$00
+12eb: 64 4e 04     ONI     MKH,$04
+12ee: fc           JR      $12EB
+12ef: 7b 5c        CALF    $0B5C
+12f1: b9           RETS    
+12f2: 5b 64        BIT     3,VV:64
+12f4: 4f c7        JRE     $12BD
+12f6: 05 64 f7     ANIW    VV:64,$F7
+12f9: 30 60        DCRW    VV:60
+12fb: c3           JR      $12FF
+12fc: 69 01        MVI     A,$01
+12fe: b8           RET     
+12ff: 01 60        LDAW    VV:60
+1301: 65 61 00     NEIW    VV:61,$00
+1304: 77 01        EQI     A,$01
+1306: c3           JR      $130A
+1307: 69 02        MVI     A,$02
+1309: b8           RET     
+130a: 74 f8 40     EQAW    VV:40
+130d: c5           JR      $1313
+130e: 05 66 f7     ANIW    VV:66,$F7
+1311: 69 04        MVI     A,$04
+1313: 69 00        MVI     A,$00
+1315: b8           RET     
+1316: 7b 5c        CALF    $0B5C
+1318: 59 63        BIT     1,VV:63
+131a: d1           JR      $132C
+131b: 64 5a 20     OFFI    PC,$20
+131e: ca           JR      $1329
+131f: 5a 63        BIT     2,VV:63
+1321: ca           JR      $132C
+1322: 64 4a 40     ONI     PC,$40
+1325: 15 21 10     ORIW    VV:21,$10
+1328: cf           JR      $1338
+1329: 15 63 04     ORIW    VV:63,$04
+132c: 45 21 dc     ONIW    VV:21,$DC
+132f: b8           RET     
+1330: 05 63 f7     ANIW    VV:63,$F7
+1333: 45 63 03     ONIW    VV:63,$03
+1336: 4e 22        JRE     $135A
+1338: 69 00        MVI     A,$00
+133a: 4d cc        MOV     ETMM,A
+133c: 44 ff ff     LXI     EA,$FFFF
+133f: 7c 74        CALF    $0C74
+1341: 48 d3        DMOV    ETM1,EA
+1343: 69 04        MVI     A,$04
+1345: 4d cc        MOV     ETMM,A
+1347: 59 63        BIT     1,VV:63
+1349: c9           JR      $1353
+134a: 45 21 50     ONIW    VV:21,$50
+134d: 69 fa        MVI     A,$FA
+134f: 69 fb        MVI     A,$FB
+1351: 7c fd        CALF    $0CFD
+1353: 45 21 50     ONIW    VV:21,$50
+1356: 4e 29        JRE     $1381
+1358: 4e 22        JRE     $137C
+135a: 44 00 14     LXI     EA,$1400
+135d: 45 21 50     ONIW    VV:21,$50
+1360: 69 fa        MVI     A,$FA
+1362: 69 fb        MVI     A,$FB
+1364: 7c fd        CALF    $0CFD
+1366: 5f 2e        BIT     7,VV:2E
+1368: c3           JR      $136C
+1369: 7c 74        CALF    $0C74
+136b: cc           JR      $1378
+136c: 69 00        MVI     A,$00
+136e: 4d cc        MOV     ETMM,A
+1370: 7c 74        CALF    $0C74
+1372: 48 d3        DMOV    ETM1,EA
+1374: 69 0c        MVI     A,$0C
+1376: 4d cc        MOV     ETMM,A
+1378: 45 21 50     ONIW    VV:21,$50
+137b: c5           JR      $1381
+137c: 75 70 ff     EQIW    VV:70,$FF
+137f: d7           JR      $1397
+1380: d3           JR      $1394
+1381: 5f 63        BIT     7,VV:63
+1383: cc           JR      $1390
+1384: 70 1f 75 ff  LBCD    $FF75
+1388: 70 1e e6 2f  SBCD    $2FE6
+138c: 7d cd        CALF    $0DCD
+138e: 7e bf        CALF    $0EBF
+1390: 79 c3        CALF    $09C3
+1392: 7d 8b        CALF    $0D8B
+1394: 71 70 00     MVIW    VV:70,$00
+1397: 69 00        MVI     A,$00
+1399: 63 15        STAW    VV:15
+139b: 63 1d        STAW    VV:1D
+139d: 63 21        STAW    VV:21
+139f: 63 24        STAW    VV:24
+13a1: 90           CALT    ($00A0)
+13a2: b9           RETS    
+13a3: b8           RET     
+13a4: 55 63 03     OFFIW   VV:63,$03
+13a7: c4           JR      $13AC
+13a8: 15 21 60     ORIW    VV:21,$60
+13ab: b8           RET     
+13ac: 71 24 00     MVIW    VV:24,$00
+13af: 55 21 60     OFFIW   VV:21,$60
+13b2: b8           RET     
+13b3: 59 63        BIT     1,VV:63
+13b5: f6           JR      $13AC
+13b6: 64 4a 20     ONI     PC,$20
+13b9: f2           JR      $13AC
+13ba: ed           JR      $13A8
+13bb: 4c e0        MOV     A,CR0
+13bd: 1a           MOV     B,A
+13be: 74 b0 31     SUBNBW  VV:31
+13c1: c5           JR      $13C7
+13c2: 27 01        GTI     A,$01
+13c4: b8           RET     
+13c5: 52           DCR     B
+13c6: c4           JR      $13CB
+13c7: 37 ff        LTI     A,$FF
+13c9: b8           RET     
+13ca: 42           INR     B
+13cb: 0a           MOV     A,B
+13cc: 63 31        STAW    VV:31
+13ce: 01 30        LDAW    VV:30
+13d0: 5e 65        BIT     6,VV:65
+13d2: c4           JR      $13D7
+13d3: 60 ba        LTA     A,B
+13d5: c8           JR      $13DE
+13d6: b8           RET     
+13d7: 5f 65        BIT     7,VV:65
+13d9: d3           JR      $13ED
+13da: 60 aa        GTA     A,B
+13dc: c1           JR      $13DE
+13dd: b8           RET     
+13de: 01 65        LDAW    VV:65
+13e0: 55 23 40     OFFIW   VV:23,$40
+13e3: c5           JR      $13E9
+13e4: 16 c0        XRI     A,$C0
+13e6: 63 65        STAW    VV:65
+13e8: b8           RET     
+13e9: 07 3f        ANI     A,$3F
+13eb: 63 65        STAW    VV:65
+13ed: 01 31        LDAW    VV:31
+13ef: 63 30        STAW    VV:30
+13f1: b4           PUSH    EA
+13f2: 01 30        LDAW    VV:30
+13f4: 6a e1        MVI     B,$E1
+13f6: 48 2e        MUL     B
+13f8: 08           MOV     A,EAH
+13f9: 46 20        ADI     A,$20
+13fb: 1a           MOV     B,A
+13fc: 44 c5 10     LXI     EA,$10C5
+13ff: 48 3d        DIV     A
+1401: 18           MOV     EAH,A
+1402: 09           MOV     A,EAL
+1403: 63 45        STAW    VV:45
+1405: 69 82        MVI     A,$82
+1407: 19           MOV     EAL,A
+1408: 48 3e        DIV     B
+140a: 09           MOV     A,EAL
+140b: 63 44        STAW    VV:44
+140d: a4           POP     EA
+140e: b8           RET     
+140f: 5f 2e        BIT     7,VV:2E
+1411: 5e 23        BIT     6,VV:23
+1413: b9           RETS    
+1414: 58 63        BIT     0,VV:63
+1416: c7           JR      $141E
+1417: 71 2b 0f     MVIW    VV:2B,$0F
+141a: 71 28 00     MVIW    VV:28,$00
+141d: c9           JR      $1427
+141e: 59 63        BIT     1,VV:63
+1420: ca           JR      $142B
+1421: 71 2b 00     MVIW    VV:2B,$00
+1424: 71 28 0f     MVIW    VV:28,$0F
+1427: 71 25 0f     MVIW    VV:25,$0F
+142a: b8           RET     
+142b: 44 00 00     LXI     EA,$0000
+142e: 01 30        LDAW    VV:30
+1430: 19           MOV     EAL,A
+1431: 69 24        MVI     A,$24
+1433: 70 41        EADD    EA,A
+1435: 81           CALT    ($0082)
+1436: b8           RET     
+1437: 59 24        BIT     1,VV:24
+1439: b8           RET     
+143a: 01 63        LDAW    VV:63
+143c: 05 63 fc     ANIW    VV:63,$FC
+143f: 47 01        ONI     A,$01
+1441: c7           JR      $1449
+1442: 15 63 02     ORIW    VV:63,$02
+1445: 64 0f f7     ANI     MKL,$F7
+1448: d3           JR      $145C
+1449: 47 02        ONI     A,$02
+144b: c8           JR      $1454
+144c: 64 1f 08     ORI     MKL,$08
+144f: 69 0c        MVI     A,$0C
+1451: 4d cc        MOV     ETMM,A
+1453: c8           JR      $145C
+1454: 15 63 01     ORIW    VV:63,$01
+1457: 15 64 01     ORIW    VV:64,$01
+145a: 7c 3f        CALF    $0C3F
+145c: 71 5b 00     MVIW    VV:5B,$00
+145f: 40 14 14     CALL    $1414
+1462: 55 23 02     OFFIW   VV:23,$02
+1465: fc           JR      $1462
+1466: 71 21 00     MVIW    VV:21,$00
+1469: 71 24 00     MVIW    VV:24,$00
+146c: b8           RET     
+146d: 59 24        BIT     1,VV:24
+146f: b8           RET     
+1470: 71 24 00     MVIW    VV:24,$00
+1473: 5f 2e        BIT     7,VV:2E
+1475: c3           JR      $1479
+1476: 7c 3f        CALF    $0C3F
+1478: b8           RET     
+1479: 55 63 03     OFFIW   VV:63,$03
+147c: b8           RET     
+147d: 64 07 ef     MVI     MKL,$EF
+1480: 15 2e 80     ORIW    VV:2E,$80
+1483: 15 64 01     ORIW    VV:64,$01
+1486: 71 5b 00     MVIW    VV:5B,$00
+1489: b8           RET     
+148a: 01 1f        LDAW    VV:1F
+148c: 1d           MOV     E,A
+148d: 01 17        LDAW    VV:17
+148f: 1c           MOV     D,A
+1490: 59 65        BIT     1,VV:65
+1492: c8           JR      $149B
+1493: 60 9d        ORA     A,E
+1495: 67 00        NEI     A,$00
+1497: 05 65 fd     ANIW    VV:65,$FD
+149a: b8           RET     
+149b: 6b 00        MVI     C,$00
+149d: 77 00        EQI     A,$00
+149f: c6           JR      $14A6
+14a0: 0d           MOV     A,E
+14a1: 67 00        NEI     A,$00
+14a3: b8           RET     
+14a4: 6b 08        MVI     C,$08
+14a6: 48 01        SLRC    A
+14a8: c1           JR      $14AA
+14a9: c2           JR      $14AC
+14aa: 43           INR     C
+14ab: fa           JR      $14A6
+14ac: 0d           MOV     A,E
+14ad: 6a 0f        MVI     B,$0F
+14af: 77 00        EQI     A,$00
+14b1: c3           JR      $14B5
+14b2: 0c           MOV     A,D
+14b3: 6a 07        MVI     B,$07
+14b5: 48 05        SLLC    A
+14b7: c1           JR      $14B9
+14b8: c4           JR      $14BD
+14b9: 52           DCR     B
+14ba: fa           JR      $14B5
+14bb: 6a 0f        MVI     B,$0F
+14bd: 70 1e 39 ff  SBCD    $FF39
+14c1: 0b           MOV     A,C
+14c2: 60 fa        EQA     A,B
+14c4: 15 65 02     ORIW    VV:65,$02
+14c7: b9           RETS    
+14c8: 14 ff ff     LXI     BC,$FFFF
+14cb: b3           PUSH    HL
+14cc: a3           POP     HL
+14cd: 53           DCR     C
+14ce: fc           JR      $14CB
+14cf: 52           DCR     B
+14d0: fa           JR      $14CB
+14d1: b8           RET     
+14d2: 98           CALT    ($00B0)
+14d3: b8           RET     
+14d4: 77 0a        EQI     A,$0A
+14d6: b8           RET     
+14d7: 05 32 f0     ANIW    VV:32,$F0
+14da: 34 32 ff     LXI     HL,$FF32
+14dd: 48 83        LDEAX   (HL)
+14df: 15 65 02     ORIW    VV:65,$02
+14e2: 01 38        LDAW    VV:38
+14e4: 63 35        STAW    VV:35
+14e6: 63 36        STAW    VV:36
+14e8: 7a 7e        CALF    $0A7E
+14ea: 79 95        CALF    $0995
+14ec: 98           CALT    ($00B0)
+14ed: ca           JR      $14F8
+14ee: 63 38        STAW    VV:38
+14f0: 63 35        STAW    VV:35
+14f2: 1a           MOV     B,A
+14f3: 1b           MOV     C,A
+14f4: 7a 82        CALF    $0A82
+14f6: 79 d1        CALF    $09D1
+14f8: 7a 25        CALF    $0A25
+14fa: 79 e0        CALF    $09E0
+14fc: 7c 37        CALF    $0C37
+14fe: 63 33        STAW    VV:33
+1500: 7a 02        CALF    $0A02
+1502: f7           JR      $14FA
+1503: 58 20        BIT     0,VV:20
+1505: 4e 40        JRE     $1547
+1507: 58 23        BIT     0,VV:23
+1509: e2           JR      $14EC
+150a: 71 24 00     MVIW    VV:24,$00
+150d: 40 5e 15     CALL    $155E
+1510: 31           BLOCK   
+1511: 40 5e 15     CALL    $155E
+1514: 74 1c 01     ORI     D,$01
+1517: 74 1e 01     ORI     H,$01
+151a: 31           BLOCK   
+151b: 59 33        BIT     1,VV:33
+151d: 69 01        MVI     A,$01
+151f: 69 02        MVI     A,$02
+1521: 1a           MOV     B,A
+1522: b6           DMOV    DE,EA
+1523: b7           DMOV    HL,EA
+1524: 80           CALT    ($0080)
+1525: 1c           MOV     D,A
+1526: 40 5f 15     CALL    $155F
+1529: 80           CALT    ($0080)
+152a: 2d           LDAX    (HL+)
+152b: 60 8a        ANA     A,B
+152d: 63 38        STAW    VV:38
+152f: 0a           MOV     A,B
+1530: 16 ff        XRI     A,$FF
+1532: 70 8a        ANAX    (DE)
+1534: 74 98 38     ORAW    VV:38
+1537: 3c           STAX    (DE+)
+1538: 53           DCR     C
+1539: f0           JR      $152A
+153a: b7           DMOV    HL,EA
+153b: 8f           CALT    ($009E)
+153c: 0e           MOV     A,H
+153d: 1c           MOV     D,A
+153e: 0f           MOV     A,L
+153f: 1d           MOV     E,A
+1540: 8e           CALT    ($009C)
+1541: 2d           LDAX    (HL+)
+1542: 07 7f        ANI     A,$7F
+1544: 3c           STAX    (DE+)
+1545: 2b           LDAX    (HL)
+1546: 3a           STAX    (DE)
+1547: 08           MOV     A,EAH
+1548: 63 33        STAW    VV:33
+154a: 07 0c        ANI     A,$0C
+154c: 63 34        STAW    VV:34
+154e: 09           MOV     A,EAL
+154f: 63 32        STAW    VV:32
+1551: 7d 82        CALF    $0D82
+1553: 63 38        STAW    VV:38
+1555: 63 35        STAW    VV:35
+1557: 7a 38        CALF    $0A38
+1559: 7c a3        CALF    $0CA3
+155b: 7a 17        CALF    $0A17
+155d: b8           RET     
+155e: b6           DMOV    DE,EA
+155f: 70 3f 32 ff  LHLD    $FF32
+1563: 6b 0f        MVI     C,$0F
+1565: b8           RET     
+1566: 25 4b f7     GTIW    VV:4B,$F7
+1569: cb           JR      $1575
+156a: 48 4a        SKIT    FST
+156c: b8           RET     
+156d: 01 4b        LDAW    VV:4B
+156f: 71 4b 00     MVIW    VV:4B,$00
+1572: 4d d8        MOV     TXB,A
+1574: b8           RET     
+1575: 5d 69        BIT     5,VV:69
+1577: c7           JR      $157F
+1578: 01 4f        LDAW    VV:4F
+157a: 74 f8 50     EQAW    VV:50
+157d: 4e 41        JRE     $15C0
+157f: 01 4c        LDAW    VV:4C
+1581: 74 f8 4e     EQAW    VV:4E
+1584: ca           JR      $158F
+1585: 05 69 ef     ANIW    VV:69,$EF
+1588: 15 69 20     ORIW    VV:69,$20
+158b: 64 1e 04     ORI     MKH,$04
+158e: b8           RET     
+158f: 48 4a        SKIT    FST
+1591: b8           RET     
+1592: 6e ff        MVI     H,$FF
+1594: 1f           MOV     L,A
+1595: 2d           LDAX    (HL+)
+1596: 47 80        ONI     A,$80
+1598: c8           JR      $15A1
+1599: 63 49        STAW    VV:49
+159b: 05 69 d7     ANIW    VV:69,$D7
+159e: 7d 2b        CALF    $0D2B
+15a0: d5           JR      $15B6
+15a1: 5b 69        BIT     3,VV:69
+15a3: c7           JR      $15AB
+15a4: 01 49        LDAW    VV:49
+15a6: 05 69 d7     ANIW    VV:69,$D7
+15a9: 4f c7        JRE     $1572
+15ab: 05 69 df     ANIW    VV:69,$DF
+15ae: 30 5f        DCRW    VV:5F
+15b0: c5           JR      $15B6
+15b1: 7d 2b        CALF    $0D2B
+15b3: 15 69 20     ORIW    VV:69,$20
+15b6: 4d d8        MOV     TXB,A
+15b8: 0f           MOV     A,L
+15b9: 07 1f        ANI     A,$1F
+15bb: 46 80        ADI     A,$80
+15bd: 63 4c        STAW    VV:4C
+15bf: b8           RET     
+15c0: 48 4a        SKIT    FST
+15c2: b8           RET     
+15c3: 15 69 08     ORIW    VV:69,$08
+15c6: 6e ff        MVI     H,$FF
+15c8: 1f           MOV     L,A
+15c9: 2d           LDAX    (HL+)
+15ca: 4d d8        MOV     TXB,A
+15cc: 0f           MOV     A,L
+15cd: 37 d0        LTI     A,$D0
+15cf: 69 a0        MVI     A,$A0
+15d1: 63 4f        STAW    VV:4F
+15d3: b8           RET     
+15d4: 40 66 15     CALL    $1566
+15d7: 11           EXX     
+15d8: 10           EXA     
+15d9: aa           EI      
+15da: 62           RETI    
+15db: 10           EXA     
+15dc: 11           EXX     
+15dd: 64 5e 04     OFFI    MKH,$04
+15e0: c3           JR      $15E4
+15e1: 48 49        SKIT    FSR
+15e3: f0           JR      $15D4
+15e4: 4c d9        MOV     A,RXB
+15e6: 48 6b        SKNIT   ER
+15e8: 4e b6        JRE     $16A0
+15ea: 1c           MOV     D,A
+15eb: 27 f7        GTI     A,$F7
+15ed: c9           JR      $15F7
+15ee: 67 f8        NEI     A,$F8
+15f0: 55 63 01     OFFIW   VV:63,$01
+15f3: 63 4b        STAW    VV:4B
+15f5: 4e 31        JRE     $1628
+15f7: 57 80        OFFI    A,$80
+15f9: 4e 23        JRE     $161E
+15fb: 01 6b        LDAW    VV:6B
+15fd: 37 0c        LTI     A,$0C
+15ff: 4e 9f        JRE     $16A0
+1601: 48 25        SLL     A
+1603: 48 a8        TABLE   
+1605: 21           JB      
+1606: a0           POP     VA
+1607: 16 7e        XRI     A,$7E
+1609: 16 d0        XRI     A,$D0
+160b: 16 d6        XRI     A,$D6
+160d: 16 a4        XRI     A,$A4
+160f: 16 aa        XRI     A,$AA
+1611: 16 c5        XRI     A,$C5
+1613: 16 2c        XRI     A,$2C
+1615: 17 33        ORI     A,$33
+1617: 17 c9        ORI     A,$C9
+1619: 17 dc        ORI     A,$DC
+161b: 17 22        ORI     A,$22
+161d: 18           MOV     EAH,A
+161e: 05 69 fe     ANIW    VV:69,$FE
+1621: 07 f0        ANI     A,$F0
+1623: 77 f0        EQI     A,$F0
+1625: 4e 28        JRE     $164F
+1627: 0c           MOV     A,D
+1628: 07 0f        ANI     A,$0F
+162a: 48 25        SLL     A
+162c: 48 a8        TABLE   
+162e: 21           JB      
+162f: c3           JR      $1633
+1630: 17 64        ORI     A,$64
+1632: 17 5c        ORI     A,$5C
+1634: 17 5e        ORI     A,$5E
+1636: 17 64        ORI     A,$64
+1638: 17 64        ORI     A,$64
+163a: 17 60        ORI     A,$60
+163c: 17 60        ORI     A,$60
+163e: 17 69        ORI     A,$69
+1640: 17 9d        ORI     A,$9D
+1642: 16 71        XRI     A,$71
+1644: 17 75        ORI     A,$75
+1646: 17 7c        ORI     A,$7C
+1648: 17 9d        ORI     A,$9D
+164a: 16 9d        XRI     A,$9D
+164c: 16 83        XRI     A,$83
+164e: 17 71        ORI     A,$71
+1650: 6b 00        MVI     C,$00
+1652: 0c           MOV     A,D
+1653: 07 f0        ANI     A,$F0
+1655: 77 90        EQI     A,$90
+1657: d0           JR      $1668
+1658: 5a 66        BIT     2,VV:66
+165a: ca           JR      $1665
+165b: 0c           MOV     A,D
+165c: 07 0f        ANI     A,$0F
+165e: 74 e0 41     SUBW    VV:41
+1661: 74 b8 74     LTAW    VV:74
+1664: d0           JR      $1675
+1665: 69 02        MVI     A,$02
+1667: d4           JR      $167C
+1668: 77 b0        EQI     A,$B0
+166a: ca           JR      $1675
+166b: 0c           MOV     A,D
+166c: 07 0f        ANI     A,$0F
+166e: 74 f8 41     EQAW    VV:41
+1671: c3           JR      $1675
+1672: 69 07        MVI     A,$07
+1674: c7           JR      $167C
+1675: 55 69 02     OFFIW   VV:69,$02
+1678: 4e 26        JRE     $16A0
+167a: 69 01        MVI     A,$01
+167c: 63 6b        STAW    VV:6B
+167e: 9d           CALT    ($00BA)
+167f: 0c           MOV     A,D
+1680: 57 80        OFFI    A,$80
+1682: c9           JR      $168C
+1683: 30 5e        DCRW    VV:5E
+1685: da           JR      $16A0
+1686: 01 4d        LDAW    VV:4D
+1688: 63 4e        STAW    VV:4E
+168a: 01 48        LDAW    VV:48
+168c: 63 48        STAW    VV:48
+168e: 71 5e 01     MVIW    VV:5E,$01
+1691: 7d 39        CALF    $0D39
+1693: c9           JR      $169D
+1694: 30 5e        DCRW    VV:5E
+1696: 27 f5        GTI     A,$F5
+1698: c4           JR      $169D
+1699: 01 4d        LDAW    VV:4D
+169b: 63 4e        STAW    VV:4E
+169d: 64 0e fb     ANI     MKH,$FB
+16a0: 11           EXX     
+16a1: 10           EXA     
+16a2: aa           EI      
+16a3: 62           RETI    
+16a4: 0c           MOV     A,D
+16a5: 63 51        STAW    VV:51
+16a7: 69 05        MVI     A,$05
+16a9: d9           JR      $16C3
+16aa: 5e 64        BIT     6,VV:64
+16ac: 5f 63        BIT     7,VV:63
+16ae: d2           JR      $16C1
+16af: 01 51        LDAW    VV:51
+16b1: 1b           MOV     C,A
+16b2: 0c           MOV     A,D
+16b3: 1a           MOV     B,A
+16b4: 48 02        SLRC    B
+16b6: c3           JR      $16BA
+16b7: 74 1b 80     ORI     C,$80
+16ba: 70 1e 51 ff  SBCD    $FF51
+16be: 15 67 04     ORIW    VV:67,$04
+16c1: 69 01        MVI     A,$01
+16c3: 4f b7        JRE     $167C
+16c5: 55 64 40     OFFIW   VV:64,$40
+16c8: 4e 60        JRE     $172A
+16ca: 0c           MOV     A,D
+16cb: 63 53        STAW    VV:53
+16cd: 69 01        MVI     A,$01
+16cf: f3           JR      $16C3
+16d0: 0c           MOV     A,D
+16d1: 63 54        STAW    VV:54
+16d3: 69 03        MVI     A,$03
+16d5: ed           JR      $16C3
+16d6: 71 6b 02     MVIW    VV:6B,$02
+16d9: 01 54        LDAW    VV:54
+16db: 66 23        SUI     A,$23
+16dd: 27 10        GTI     A,$10
+16df: 74 6c 00     NEI     D,$00
+16e2: 4f 9a        JRE     $167E
+16e4: 48 a8        TABLE   
+16e6: d1           JR      $16F8
+16e7: 10           EXA     
+16e8: 10           EXA     
+16e9: 15 21 65     ORIW    VV:21,$65
+16ec: 21           JB      
+16ed: 32           INX     HL
+16ee: 96           CALT    ($00AC)
+16ef: 32           INX     HL
+16f0: 96           CALT    ($00AC)
+16f1: 43           INR     C
+16f2: 86           CALT    ($008C)
+16f3: 43           INR     C
+16f4: 54 47 54     JMP     $5447
+16f7: 57 0b        OFFI    A,$0B
+16f9: 1d           MOV     E,A
+16fa: 6a ff        MVI     B,$FF
+16fc: 74 0b 07     ANI     C,$07
+16ff: 0c           MOV     A,D
+1700: 74 3b 06     LTI     C,$06
+1703: 34 c0 1f     LXI     HL,$1FC0
+1706: 34 80 1f     LXI     HL,$1F80
+1709: 48 21        SLR     A
+170b: ac           LDAX    (HL+A)
+170c: 39           STAX    (BC)
+170d: 74 2b 04     GTI     C,$04
+1710: 69 08        MVI     A,$08
+1712: 69 09        MVI     A,$09
+1714: 1b           MOV     C,A
+1715: 34 08 00     LXI     HL,$0008
+1718: 0d           MOV     A,E
+1719: 7d 82        CALF    $0D82
+171b: 27 07        GTI     A,$07
+171d: c8           JR      $1726
+171e: 67 08        NEI     A,$08
+1720: 05 09 f7     ANIW    VV:09,$F7
+1723: 34 6b 12     LXI     HL,$126B
+1726: ac           LDAX    (HL+A)
+1727: 70 99        ORAX    (BC)
+1729: 39           STAX    (BC)
+172a: 4f 52        JRE     $167E
+172c: 0c           MOV     A,D
+172d: 63 56        STAW    VV:56
+172f: 69 08        MVI     A,$08
+1731: 4f 49        JRE     $167C
+1733: 01 56        LDAW    VV:56
+1735: 36 7c        SUINB   A,$7C
+1737: 4e 21        JRE     $175A
+1739: 51           DCR     A
+173a: c7           JR      $1742
+173b: 74 6c 00     NEI     D,$00
+173e: 15 66 04     ORIW    VV:66,$04
+1741: d8           JR      $175A
+1742: 51           DCR     A
+1743: c7           JR      $174B
+1744: 74 6c 00     NEI     D,$00
+1747: 05 66 fb     ANIW    VV:66,$FB
+174a: cf           JR      $175A
+174b: 51           DCR     A
+174c: c7           JR      $1754
+174d: 0c           MOV     A,D
+174e: 67 00        NEI     A,$00
+1750: 41           INR     A
+1751: 63 74        STAW    VV:74
+1753: c6           JR      $175A
+1754: 74 6c 00     NEI     D,$00
+1757: 71 74 01     MVIW    VV:74,$01
+175a: 69 07        MVI     A,$07
+175c: 69 04        MVI     A,$04
+175e: 69 06        MVI     A,$06
+1760: 69 01        MVI     A,$01
+1762: 4f 18        JRE     $167C
+1764: 71 6b 00     MVIW    VV:6B,$00
+1767: 4f 37        JRE     $16A0
+1769: 55 63 01     OFFIW   VV:63,$01
+176c: 40 92 17     CALL    $1792
+176f: 4f 2c        JRE     $169D
+1771: 15 21 08     ORIW    VV:21,$08
+1774: fa           JR      $176F
+1775: 75 70 ff     EQIW    VV:70,$FF
+1778: 15 21 10     ORIW    VV:21,$10
+177b: f3           JR      $176F
+177c: 15 21 20     ORIW    VV:21,$20
+177f: 15 64 10     ORIW    VV:64,$10
+1782: ec           JR      $176F
+1783: 48 4a        SKIT    FST
+1785: fd           JR      $1783
+1786: 0c           MOV     A,D
+1787: 4d d8        MOV     TXB,A
+1789: 55 63 40     OFFIW   VV:63,$40
+178c: 40 79 10     CALL    $1079
+178f: 54 cb 02     JMP     $02CB
+1792: 20 5b        INRW    VV:5B
+1794: c9           JR      $179E
+1795: 20 5b        INRW    VV:5B
+1797: 01 3d        LDAW    VV:3D
+1799: 19           MOV     EAL,A
+179a: 01 3e        LDAW    VV:3E
+179c: 18           MOV     EAH,A
+179d: d8           JR      $17B6
+179e: 48 c0        DMOV    EA,ECNT
+17a0: 48 a0        DSLR    EA
+17a2: 08           MOV     A,EAH
+17a3: 55 64 20     OFFIW   VV:64,$20
+17a6: 46 80        ADI     A,$80
+17a8: 05 64 df     ANIW    VV:64,$DF
+17ab: 63 3e        STAW    VV:3E
+17ad: 18           MOV     EAH,A
+17ae: 09           MOV     A,EAL
+17af: 63 3d        STAW    VV:3D
+17b1: 75 5b 01     EQIW    VV:5B,$01
+17b4: 48 a0        DSLR    EA
+17b6: 48 d3        DMOV    ETM1,EA
+17b8: 69 00        MVI     A,$00
+17ba: 4d cc        MOV     ETMM,A
+17bc: 69 04        MVI     A,$04
+17be: 4d cc        MOV     ETMM,A
+17c0: 8b           CALT    ($0096)
+17c1: b8           RET     
+17c2: b8           RET     
+17c3: 71 6b 09     MVIW    VV:6B,$09
+17c6: 54 a0 16     JMP     $16A0
+17c9: 74 6c 41     NEI     D,$41
+17cc: c5           JR      $17D2
+17cd: 5e 67        BIT     6,VV:67
+17cf: c7           JR      $17D7
+17d0: 69 00        MVI     A,$00
+17d2: 69 0a        MVI     A,$0A
+17d4: 63 6b        STAW    VV:6B
+17d6: ef           JR      $17C6
+17d7: b2           PUSH    DE
+17d8: 6c f0        MVI     D,$F0
+17da: 4e 3e        JRE     $181A
+17dc: 71 6b 00     MVIW    VV:6B,$00
+17df: 0c           MOV     A,D
+17e0: 67 51        NEI     A,$51
+17e2: 4e 5a        JRE     $183E
+17e4: 67 50        NEI     A,$50
+17e6: 4e c2        JRE     $18AA
+17e8: 5c 67        BIT     4,VV:67
+17ea: dc           JR      $1807
+17eb: 77 53        EQI     A,$53
+17ed: d4           JR      $1802
+17ee: 20 73        INRW    VV:73
+17f0: 45 73 10     ONIW    VV:73,$10
+17f3: 4e 58        JRE     $184D
+17f5: 71 73 40     MVIW    VV:73,$40
+17f8: 05 67 ef     ANIW    VV:67,$EF
+17fb: 40 50 19     CALL    $1950
+17fe: 6c f7        MVI     D,$F7
+1800: 4e 20        JRE     $1822
+1802: 67 71        NEI     A,$71
+1804: 4e 47        JRE     $184D
+1806: cd           JR      $1814
+1807: 5d 67        BIT     5,VV:67
+1809: ca           JR      $1814
+180a: 67 52        NEI     A,$52
+180c: 4e b4        JRE     $18C2
+180e: 67 55        NEI     A,$55
+1810: d7           JR      $1828
+1811: 67 54        NEI     A,$54
+1813: db           JR      $182F
+1814: b2           PUSH    DE
+1815: 6c f0        MVI     D,$F0
+1817: 9d           CALT    ($00BA)
+1818: 6c 41        MVI     D,$41
+181a: 9d           CALT    ($00BA)
+181b: 15 69 01     ORIW    VV:69,$01
+181e: 71 6b 0b     MVIW    VV:6B,$0B
+1821: a2           POP     DE
+1822: 9d           CALT    ($00BA)
+1823: 63 4e        STAW    VV:4E
+1825: 54 9d 16     JMP     $169D
+1828: 5f 69        BIT     7,VV:69
+182a: c6           JR      $1831
+182b: 05 67 20     ANIW    VV:67,$20
+182e: c4           JR      $1833
+182f: 5f 69        BIT     7,VV:69
+1831: 69 71        MVI     A,$71
+1833: 69 53        MVI     A,$53
+1835: 1c           MOV     D,A
+1836: 05 69 7f     ANIW    VV:69,$7F
+1839: 40 50 19     CALL    $1950
+183c: 4e dd        JRE     $191B
+183e: 5e 64        BIT     6,VV:64
+1840: 5f 63        BIT     7,VV:63
+1842: 4e d5        JRE     $1919
+1844: 15 67 10     ORIW    VV:67,$10
+1847: 05 67 df     ANIW    VV:67,$DF
+184a: 71 73 40     MVIW    VV:73,$40
+184d: 40 50 19     CALL    $1950
+1850: c3           JR      $1854
+1851: 40 66 15     CALL    $1566
+1854: 64 4e 04     ONI     MKH,$04
+1857: f9           JR      $1851
+1858: 40 97 19     CALL    $1997
+185b: 64 00 01     MVI     PA,$01
+185e: 64 01 00     MVI     PB,$00
+1861: 01 33        LDAW    VV:33
+1863: 07 f0        ANI     A,$F0
+1865: 1e           MOV     H,A
+1866: 01 73        LDAW    VV:73
+1868: 07 0f        ANI     A,$0F
+186a: 60 1e        ORA     H,A
+186c: 6f 00        MVI     L,$00
+186e: 71 56 00     MVIW    VV:56,$00
+1871: 69 f0        MVI     A,$F0
+1873: 9c           CALT    ($00B8)
+1874: 69 41        MVI     A,$41
+1876: 9c           CALT    ($00B8)
+1877: 69 52        MVI     A,$52
+1879: 9c           CALT    ($00B8)
+187a: 69 01        MVI     A,$01
+187c: 9c           CALT    ($00B8)
+187d: 01 73        LDAW    VV:73
+187f: 9c           CALT    ($00B8)
+1880: 2b           LDAX    (HL)
+1881: 07 0f        ANI     A,$0F
+1883: 9c           CALT    ($00B8)
+1884: 74 c0 56     ADDW    VV:56
+1887: 63 56        STAW    VV:56
+1889: 2d           LDAX    (HL+)
+188a: 7d 82        CALF    $0D82
+188c: 9c           CALT    ($00B8)
+188d: 74 c0 56     ADDW    VV:56
+1890: 63 56        STAW    VV:56
+1892: 74 7f 00     EQI     L,$00
+1895: ea           JR      $1880
+1896: 01 56        LDAW    VV:56
+1898: 48 3a        NEGA    
+189a: 07 7f        ANI     A,$7F
+189c: 9c           CALT    ($00B8)
+189d: 69 f7        MVI     A,$F7
+189f: 9c           CALT    ($00B8)
+18a0: 75 73 4f     EQIW    VV:73,$4F
+18a3: 69 54        MVI     A,$54
+18a5: 69 55        MVI     A,$55
+18a7: 1c           MOV     D,A
+18a8: 4e 71        JRE     $191B
+18aa: 40 50 19     CALL    $1950
+18ad: 5e 64        BIT     6,VV:64
+18af: 5f 63        BIT     7,VV:63
+18b1: c4           JR      $18B6
+18b2: 01 33        LDAW    VV:33
+18b4: 57 40        OFFI    A,$40
+18b6: 4e 61        JRE     $1919
+18b8: 15 67 20     ORIW    VV:67,$20
+18bb: 05 67 ef     ANIW    VV:67,$EF
+18be: 6c 51        MVI     D,$51
+18c0: 4e 59        JRE     $191B
+18c2: 01 3b        LDAW    VV:3B
+18c4: 55 33 10     OFFIW   VV:33,$10
+18c7: 17 04        ORI     A,$04
+18c9: 63 53        STAW    VV:53
+18cb: 64 00 01     MVI     PA,$01
+18ce: 64 01 00     MVI     PB,$00
+18d1: 9b           CALT    ($00B6)
+18d2: 77 01        EQI     A,$01
+18d4: 4e 5a        JRE     $1930
+18d6: 9b           CALT    ($00B6)
+18d7: 47 40        ONI     A,$40
+18d9: 4e 55        JRE     $1930
+18db: 07 0f        ANI     A,$0F
+18dd: 1e           MOV     H,A
+18de: 01 33        LDAW    VV:33
+18e0: 07 f0        ANI     A,$F0
+18e2: 60 1e        ORA     H,A
+18e4: 6f 00        MVI     L,$00
+18e6: 05 69 7f     ANIW    VV:69,$7F
+18e9: 71 56 00     MVIW    VV:56,$00
+18ec: 9b           CALT    ($00B6)
+18ed: 74 c0 56     ADDW    VV:56
+18f0: 63 56        STAW    VV:56
+18f2: 0c           MOV     A,D
+18f3: 07 0f        ANI     A,$0F
+18f5: 63 57        STAW    VV:57
+18f7: 9b           CALT    ($00B6)
+18f8: 74 c0 56     ADDW    VV:56
+18fb: 63 56        STAW    VV:56
+18fd: 0c           MOV     A,D
+18fe: 7d 79        CALF    $0D79
+1900: 74 98 57     ORAW    VV:57
+1903: 3d           STAX    (HL+)
+1904: 74 7f 00     EQI     L,$00
+1907: e4           JR      $18EC
+1908: 9b           CALT    ($00B6)
+1909: 74 c0 56     ADDW    VV:56
+190c: 07 7f        ANI     A,$7F
+190e: 67 00        NEI     A,$00
+1910: 15 69 80     ORIW    VV:69,$80
+1913: 40 50 19     CALL    $1950
+1916: 54 a0 16     JMP     $16A0
+1919: 6c 70        MVI     D,$70
+191b: b2           PUSH    DE
+191c: 40 97 19     CALL    $1997
+191f: 48 69        SKNIT   FSR
+1921: 4c d9        MOV     A,RXB
+1923: 6c f0        MVI     D,$F0
+1925: 9d           CALT    ($00BA)
+1926: 6c 41        MVI     D,$41
+1928: 9d           CALT    ($00BA)
+1929: a2           POP     DE
+192a: 9d           CALT    ($00BA)
+192b: 6c f7        MVI     D,$F7
+192d: 54 22 18     JMP     $1822
+1930: 05 69 7e     ANIW    VV:69,$7E
+1933: 71 6b 00     MVIW    VV:6B,$00
+1936: 54 a0 16     JMP     $16A0
+1939: 40 7b 19     CALL    $197B
+193c: 48 49        SKIT    FSR
+193e: fa           JR      $1939
+193f: 4c d9        MOV     A,RXB
+1941: 1c           MOV     D,A
+1942: 47 80        ONI     A,$80
+1944: b8           RET     
+1945: 37 f8        LTI     A,$F8
+1947: f1           JR      $1939
+1948: a3           POP     HL
+1949: 05 69 7e     ANIW    VV:69,$7E
+194c: 0c           MOV     A,D
+194d: 54 1e 16     JMP     $161E
+1950: 40 7b 19     CALL    $197B
+1953: 48 49        SKIT    FSR
+1955: fa           JR      $1950
+1956: 4c d9        MOV     A,RXB
+1958: 77 f7        EQI     A,$F7
+195a: 47 80        ONI     A,$80
+195c: b8           RET     
+195d: 27 f7        GTI     A,$F7
+195f: e8           JR      $1948
+1960: ef           JR      $1950
+1961: 1a           MOV     B,A
+1962: 40 7b 19     CALL    $197B
+1965: 48 4a        SKIT    FST
+1967: fa           JR      $1962
+1968: 0a           MOV     A,B
+1969: 4d d8        MOV     TXB,A
+196b: b8           RET     
+196c: 6e ff        MVI     H,$FF
+196e: 01 4d        LDAW    VV:4D
+1970: 1f           MOV     L,A
+1971: 0c           MOV     A,D
+1972: 3d           STAX    (HL+)
+1973: 0f           MOV     A,L
+1974: 07 1f        ANI     A,$1F
+1976: 46 80        ADI     A,$80
+1978: 63 4d        STAW    VV:4D
+197a: b8           RET     
+197b: 69 00        MVI     A,$00
+197d: 30 62        DCRW    VV:62
+197f: c5           JR      $1985
+1980: 71 62 04     MVIW    VV:62,$04
+1983: 69 10        MVI     A,$10
+1985: 4d c1        MOV     PB,A
+1987: 70 69 00 40  MOV     A,($4000)
+198b: 47 01        ONI     A,$01
+198d: b8           RET     
+198e: 04 ff ff     LXI     SP,$FFFF
+1991: 71 6b 00     MVIW    VV:6B,$00
+1994: 54 06 03     JMP     $0306
+1997: 69 00        MVI     A,$00
+1999: 00           NOP     
+199a: 41           INR     A
+199b: fd           JR      $1999
+199c: b8           RET     
+199d: 55 69 01     OFFIW   VV:69,$01
+19a0: b8           RET     
+19a1: 6c ff        MVI     D,$FF
+19a3: 01 50        LDAW    VV:50
+19a5: 1d           MOV     E,A
+19a6: 69 f3        MVI     A,$F3
+19a8: 7b 54        CALF    $0B54
+19aa: 01 3b        LDAW    VV:3B
+19ac: 55 33 10     OFFIW   VV:33,$10
+19af: 17 04        ORI     A,$04
+19b1: 7b 54        CALF    $0B54
+19b3: 63 50        STAW    VV:50
+19b5: 64 06 00     MVI     MKH,$00
+19b8: b8           RET     
+19b9: 69 00        MVI     A,$00
+19bb: 63 70        STAW    VV:70
+19bd: 63 77        STAW    VV:77
+19bf: 63 78        STAW    VV:78
+19c1: 70 2f 75 ff  LDED    $FF75
+19c5: 70 3f e6 2f  LHLD    $2FE6
+19c9: a7           DMOV    EA,HL
+19ca: 74 ae        DGT     EA,DE
+19cc: cf           JR      $19DC
+19cd: 40 d7 1a     CALL    $1AD7
+19d0: 40 e5 1a     CALL    $1AE5
+19d3: 2b           LDAX    (HL)
+19d4: 47 80        ONI     A,$80
+19d6: ee           JR      $19C5
+19d7: 74 27 08     ADINC   L,$08
+19da: ea           JR      $19C5
+19db: f4           JR      $19D0
+19dc: 01 70        LDAW    VV:70
+19de: 48 25        SLL     A
+19e0: 63 70        STAW    VV:70
+19e2: 55 69 01     OFFIW   VV:69,$01
+19e5: b8           RET     
+19e6: 6c ff        MVI     D,$FF
+19e8: 01 50        LDAW    VV:50
+19ea: 1d           MOV     E,A
+19eb: 69 f2        MVI     A,$F2
+19ed: 7b 54        CALF    $0B54
+19ef: 01 77        LDAW    VV:77
+19f1: 07 7f        ANI     A,$7F
+19f3: 7b 54        CALF    $0B54
+19f5: 01 78        LDAW    VV:78
+19f7: 48 25        SLL     A
+19f9: 55 77 80     OFFIW   VV:77,$80
+19fc: 17 01        ORI     A,$01
+19fe: 07 7f        ANI     A,$7F
+1a00: 7b 54        CALF    $0B54
+1a02: 63 50        STAW    VV:50
+1a04: 64 06 00     MVI     MKH,$00
+1a07: b8           RET     
+1a08: 05 67 fb     ANIW    VV:67,$FB
+1a0b: 69 00        MVI     A,$00
+1a0d: 63 70        STAW    VV:70
+1a0f: 63 77        STAW    VV:77
+1a11: 63 78        STAW    VV:78
+1a13: 7d 8b        CALF    $0D8B
+1a15: 70 2f 75 ff  LDED    $FF75
+1a19: 75 51 00     EQIW    VV:51,$00
+1a1c: cb           JR      $1A28
+1a1d: 75 52 00     EQIW    VV:52,$00
+1a20: c7           JR      $1A28
+1a21: 70 2e e6 2f  SDED    $2FE6
+1a25: 7d cd        CALF    $0DCD
+1a27: b8           RET     
+1a28: b2           PUSH    DE
+1a29: 7d a5        CALF    $0DA5
+1a2b: a2           POP     DE
+1a2c: a8           INX     EA
+1a2d: 74 ae        DGT     EA,DE
+1a2f: 4e 91        JRE     $1AC2
+1a31: 40 d7 1a     CALL    $1AD7
+1a34: 40 e5 1a     CALL    $1AE5
+1a37: 70 1f 51 ff  LBCD    $FF51
+1a3b: 74 bd        DLT     EA,BC
+1a3d: c8           JR      $1A46
+1a3e: 2b           LDAX    (HL)
+1a3f: 57 80        OFFI    A,$80
+1a41: 74 27 08     ADINC   L,$08
+1a44: e3           JR      $1A28
+1a45: ee           JR      $1A34
+1a46: 74 fd        DEQ     EA,BC
+1a48: 4e 21        JRE     $1A6B
+1a4a: 01 70        LDAW    VV:70
+1a4c: 48 25        SLL     A
+1a4e: 63 70        STAW    VV:70
+1a50: 2b           LDAX    (HL)
+1a51: 57 80        OFFI    A,$80
+1a53: 74 27 08     ADINC   L,$08
+1a56: c2           JR      $1A59
+1a57: 4e 3f        JRE     $1A98
+1a59: b2           PUSH    DE
+1a5a: 7d a5        CALF    $0DA5
+1a5c: a2           POP     DE
+1a5d: 74 be        DLT     EA,DE
+1a5f: 4f c0        JRE     $1A21
+1a61: 5d 2e        BIT     5,VV:2E
+1a63: 4e 6b        JRE     $1AD0
+1a65: 70 2f 75 ff  LDED    $FF75
+1a69: 4f b6        JRE     $1A21
+1a6b: ba           DI      
+1a6c: 74 e5        DSUB    EA,BC
+1a6e: 09           MOV     A,EAL
+1a6f: 6a 06        MVI     B,$06
+1a71: 48 2e        MUL     B
+1a73: 01 70        LDAW    VV:70
+1a75: 70 41        EADD    EA,A
+1a77: 2b           LDAX    (HL)
+1a78: 7d 82        CALF    $0D82
+1a7a: 07 03        ANI     A,$03
+1a7c: 48 a8        TABLE   
+1a7e: c4           JR      $1A83
+1a7f: 06           illegal 
+1a80: 03           DCX     SP
+1a81: 08           MOV     A,EAH
+1a82: 04 0b 48     LXI     SP,$480B
+1a85: 3d           STAX    (HL+)
+1a86: 48 25        SLL     A
+1a88: 63 60        STAW    VV:60
+1a8a: 0b           MOV     A,C
+1a8b: 48 25        SLL     A
+1a8d: 63 43        STAW    VV:43
+1a8f: 09           MOV     A,EAL
+1a90: 07 0f        ANI     A,$0F
+1a92: 63 61        STAW    VV:61
+1a94: 69 00        MVI     A,$00
+1a96: 63 70        STAW    VV:70
+1a98: 23           DCX     DE
+1a99: 70 2e e6 2f  SDED    $2FE6
+1a9d: 0f           MOV     A,L
+1a9e: 7d 84        CALF    $0D84
+1aa0: 07 0f        ANI     A,$0F
+1aa2: 63 38        STAW    VV:38
+1aa4: 1a           MOV     B,A
+1aa5: 1b           MOV     C,A
+1aa6: 7c 37        CALF    $0C37
+1aa8: 63 33        STAW    VV:33
+1aaa: 7a 66        CALF    $0A66
+1aac: 01 36        LDAW    VV:36
+1aae: 63 37        STAW    VV:37
+1ab0: 01 38        LDAW    VV:38
+1ab2: 79 d1        CALF    $09D1
+1ab4: 79 95        CALF    $0995
+1ab6: 01 42        LDAW    VV:42
+1ab8: 74 e0 61     SUBW    VV:61
+1abb: 74 98 32     ORAW    VV:32
+1abe: 63 32        STAW    VV:32
+1ac0: aa           EI      
+1ac1: b8           RET     
+1ac2: 5d 2e        BIT     5,VV:2E
+1ac4: ca           JR      $1ACF
+1ac5: 75 77 00     EQIW    VV:77,$00
+1ac8: 4f 4b        JRE     $1A15
+1aca: 75 78 00     EQIW    VV:78,$00
+1acd: 4f 46        JRE     $1A15
+1acf: a9           DCX     EA
+1ad0: b6           DMOV    DE,EA
+1ad1: 69 ff        MVI     A,$FF
+1ad3: 63 70        STAW    VV:70
+1ad5: 4f 4a        JRE     $1A21
+1ad7: 2c           LDAX    (DE+)
+1ad8: 48 21        SLR     A
+1ada: 07 fe        ANI     A,$FE
+1adc: 17 80        ORI     A,$80
+1ade: 1f           MOV     L,A
+1adf: 01 33        LDAW    VV:33
+1ae1: 17 0f        ORI     A,$0F
+1ae3: 1e           MOV     H,A
+1ae4: b8           RET     
+1ae5: 2b           LDAX    (HL)
+1ae6: 7d 82        CALF    $0D82
+1ae8: 07 03        ANI     A,$03
+1aea: 48 a8        TABLE   
+1aec: c4           JR      $1AF1
+1aed: 06           illegal 
+1aee: 03           DCX     SP
+1aef: 08           MOV     A,EAH
+1af0: 04 2b 07     LXI     SP,$072B
+1af3: 0f           MOV     A,L
+1af4: 41           INR     A
+1af5: 48 2f        MUL     C
+1af7: 69 06        MVI     A,$06
+1af9: 48 3d        DIV     A
+1afb: 74 c0 70     ADDW    VV:70
+1afe: 63 70        STAW    VV:70
+1b00: 27 05        GTI     A,$05
+1b02: c5           JR      $1B08
+1b03: 66 06        SUI     A,$06
+1b05: 63 70        STAW    VV:70
+1b07: a8           INX     EA
+1b08: 70 1f 77 ff  LBCD    $FF77
+1b0c: 74 c5        DADD    EA,BC
+1b0e: b5           DMOV    BC,EA
+1b0f: 70 1e 77 ff  SBCD    $FF77
+1b13: b8           RET     
+1b14: 34 ef 2f     LXI     HL,$2FEF
+1b17: 69 00        MVI     A,$00
+1b19: 3b           STAX    (HL)
+1b1a: 6f f6        MVI     L,$F6
+1b1c: 3d           STAX    (HL+)
+1b1d: 3b           STAX    (HL)
+1b1e: 6f fe        MVI     L,$FE
+1b20: 3d           STAX    (HL+)
+1b21: 3b           STAX    (HL)
+1b22: 63 7b        STAW    VV:7B
+1b24: 63 7c        STAW    VV:7C
+1b26: 64 85 ff     MVI     TMM,$FF
+1b29: 64 4e 04     ONI     MKH,$04
+1b2c: fc           JR      $1B29
+1b2d: 64 07 ff     MVI     MKL,$FF
+1b30: 64 06 ff     MVI     MKH,$FF
+1b33: 64 00 01     MVI     PA,$01
+1b36: 64 01 10     MVI     PB,$10
+1b39: 15 67 80     ORIW    VV:67,$80
+1b3c: 69 23        MVI     A,$23
+1b3e: 4d d1        MOV     MCC,A
+1b40: 11           EXX     
+1b41: 24 ff 00     LXI     DE,$00FF
+1b44: 11           EXX     
+1b45: 01 7d        LDAW    VV:7D
+1b47: 63 71        STAW    VV:71
+1b49: 01 7e        LDAW    VV:7E
+1b4b: 63 72        STAW    VV:72
+1b4d: 55 68 10     OFFIW   VV:68,$10
+1b50: 4e 97        JRE     $1BE9
+1b52: 6f ff        MVI     L,$FF
+1b54: 40 66 1c     CALL    $1C66
+1b57: 40 66 1c     CALL    $1C66
+1b5a: 6b 1e        MVI     C,$1E
+1b5c: 40 66 1c     CALL    $1C66
+1b5f: 44 b8 01     LXI     EA,$01B8
+1b62: 74 be        DLT     EA,DE
+1b64: ed           JR      $1B52
+1b65: 44 3a 02     LXI     EA,$023A
+1b68: 74 ae        DGT     EA,DE
+1b6a: e7           JR      $1B52
+1b6b: 44 2c 01     LXI     EA,$012C
+1b6e: 48 d2        DMOV    ETM0,EA
+1b70: 53           DCR     C
+1b71: ea           JR      $1B5C
+1b72: 64 00 03     MVI     PA,$03
+1b75: 40 66 1c     CALL    $1C66
+1b78: 48 65        SKNIT   FE0
+1b7a: fa           JR      $1B75
+1b7b: 11           EXX     
+1b7c: 34 7b ff     LXI     HL,$FF7B
+1b7f: 14 02 00     LXI     BC,$0002
+1b82: 11           EXX     
+1b83: 40 d9 1c     CALL    $1CD9
+1b86: 48 1c        SKN     Z
+1b88: c4           JR      $1B8D
+1b89: 40 b2 1c     CALL    $1CB2
+1b8c: f6           JR      $1B83
+1b8d: 40 c2 1c     CALL    $1CC2
+1b90: 70 1f 7d ff  LBCD    $FF7D
+1b94: a5           DMOV    EA,BC
+1b95: 70 1f 7b ff  LBCD    $FF7B
+1b99: 74 fd        DEQ     EA,BC
+1b9b: 45 68 24     ONIW    VV:68,$24
+1b9e: d3           JR      $1BB2
+1b9f: 70 1e 7d ff  SBCD    $FF7D
+1ba3: 7f a6        CALF    $0FA6
+1ba5: b5           DMOV    BC,EA
+1ba6: 70 1e 7d ff  SBCD    $FF7D
+1baa: 64 06 fe     MVI     MKH,$FE
+1bad: 40 c8 14     CALL    $14C8
+1bb0: 4f 62        JRE     $1B14
+1bb2: 70 1e 71 ff  SBCD    $FF71
+1bb6: 11           EXX     
+1bb7: 6f 00        MVI     L,$00
+1bb9: 01 33        LDAW    VV:33
+1bbb: 07 30        ANI     A,$30
+1bbd: 1e           MOV     H,A
+1bbe: 14 00 10     LXI     BC,$1000
+1bc1: 11           EXX     
+1bc2: 64 00 05     MVI     PA,$05
+1bc5: 6b 00        MVI     C,$00
+1bc7: 6e 00        MVI     H,$00
+1bc9: 40 b2 1c     CALL    $1CB2
+1bcc: 5e 68        BIT     6,VV:68
+1bce: c4           JR      $1BD3
+1bcf: 40 d9 1c     CALL    $1CD9
+1bd2: c4           JR      $1BD7
+1bd3: 40 e2 1c     CALL    $1CE2
+1bd6: c0           JR      $1BD7
+1bd7: 48 1c        SKN     Z
+1bd9: c9           JR      $1BE3
+1bda: 43           INR     C
+1bdb: ed           JR      $1BC9
+1bdc: 40 99 1c     CALL    $1C99
+1bdf: 40 c2 1c     CALL    $1CC2
+1be2: e4           JR      $1BC7
+1be3: 40 99 1c     CALL    $1C99
+1be6: 54 2c 1d     JMP     $1D2C
+1be9: 11           EXX     
+1bea: 14 dc 05     LXI     BC,$05DC
+1bed: 11           EXX     
+1bee: 6f 00        MVI     L,$00
+1bf0: 69 0c        MVI     A,$0C
+1bf2: 4d cc        MOV     ETMM,A
+1bf4: 64 07 bf     MVI     MKL,$BF
+1bf7: 64 00 03     MVI     PA,$03
+1bfa: 69 ff        MVI     A,$FF
+1bfc: 19           MOV     EAL,A
+1bfd: 40 d4 1c     CALL    $1CD4
+1c00: 48 0c        SK      Z
+1c02: f7           JR      $1BFA
+1c03: 64 00 05     MVI     PA,$05
+1c06: 69 00        MVI     A,$00
+1c08: 19           MOV     EAL,A
+1c09: 40 f3 1c     CALL    $1CF3
+1c0c: 11           EXX     
+1c0d: 34 7d ff     LXI     HL,$FF7D
+1c10: 14 02 00     LXI     BC,$0002
+1c13: 11           EXX     
+1c14: 11           EXX     
+1c15: 2d           LDAX    (HL+)
+1c16: 11           EXX     
+1c17: 19           MOV     EAL,A
+1c18: 40 d4 1c     CALL    $1CD4
+1c1b: 48 1c        SKN     Z
+1c1d: c4           JR      $1C22
+1c1e: 40 bb 1c     CALL    $1CBB
+1c21: f2           JR      $1C14
+1c22: 40 cd 1c     CALL    $1CCD
+1c25: 11           EXX     
+1c26: 6f 00        MVI     L,$00
+1c28: 01 33        LDAW    VV:33
+1c2a: 07 30        ANI     A,$30
+1c2c: 1e           MOV     H,A
+1c2d: 14 00 10     LXI     BC,$1000
+1c30: 11           EXX     
+1c31: 6b 00        MVI     C,$00
+1c33: 6e 00        MVI     H,$00
+1c35: 40 bb 1c     CALL    $1CBB
+1c38: 11           EXX     
+1c39: 2d           LDAX    (HL+)
+1c3a: 11           EXX     
+1c3b: 19           MOV     EAL,A
+1c3c: 60 46        ADD     H,A
+1c3e: 40 d4 1c     CALL    $1CD4
+1c41: 48 1c        SKN     Z
+1c43: c9           JR      $1C4D
+1c44: 43           INR     C
+1c45: ef           JR      $1C35
+1c46: 40 a7 1c     CALL    $1CA7
+1c49: 40 cd 1c     CALL    $1CCD
+1c4c: e6           JR      $1C33
+1c4d: 40 a7 1c     CALL    $1CA7
+1c50: 11           EXX     
+1c51: 14 fa 00     LXI     BC,$00FA
+1c54: 11           EXX     
+1c55: 69 ff        MVI     A,$FF
+1c57: 19           MOV     EAL,A
+1c58: 40 f7 1c     CALL    $1CF7
+1c5b: 11           EXX     
+1c5c: 13           DCX     BC
+1c5d: 0a           MOV     A,B
+1c5e: 60 9b        ORA     A,C
+1c60: 11           EXX     
+1c61: 48 0c        SK      Z
+1c63: f1           JR      $1C55
+1c64: 4e c6        JRE     $1D2C
+1c66: 74 17 ff     XRI     L,$FF
+1c69: 40 74 1d     CALL    $1D74
+1c6c: 4c c2        MOV     A,PC
+1c6e: 60 97        XRA     A,L
+1c70: 57 08        OFFI    A,$08
+1c72: f6           JR      $1C69
+1c73: 10           EXA     
+1c74: 48 c0        DMOV    EA,ECNT
+1c76: b6           DMOV    DE,EA
+1c77: 10           EXA     
+1c78: 69 00        MVI     A,$00
+1c7a: 4d cc        MOV     ETMM,A
+1c7c: 69 04        MVI     A,$04
+1c7e: 4d cc        MOV     ETMM,A
+1c80: b8           RET     
+1c81: 69 01        MVI     A,$01
+1c83: 69 07        MVI     A,$07
+1c85: 69 09        MVI     A,$09
+1c87: 1a           MOV     B,A
+1c88: 44 00 00     LXI     EA,$0000
+1c8b: 40 66 1c     CALL    $1C66
+1c8e: 48 2b        STC     
+1c90: 48 45        SKIT    FE0
+1c92: 48 2a        CLC     
+1c94: 48 b0        DRLR    EA
+1c96: 52           DCR     B
+1c97: f3           JR      $1C8B
+1c98: b8           RET     
+1c99: 40 b2 1c     CALL    $1CB2
+1c9c: 40 83 1c     CALL    $1C83
+1c9f: 08           MOV     A,EAH
+1ca0: 60 c6        ADD     A,H
+1ca2: 77 00        EQI     A,$00
+1ca4: 4e c8        JRE     $1D6E
+1ca6: b8           RET     
+1ca7: 40 bb 1c     CALL    $1CBB
+1caa: 0e           MOV     A,H
+1cab: 48 3a        NEGA    
+1cad: 19           MOV     EAL,A
+1cae: 40 f7 1c     CALL    $1CF7
+1cb1: b8           RET     
+1cb2: 40 81 1c     CALL    $1C81
+1cb5: 08           MOV     A,EAH
+1cb6: 77 40        EQI     A,$40
+1cb8: 4e b4        JRE     $1D6E
+1cba: b8           RET     
+1cbb: 69 01        MVI     A,$01
+1cbd: 19           MOV     EAL,A
+1cbe: 40 f5 1c     CALL    $1CF5
+1cc1: b8           RET     
+1cc2: 40 85 1c     CALL    $1C85
+1cc5: 24 c0 ff     LXI     DE,$FFC0
+1cc8: 74 fe        DEQ     EA,DE
+1cca: 4e a2        JRE     $1D6E
+1ccc: b8           RET     
+1ccd: 44 ff 03     LXI     EA,$03FF
+1cd0: 40 f9 1c     CALL    $1CF9
+1cd3: b8           RET     
+1cd4: 40 f7 1c     CALL    $1CF7
+1cd7: 11           EXX     
+1cd8: d4           JR      $1CED
+1cd9: 40 83 1c     CALL    $1C83
+1cdc: 08           MOV     A,EAH
+1cdd: 60 46        ADD     H,A
+1cdf: 11           EXX     
+1ce0: 3d           STAX    (HL+)
+1ce1: cb           JR      $1CED
+1ce2: 40 83 1c     CALL    $1C83
+1ce5: 08           MOV     A,EAH
+1ce6: 60 46        ADD     H,A
+1ce8: 11           EXX     
+1ce9: 70 fd        EQAX    (HL+)
+1ceb: 4e 81        JRE     $1D6E
+1ced: 13           DCX     BC
+1cee: 0a           MOV     A,B
+1cef: 60 9b        ORA     A,C
+1cf1: 11           EXX     
+1cf2: b8           RET     
+1cf3: 69 00        MVI     A,$00
+1cf5: 69 01        MVI     A,$01
+1cf7: 69 07        MVI     A,$07
+1cf9: 69 09        MVI     A,$09
+1cfb: 1a           MOV     B,A
+1cfc: 48 b0        DRLR    EA
+1cfe: 48 0a        SK      CY
+1d00: cb           JR      $1D0C
+1d01: 24 f4 01     LXI     DE,$01F4
+1d04: 74 4f 80     ONI     L,$80
+1d07: 6f 80        MVI     L,$80
+1d09: 6f 40        MVI     L,$40
+1d0b: ca           JR      $1D16
+1d0c: 24 7d 00     LXI     DE,$007D
+1d0f: 74 4f 80     ONI     L,$80
+1d12: 6f c0        MVI     L,$C0
+1d14: 6f 00        MVI     L,$00
+1d16: 40 74 1d     CALL    $1D74
+1d19: 48 3b        HALT    
+1d1b: 10           EXA     
+1d1c: a6           DMOV    EA,DE
+1d1d: 48 d3        DMOV    ETM1,EA
+1d1f: 10           EXA     
+1d20: 4c c1        MOV     A,PB
+1d22: 07 3f        ANI     A,$3F
+1d24: 60 9f        ORA     A,L
+1d26: 4d c1        MOV     PB,A
+1d28: 52           DCR     B
+1d29: 4f d1        JRE     $1CFC
+1d2b: b8           RET     
+1d2c: 55 68 10     OFFIW   VV:68,$10
+1d2f: c8           JR      $1D38
+1d30: 70 3f 7b ff  LHLD    $FF7B
+1d34: 70 3e 7d ff  SHLD    $FF7D
+1d38: 7f a6        CALF    $0FA6
+1d3a: 64 06 fe     MVI     MKH,$FE
+1d3d: 40 c8 14     CALL    $14C8
+1d40: 69 00        MVI     A,$00
+1d42: 63 21        STAW    VV:21
+1d44: 63 24        STAW    VV:24
+1d46: 63 68        STAW    VV:68
+1d48: 05 67 7f     ANIW    VV:67,$7F
+1d4b: 69 1b        MVI     A,$1B
+1d4d: 4d d1        MOV     MCC,A
+1d4f: 69 0c        MVI     A,$0C
+1d51: 4d cc        MOV     ETMM,A
+1d53: 64 85 61     MVI     TMM,$61
+1d56: 64 06 04     MVI     MKH,$04
+1d59: 59 63        BIT     1,VV:63
+1d5b: 69 bf        MVI     A,$BF
+1d5d: 69 b7        MVI     A,$B7
+1d5f: 4d c7        MOV     MKL,A
+1d61: 48 4a        SKIT    FST
+1d63: 00           NOP     
+1d64: 69 f8        MVI     A,$F8
+1d66: 4d d8        MOV     TXB,A
+1d68: 40 1c 10     CALL    $101C
+1d6b: 54 ce 03     JMP     $03CE
+1d6e: 04 ff ff     LXI     SP,$FFFF
+1d71: 54 14 1b     JMP     $1B14
+1d74: 4c c1        MOV     A,PB
+1d76: 07 c0        ANI     A,$C0
+1d78: 30 62        DCRW    VV:62
+1d7a: c5           JR      $1D80
+1d7b: 71 62 04     MVIW    VV:62,$04
+1d7e: 17 10        ORI     A,$10
+1d80: 4d c1        MOV     PB,A
+1d82: 70 69 00 40  MOV     A,($4000)
+1d86: 47 01        ONI     A,$01
+1d88: b8           RET     
+1d89: 04 ff ff     LXI     SP,$FFFF
+1d8c: 4f 9e        JRE     $1D2C
+1d8e: 01 00        LDAW    VV:00
+1d90: 00           NOP     
+1d91: 00           NOP     
+1d92: 04 01 00     LXI     SP,$0001
+1d95: 01 00        LDAW    VV:00
+1d97: 00           NOP     
+1d98: 00           NOP     
+1d99: 00           NOP     
+1d9a: 04 00 00     LXI     SP,$0000
+1d9d: 01 00        LDAW    VV:00
+1d9f: 00           NOP     
+1da0: 01 00        LDAW    VV:00
+1da2: 04 01 00     LXI     SP,$0001
+1da5: 00           NOP     
+1da6: 01 00        LDAW    VV:00
+1da8: 00           NOP     
+1da9: 01 04        LDAW    VV:04
+1dab: 00           NOP     
+1dac: 01 00        LDAW    VV:00
+1dae: 01 00        LDAW    VV:00
+1db0: 00           NOP     
+1db1: 01 00        LDAW    VV:00
+1db3: 04 00 01     LXI     SP,$0100
+1db6: 00           NOP     
+1db7: 00           NOP     
+1db8: 01 01        LDAW    VV:01
+1dba: 04 00 00     LXI     SP,$0000
+1dbd: 00           NOP     
+1dbe: 0c           MOV     A,D
+1dbf: 01 00        LDAW    VV:00
+1dc1: 0c           MOV     A,D
+1dc2: 04 01 00     LXI     SP,$0001
+1dc5: 0c           MOV     A,D
+1dc6: 04 01 00     LXI     SP,$0001
+1dc9: 01 00        LDAW    VV:00
+1dcb: 01 00        LDAW    VV:00
+1dcd: 01 0c        LDAW    VV:0C
+1dcf: 08           MOV     A,EAH
+1dd0: 04 00 00     LXI     SP,$0000
+1dd3: 00           NOP     
+1dd4: c0           JR      $1DD5
+1dd5: 80           CALT    ($0080)
+1dd6: 40 30 20     CALL    $2030
+1dd9: 10           EXA     
+1dda: 0e           MOV     A,H
+1ddb: 01 00        LDAW    VV:00
+1ddd: 01 01        LDAW    VV:01
+1ddf: 00           NOP     
+1de0: 00           NOP     
+1de1: 04 01 00     LXI     SP,$0001
+1de4: 00           NOP     
+1de5: 00           NOP     
+1de6: 00           NOP     
+1de7: 02           INX     SP
+1de8: 01 00        LDAW    VV:00
+1dea: 04 00 00     LXI     SP,$0000
+1ded: 01 01        LDAW    VV:01
+1def: 00           NOP     
+1df0: 00           NOP     
+1df1: 00           NOP     
+1df2: 00           NOP     
+1df3: 00           NOP     
+1df4: 00           NOP     
+1df5: 00           NOP     
+1df6: 04 00 00     LXI     SP,$0000
+1df9: 00           NOP     
+1dfa: 00           NOP     
+1dfb: 00           NOP     
+1dfc: 01 00        LDAW    VV:00
+1dfe: 01 00        LDAW    VV:00
+1e00: 04 00 00     LXI     SP,$0000
+1e03: 00           NOP     
+1e04: 01 00        LDAW    VV:00
+1e06: 04 00 00     LXI     SP,$0000
+1e09: 00           NOP     
+1e0a: 00           NOP     
+1e0b: 04 05 04     LXI     SP,$0405
+1e0e: 40 20 20     CALL    $2020
+1e11: 20 20        INRW    VV:20
+1e13: 30 20        DCRW    VV:20
+1e15: 20 20        INRW    VV:20
+1e17: 20 20        INRW    VV:20
+1e19: 20 20        INRW    VV:20
+1e1b: 20 20        INRW    VV:20
+1e1d: 30 20        DCRW    VV:20
+1e1f: 20 20        INRW    VV:20
+1e21: 20 20        INRW    VV:20
+1e23: 20 20        INRW    VV:20
+1e25: 20 20        INRW    VV:20
+1e27: 20 20        INRW    VV:20
+1e29: 20 20        INRW    VV:20
+1e2b: 20 30        INRW    VV:30
+1e2d: 20 20        INRW    VV:20
+1e2f: 20 20        INRW    VV:20
+1e31: 30 20        DCRW    VV:20
+1e33: 20 20        INRW    VV:20
+1e35: 20 20        INRW    VV:20
+1e37: 20 20        INRW    VV:20
+1e39: 20 20        INRW    VV:20
+1e3b: 20 30        INRW    VV:30
+1e3d: 00           NOP     
+1e3e: 20 30        INRW    VV:30
+1e40: 00           NOP     
+1e41: 00           NOP     
+1e42: 20 30        INRW    VV:30
+1e44: 00           NOP     
+1e45: 00           NOP     
+1e46: 20 30        INRW    VV:30
+1e48: 20 30        INRW    VV:30
+1e4a: 20 30        INRW    VV:30
+1e4c: 60 30        SUBNB   V,A
+1e4e: 20 00        INRW    VV:00
+1e50: 30 03        DCRW    VV:03
+1e52: 22           INX     DE
+1e53: 01 30        LDAW    VV:30
+1e55: 00           NOP     
+1e56: 20 00        INRW    VV:00
+1e58: 30 00        DCRW    VV:00
+1e5a: 20 70        INRW    VV:70
+1e5c: 00           NOP     
+1e5d: 70 20        illegal 
+1e5f: 24 30 00     LXI     DE,$0030
+1e62: 28           illegal 
+1e63: 20 30        INRW    VV:30
+1e65: 04 20 24     LXI     SP,$2420
+1e68: 30 00        DCRW    VV:00
+1e6a: 28           illegal 
+1e6b: 00           NOP     
+1e6c: 30 0c        DCRW    VV:0C
+1e6e: a0           POP     VA
+1e6f: 20 20        INRW    VV:20
+1e71: 20 20        INRW    VV:20
+1e73: 00           NOP     
+1e74: 20 00        INRW    VV:00
+1e76: 20 00        INRW    VV:00
+1e78: 20 00        INRW    VV:00
+1e7a: 20 00        INRW    VV:00
+1e7c: 30 00        DCRW    VV:00
+1e7e: 20 00        INRW    VV:00
+1e80: 30 00        DCRW    VV:00
+1e82: 00           NOP     
+1e83: 00           NOP     
+1e84: 00           NOP     
+1e85: 00           NOP     
+1e86: 30 00        DCRW    VV:00
+1e88: 00           NOP     
+1e89: 00           NOP     
+1e8a: 00           NOP     
+1e8b: 00           NOP     
+1e8c: 00           NOP     
+1e8d: 00           NOP     
+1e8e: 41           INR     A
+1e8f: 00           NOP     
+1e90: 10           EXA     
+1e91: 00           NOP     
+1e92: 21           JB      
+1e93: 00           NOP     
+1e94: 20 00        INRW    VV:00
+1e96: 31           BLOCK   
+1e97: 50           EXH     
+1e98: 50           EXH     
+1e99: 50           EXH     
+1e9a: 41           INR     A
+1e9b: 60 60        SUB     V,A
+1e9d: 61           DAA     
+1e9e: 31           BLOCK   
+1e9f: 00           NOP     
+1ea0: 10           EXA     
+1ea1: 00           NOP     
+1ea2: 21           JB      
+1ea3: 00           NOP     
+1ea4: 20 00        INRW    VV:00
+1ea6: 31           BLOCK   
+1ea7: 50           EXH     
+1ea8: 50           EXH     
+1ea9: 50           EXH     
+1eaa: 41           INR     A
+1eab: 60 61        SUB     A,A
+1ead: 60 31        SUBNB   A,A
+1eaf: 00           NOP     
+1eb0: 10           EXA     
+1eb1: 00           NOP     
+1eb2: 21           JB      
+1eb3: 01 20        LDAW    VV:20
+1eb5: 00           NOP     
+1eb6: 31           BLOCK   
+1eb7: 50           EXH     
+1eb8: 50           EXH     
+1eb9: 50           EXH     
+1eba: 41           INR     A
+1ebb: 60 61        SUB     A,A
+1ebd: 60 31        SUBNB   A,A
+1ebf: 01 10        LDAW    VV:10
+1ec1: 01 21        LDAW    VV:21
+1ec3: 01 20        LDAW    VV:20
+1ec5: 01 31        LDAW    VV:31
+1ec7: 51           DCR     A
+1ec8: 50           EXH     
+1ec9: 51           DCR     A
+1eca: 40 61 60     CALL    $6061
+1ecd: 61           DAA     
+1ece: 31           BLOCK   
+1ecf: 00           NOP     
+1ed0: 00           NOP     
+1ed1: 01 00        LDAW    VV:00
+1ed3: 00           NOP     
+1ed4: 01 00        LDAW    VV:00
+1ed6: 00           NOP     
+1ed7: 01 00        LDAW    VV:00
+1ed9: 00           NOP     
+1eda: 01 00        LDAW    VV:00
+1edc: 00           NOP     
+1edd: 01 01        LDAW    VV:01
+1edf: 00           NOP     
+1ee0: 00           NOP     
+1ee1: 00           NOP     
+1ee2: 01 01        LDAW    VV:01
+1ee4: 00           NOP     
+1ee5: 00           NOP     
+1ee6: 01 00        LDAW    VV:00
+1ee8: 00           NOP     
+1ee9: 00           NOP     
+1eea: 01 00        LDAW    VV:00
+1eec: 01 00        LDAW    VV:00
+1eee: 01 00        LDAW    VV:00
+1ef0: 00           NOP     
+1ef1: 00           NOP     
+1ef2: 00           NOP     
+1ef3: 00           NOP     
+1ef4: 00           NOP     
+1ef5: 00           NOP     
+1ef6: 01 00        LDAW    VV:00
+1ef8: 00           NOP     
+1ef9: 00           NOP     
+1efa: 00           NOP     
+1efb: 00           NOP     
+1efc: 00           NOP     
+1efd: 00           NOP     
+1efe: 01 00        LDAW    VV:00
+1f00: 00           NOP     
+1f01: 00           NOP     
+1f02: 00           NOP     
+1f03: 00           NOP     
+1f04: 00           NOP     
+1f05: 00           NOP     
+1f06: 01 00        LDAW    VV:00
+1f08: 00           NOP     
+1f09: 00           NOP     
+1f0a: 00           NOP     
+1f0b: 00           NOP     
+1f0c: 00           NOP     
+1f0d: 00           NOP     
+1f0e: 0f           MOV     A,L
+1f0f: 40 0f 40     CALL    $400F
+1f12: 0f           MOV     A,L
+1f13: 40 0f 40     CALL    $400F
+1f16: 0f           MOV     A,L
+1f17: 40 0f 43     CALL    $430F
+1f1a: 9f           CALT    ($00BE)
+1f1b: 40 1f 40     CALL    $401F
+1f1e: 40 0c 4a     CALL    $4A0C
+1f21: 00           NOP     
+1f22: 40 0c 54     CALL    $540C
+1f25: 00           NOP     
+1f26: 40 0c 54     CALL    $540C
+1f29: 00           NOP     
+1f2a: 40 0c 54     CALL    $540C
+1f2d: 00           NOP     
+1f2e: 34 00 20     LXI     HL,$2000
+1f31: 69 00        MVI     A,$00
+1f33: 3d           STAX    (HL+)
+1f34: 74 3e 30     LTI     H,$30
+1f37: c1           JR      $1F39
+1f38: fa           JR      $1F33
+1f39: 34 80 2f     LXI     HL,$2F80
+1f3c: 44 0f 40     LXI     EA,$400F
+1f3f: 6b 0f        MVI     C,$0F
+1f41: 48 95        STEAX   (HL++)
+1f43: 48 95        STEAX   (HL++)
+1f45: 48 95        STEAX   (HL++)
+1f47: 32           INX     HL
+1f48: 32           INX     HL
+1f49: 53           DCR     C
+1f4a: f6           JR      $1F41
+1f4b: 34 8e 1d     LXI     HL,$1D8E
+1f4e: 24 00 20     LXI     DE,$2000
+1f51: 6b 7f        MVI     C,$7F
+1f53: 31           BLOCK   
+1f54: 24 00 21     LXI     DE,$2100
+1f57: 6b 7f        MVI     C,$7F
+1f59: 31           BLOCK   
+1f5a: 24 00 2c     LXI     DE,$2C00
+1f5d: 6b 7f        MVI     C,$7F
+1f5f: 31           BLOCK   
+1f60: 24 80 2f     LXI     DE,$2F80
+1f63: 6b 07        MVI     C,$07
+1f65: 40 6d 1f     CALL    $1F6D
+1f68: 24 86 2f     LXI     DE,$2F86
+1f6b: 6b 07        MVI     C,$07
+1f6d: 2d           LDAX    (HL+)
+1f6e: 3c           STAX    (DE+)
+1f6f: 2d           LDAX    (HL+)
+1f70: 3e           STAX    (DE-)
+1f71: 74 45 08     ADI     E,$08
+1f74: 53           DCR     C
+1f75: f7           JR      $1F6D
+1f76: b8           RET     
+1f77: 00           NOP     
+1f78: 00           NOP     
+1f79: 00           NOP     
+1f7a: 00           NOP     
+1f7b: 00           NOP     
+1f7c: 00           NOP     
+1f7d: 00           NOP     
+1f7e: 00           NOP     
+1f7f: 00           NOP     
+1f80: 04 04 04     LXI     SP,$0404
+1f83: 04 06 06     LXI     SP,$0606
+1f86: 06           illegal 
+1f87: 06           illegal 
+1f88: 08           MOV     A,EAH
+1f89: 08           MOV     A,EAH
+1f8a: 08           MOV     A,EAH
+1f8b: 08           MOV     A,EAH
+1f8c: 0a           MOV     A,B
+1f8d: 0a           MOV     A,B
+1f8e: 0a           MOV     A,B
+1f8f: 0a           MOV     A,B
+1f90: 0c           MOV     A,D
+1f91: 0c           MOV     A,D
+1f92: 0e           MOV     A,H
+1f93: 0e           MOV     A,H
+1f94: 10           EXA     
+1f95: 10           EXA     
+1f96: 12           INX     BC
+1f97: 12           INX     BC
+1f98: 14 14 16     LXI     BC,$1614
+1f9b: 16 18        XRI     A,$18
+1f9d: 18           MOV     EAH,A
+1f9e: 1a           MOV     B,A
+1f9f: 1a           MOV     B,A
+1fa0: 1c           MOV     D,A
+1fa1: 1c           MOV     D,A
+1fa2: 1e           MOV     H,A
+1fa3: 20 22        INRW    VV:22
+1fa5: 24 26 28     LXI     DE,$2826
+1fa8: 2a           LDAX    (DE)
+1fa9: 2c           LDAX    (DE+)
+1faa: 30 28        DCRW    VV:28
+1fac: 36 38        SUINB   A,$38
+1fae: 3c           STAX    (DE+)
+1faf: 3e           STAX    (DE-)
+1fb0: 42           INR     B
+1fb1: 46 4a        ADI     A,$4A
+1fb3: 4e 52        JRE     $2007
+1fb5: 56 5a        ACI     A,$5A
+1fb7: 5e 62        BIT     6,VV:62
+1fb9: 66 6a        SUI     A,$6A
+1fbb: 6e 72        MVI     H,$72
+1fbd: 76 7a        SBI     A,$7A
+1fbf: 7e 02        CALF    $0E02
+1fc1: 02           INX     SP
+1fc2: 04 06 08     LXI     SP,$0806
+1fc5: 0a           MOV     A,B
+1fc6: 0c           MOV     A,D
+1fc7: 0e           MOV     A,H
+1fc8: 10           EXA     
+1fc9: 12           INX     BC
+1fca: 14 16 18     LXI     BC,$1816
+1fcd: 1a           MOV     B,A
+1fce: 1c           MOV     D,A
+1fcf: 1e           MOV     H,A
+1fd0: 20 22        INRW    VV:22
+1fd2: 24 26 28     LXI     DE,$2826
+1fd5: 2a           LDAX    (DE)
+1fd6: 2c           LDAX    (DE+)
+1fd7: 2e           LDAX    (DE-)
+1fd8: 30 32        DCRW    VV:32
+1fda: 34 36 38     LXI     HL,$3836
+1fdd: 3a           STAX    (DE)
+1fde: 3c           STAX    (DE+)
+1fdf: 3e           STAX    (DE-)
+1fe0: 40 42 44     CALL    $4442
+1fe3: 46 48        ADI     A,$48
+1fe5: 4a 4c        MVIX    DE,$4C
+1fe7: 4e 50        JRE     $2039
+1fe9: 52           DCR     B
+1fea: 54 56 58     JMP     $5856
+1fed: 5a 5c        BIT     2,VV:5C
+1fef: 5e 60        BIT     6,VV:60
+1ff1: 62           RETI    
+1ff2: 64 66 68     SUI     MKH,$68
+1ff5: 6a 6c        MVI     B,$6C
+1ff7: 6e 70        MVI     H,$70
+1ff9: 72           SOFTI   
+1ffa: 74 76 78     SBI     H,$78
+1ffd: 7a 7c        CALF    $0A7C
+1fff: 7e 54        CALF    $0E00
