@@ -594,14 +594,14 @@ Jmp from 0386
 03a6: 08           MOV     A,EAH
 03a7: 63 33        STAW    VV:33
 03a9: 99           CALT    ($00B2)   // tbl to 101d
-03aa: 74 bd        DLT     EA,BC
+03aa: 74 bd        DLT     EA,BC     // Skip next if LT
 03ac: ce           JR      $03BB
 03ad: 24 7f 03     LXI     DE,$037F
 03b0: 74 c6        DADD    EA,DE
-03b2: 74 af        DGT     EA,HL
+03b2: 74 af        DGT     EA,HL     // Skip next if GT
 03b4: c6           JR      $03BB
 03b5: a7           DMOV    EA,HL
-03b6: 74 bd        DLT     EA,BC
+03b6: 74 bd        DLT     EA,BC     // Skip next if LT
 03b8: 40 8c 10     CALL    $108C     //
 03bb: 75 33 30     EQIW    VV:33,$30
 03be: c9           JR      $03C8
@@ -620,7 +620,7 @@ Jmp from 0386
 03df: 71 0a 00     MVIW    VV:0A,$00
 03e2: 40 2e 0f     CALL    $0F2E     //
 03e5: 7d b7        CALF    $0DB7     //
-03e7: 74 bd        DLT     EA,BC
+03e7: 74 bd        DLT     EA,BC     // Skip next if LT
 03e9: c6           JR      $03F0
 03ea: 99           CALT    ($00B2)   // tbl to 101d
 03eb: 13           DCX     BC
@@ -821,7 +821,7 @@ Dest from 0550
 056a: 99           CALT    ($00B2)   // tbl to 101d
 056b: 12           INX     BC
 056c: 7d b7        CALF    $0DB7     //
-056e: 74 bd        DLT     EA,BC
+056e: 74 bd        DLT     EA,BC     // Skip next if LT
 0570: c9           JR      $057A
 0571: 70 1f 75 ff  LBCD    $FF75
 0575: 5d 2e        BIT     5,VV:2E   // Test bit 5 of vv:2e, skip next if it's set
@@ -1300,7 +1300,7 @@ Table func from 0084?
 08df: 5d 47        BIT     5,VV:47   // Test bit 5 of vv:47, skip next if it's set
 08e1: 4e 51        JRE     $0934
 08e3: 4e 23        JRE     $0908
-08e5: 20 32        INRW    VV:32
+08e5: 20 32        INRW    VV:32     // Increment
 08e7: 5d 47        BIT     5,VV:47   // Test bit 5 of vv:47, skip next if it's set
 08e9: 4e 25        JRE     $0910
 08eb: 55 2e 08     OFFIW   VV:2E,$08 // Skip next if & result is 0
@@ -2220,7 +2220,7 @@ Fixed area func from 0e1a, 10e1, 1fbf
 0e02: 99           CALT    ($00B2)   // tbl to 101d
 Fixed area func from 0ea7
 0e03: a7           DMOV    EA,HL
-0e04: 74 ad        DGT     EA,BC
+0e04: 74 ad        DGT     EA,BC     // Skip next if GT
 0e06: c1           JR      $0E08
 0e07: b9           RETS
 0e08: 44 00 00     LXI     EA,$0000
@@ -2323,7 +2323,7 @@ Fixed area func from 060e, 0646
 0e9f: 63 7f        STAW    VV:7F
 0ea1: 99           CALT    ($00B2)   // tbl to 101d
 0ea2: 7d b7        CALF    $0DB7     //
-0ea4: 74 bd        DLT     EA,BC
+0ea4: 74 bd        DLT     EA,BC     // Skip next if LT
 0ea6: c6           JR      $0EAD
 0ea7: 7e 03        CALF    $0E03     //
 0ea9: b8           RET
@@ -2352,7 +2352,7 @@ Fixed area func from 0e23, 0eb3
 Fixed area func from 05da, 0e31, 0e4b, 0e5e, 0e97, 0ec3, 1111
 0ec7: 7d b7        CALF    $0DB7     //
 0ec9: 99           CALT    ($00B2)   // tbl to 101d
-0eca: 74 bd        DLT     EA,BC
+0eca: 74 bd        DLT     EA,BC     // Skip next if LT
 0ecc: 7d e5        CALF    $0DE5     //
 0ece: 71 68 00     MVIW    VV:68,$00
 
@@ -2440,7 +2440,7 @@ Func from 0508, 05fe, 0648,
 0f4b: d5           JR      $0F61
 0f4c: 99           CALT    ($00B2)   // tbl to 101d
 0f4d: 7d b7        CALF    $0DB7     //
-0f4f: 74 ad        DGT     EA,BC
+0f4f: 74 ad        DGT     EA,BC     // Skip next if GT
 0f51: 4e 2d        JRE     $0F80
 0f53: a5           DMOV    EA,BC
 0f54: b6           DMOV    DE,EA
@@ -2457,7 +2457,7 @@ Func from 0508, 05fe, 0648,
 0f64: 99           CALT    ($00B2)   // tbl to 101d
 0f65: 24 75 ff     LXI     DE,$FF75
 0f68: 48 82        LDEAX   (DE)
-0f6a: 74 bd        DLT     EA,BC
+0f6a: 74 bd        DLT     EA,BC     // Skip next if LT
 0f6c: d3           JR      $0F80
 0f6d: 13           DCX     BC
 0f6e: 33           DCX     HL
@@ -2581,10 +2581,10 @@ Func from 1dce, 02c2, 02cb, 03d9
 1039: 40 25 0f     CALL    $0F25     //
 103c: b7           DMOV    HL,EA
 103d: 7d b7        CALF    $0DB7     //
-103f: 74 af        DGT     EA,HL
+103f: 74 af        DGT     EA,HL     // Skip next if GT
 1041: c1           JR      $1043
 1042: c3           JR      $1046
-1043: 74 bd        DLT     EA,BC
+1043: 74 bd        DLT     EA,BC     // Skip next if LT
 1045: c6           JR      $104C
 1046: 74 0a 0f     ANI     B,$0F
 1049: a5           DMOV    EA,BC
@@ -2623,11 +2623,11 @@ Func from 10b6, 10c6, 052a, 0e2b, 0e58
 107a: 70 41        EADD    EA,A
 107c: 70 3f 75 ff  LHLD    $FF75
 1080: 74 c7        DADD    EA,HL
-1082: 74 ff        DEQ     EA,HL
+1082: 74 ff        DEQ     EA,HL     // Skip next if equal
 1084: a9           DCX     EA
 1085: b7           DMOV    HL,EA
 1086: 7d b7        CALF    $0DB7     //
-1088: 74 bf        DLT     EA,HL
+1088: 74 bf        DLT     EA,HL     // Skip next if LT
 108a: a7           DMOV    EA,HL
 108b: b8           RET
 
@@ -2654,23 +2654,23 @@ Func from 03b8, 064d
 10b1: 40 27 11     CALL    $1127     //
 10b4: 4e 55        JRE     $110B
 10b6: 40 61 10     CALL    $1061     //
-10b9: 74 ff        DEQ     EA,HL
+10b9: 74 ff        DEQ     EA,HL     // Skip next if equal
 10bb: 4e 57        JRE     $1114
 10bd: 70 3e 77 ff  SHLD    $FF77
 10c1: 40 27 11     CALL    $1127     //
 10c4: 4e 45        JRE     $110B
 10c6: 40 61 10     CALL    $1061     //
 10c9: 70 3f 77 ff  LHLD    $FF77
-10cd: 74 af        DGT     EA,HL
+10cd: 74 af        DGT     EA,HL     // Skip next if GT
 10cf: 4e 43        JRE     $1114
 10d1: 24 7b ff     LXI     DE,$FF7B
 10d4: 48 92        STEAX   (DE)
 10d6: a7           DMOV    EA,HL
 10d7: 99           CALT    ($00B2)   // tbl to 101d
-10d8: 74 bd        DLT     EA,BC
+10d8: 74 bd        DLT     EA,BC     // Skip next if LT
 10da: c6           JR      $10E1
 10db: 48 82        LDEAX   (DE)
-10dd: 74 bd        DLT     EA,BC
+10dd: 74 bd        DLT     EA,BC     // Skip next if LT
 10df: 4e 33        JRE     $1114
 10e1: 7e 02        CALF    $0E02     //
 10e3: 4e 3b        JRE     $1120
@@ -2689,7 +2689,7 @@ Func from 03b8, 064d
 10fe: 70 2f 7b ff  LDED    $FF7B
 1102: 34 77 ff     LXI     HL,$FF77
 1105: 48 83        LDEAX   (HL)
-1107: 74 ae        DGT     EA,DE
+1107: 74 ae        DGT     EA,DE     // Skip next if GT
 1109: 4f d6        JRE     $10E1
 110b: 71 21 00     MVIW    VV:21,$00
 110e: 71 24 00     MVIW    VV:24,$00
@@ -3488,7 +3488,7 @@ Serial ISR:
 1635: 48 49        SKIT    FSR       // Skip next if int flag is set: FSR is Ser Rx Full
 1637: f0           JR      $1628     // Jmp R??? back ~10
 From 1634:
-1638: 4c d9        MOV     A,RXB     // Get RXBuffer into A
+1638: 4c d9        MOV     A,RXB     // Get RxBuffer into A
 163a: 48 6b        SKNIT   ER        // Skip next if ser rx irq set
 163c: 4e b6        JRE     $16F4     // Skip way fwd
 163e: 1c           MOV     D,A
@@ -4068,7 +4068,7 @@ Func from 0530,
 1a27: 70 2f 75 ff  LDED    $FF75
 1a2b: 70 3f e6 2f  LHLD    $2FE6
 1a2f: a7           DMOV    EA,HL
-1a30: 74 ae        DGT     EA,DE
+1a30: 74 ae        DGT     EA,DE     // Skip next if GT
 1a32: cf           JR      $1A42
 1a33: 40 3d 1b     CALL    $1B3D     //
 1a36: 40 4b 1b     CALL    $1B4B     //
@@ -4123,19 +4123,19 @@ func from 0512,
 1a8f: 7d b7        CALF    $0DB7     //
 1a91: a2           POP     DE
 1a92: a8           INX     EA
-1a93: 74 ae        DGT     EA,DE
+1a93: 74 ae        DGT     EA,DE     // Skip next if GT
 1a95: 4e 91        JRE     $1B28
 1a97: 40 3d 1b     CALL    $1B3D     //
 1a9a: 40 4b 1b     CALL    $1B4B     //
 1a9d: 70 1f 51 ff  LBCD    $FF51
-1aa1: 74 bd        DLT     EA,BC
+1aa1: 74 bd        DLT     EA,BC     // Skip next if LT
 1aa3: c8           JR      $1AAC
 1aa4: 2b           LDAX    (HL)
 1aa5: 57 80        OFFI    A,$80     // Skip next if & result is 0
 1aa7: 74 27 08     ADINC   L,$08
 1aaa: e3           JR      $1A8E
 1aab: ee           JR      $1A9A
-1aac: 74 fd        DEQ     EA,BC
+1aac: 74 fd        DEQ     EA,BC     // Skip next if equal
 1aae: 4e 21        JRE     $1AD1
 1ab0: 01 70        LDAW    VV:70
 1ab2: 48 25        SLL     A
@@ -4148,7 +4148,7 @@ func from 0512,
 1abf: b2           PUSH    DE
 1ac0: 7d b7        CALF    $0DB7     //
 1ac2: a2           POP     DE
-1ac3: 74 be        DLT     EA,DE
+1ac3: 74 be        DLT     EA,DE     // Skip next if LT
 1ac5: 4f c0        JRE     $1A87
 1ac7: 5d 2e        BIT     5,VV:2E   // Test bit 5 of vv:2e, skip next if it's set
 1ac9: 4e 6b        JRE     $1B36
@@ -4291,10 +4291,10 @@ Func from 1a36, 1a9a
 1bc0: 6b 1e        MVI     C,$1E
 1bc2: 40 cc 1c     CALL    $1CCC     //
 1bc5: 44 b8 01     LXI     EA,$01B8
-1bc8: 74 be        DLT     EA,DE
+1bc8: 74 be        DLT     EA,DE     // Skip next if LT
 1bca: ed           JR      $1BB8
 1bcb: 44 3a 02     LXI     EA,$023A
-1bce: 74 ae        DGT     EA,DE
+1bce: 74 ae        DGT     EA,DE     // Skip next if GT
 1bd0: e7           JR      $1BB8
 1bd1: 44 2c 01     LXI     EA,$012C
 1bd4: 48 d2        DMOV    ETM0,EA
@@ -4317,7 +4317,7 @@ Func from 1a36, 1a9a
 1bf6: 70 1f 7d ff  LBCD    $FF7D
 1bfa: a5           DMOV    EA,BC
 1bfb: 70 1f 7b ff  LBCD    $FF7B
-1bff: 74 fd        DEQ     EA,BC
+1bff: 74 fd        DEQ     EA,BC     // Skip next if equal
 1c01: 45 68 24     ONIW    VV:68,$24 // Check mask x24, ship next if nonzero
 1c04: d3           JR      $1C18
 1c05: 70 1e 7d ff  SBCD    $FF7D
@@ -4493,7 +4493,7 @@ Func from 1c84, 1c9b, 1d0d
 Func from 1bf3, 1c45
 1d28: 40 eb 1c     CALL    $1CEB     //
 1d2b: 24 c0 ff     LXI     DE,$FFC0
-1d2e: 74 fe        DEQ     EA,DE
+1d2e: 74 fe        DEQ     EA,DE     // Skip next if equal
 1d30: 4e a2        JRE     $1DD4
 1d32: b8           RET
 
