@@ -6,7 +6,7 @@ _Because they sometimes lurk in unexpected places._
 
 Instruction suffixes often encode where the operand is, and there are similar families of instructions with different oper locn's.
 
-**W doesn't mean Word**
+**W doesn't mean Word.  It means indexed off VV.s**
 
 * W = Working Register = offset from VV
 * A = Register A
@@ -39,6 +39,24 @@ It looks like there are cases with series of conditionals, so marking them `/cs`
 And I'll put an `x` in the table below when the disassembly has no instances of the instruction, or a number indicating how may there are.
 ## Instructions
 
+### The common ones
+
+* BIT - test a single VV:xx bit, skip next if set.
+* OFFI - and a reg against immed bit pattern, skip next if result is 0
+* OFFIW - and a VV against an immed bit pattern, skip next if result is 0
+* ONIW - and a VV against an immed bit pattern, skip next if result is nonzero
+* DCR - decrement reg, skip next if it borrows
+* DCRW - decrement VV reg, skip next if it borrows
+* INR - increment reg, skip next if carry
+* INRW - increment VV reg, skip next if carry
+* DEQ - 16-bit, skip next if equal
+* DGT - 16-bit, skip if GT
+* DLT - 16-bit, skip if LT
+
+### The complete list
+
+
+
 * Adds (Subts) that check no carry (borrow) (NC = skip next if No Carry):
 	* ADDNC x
 	* ADDNCW x
@@ -51,29 +69,29 @@ And I'll put an `x` in the table below when the disassembly has no instances of 
 	* SUBNBX x
 	* SUINB 2
 * Bit tests
-	* BIT - skip next if bit is SET
-	* DOFF -
-	* DON -
-	* OFFA -
-	* OFFAW
-	* OFFAX
-	* OFFI
-	* OFFIW
-	* ONA
-	* ONAW
-	* ONAX
-	* ONI
-	* ONIW
+	* BIT 168 - skip next if bit is SET
+	* DOFF x -
+	* DON x -
+	* OFFA x -
+	* OFFAW x
+	* OFFAX x
+	* OFFI 30
+	* OFFIW 48
+	* ONA 2
+	* ONAW x
+	* ONAX x
+	* ONI x
+	* ONIW 17
 * Ind/Dec-rements
-	* DCR
-	* DCRW
-	* INR
-	* INRW
+	* DCR 23
+	* DCRW 20
+	* INR 26
+	* INRW 13
 * Equality, GT/LT
-	* DEQ - 16-bit equality
-	* DGT - skip if GT
-	* DLT - skip if LT
-	* DNE - skip if not equal
+	* DEQ 5 - 16-bit equality
+	* DGT 9 - 16-bit skip if GT
+	* DLT 14 - 16-bit skip if LT
+	* DNE - 16-bit skip if not equal
 	* EQA - skip if equal
 	* EQAW - skip if equal
 	* EQAX - skip if equal (indirect)

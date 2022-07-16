@@ -22,7 +22,7 @@ What globals are there?  How do they appear to be used?
 |1e|030b||Init to 0x18|
 |1f|014d|bits 7|Scanner state?|
 |20|042c|bits 0,3,4,5|0 is popular|
-|21|0aa7|bits 1||
+|21|0aa7|bits 1| 138c: looks at x50 - MIDI sync & master???|
 |22|0387|bits 1,2,3,5,6,7||
 |23|03f7|bits 0,1,2,3,5,6||
 |24|14ae|bits 0,1,2,3,4,5,7| important state??|
