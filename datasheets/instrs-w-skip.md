@@ -91,12 +91,12 @@ And I'll put an `x` in the table below when the disassembly has no instances of 
 	* DEQ 5 - 16-bit equality
 	* DGT 9 - 16-bit skip if GT
 	* DLT 14 - 16-bit skip if LT
-	* DNE - 16-bit skip if not equal
-	* EQA - skip if equal
-	* EQAW - skip if equal
-	* EQAX - skip if equal (indirect)
-	* EQI - skip if equal, immed
-	* EQIW - skip if equal
+	* DNE 2 - 16-bit skip if not equal
+	* EQA 3 - skip if equal
+	* EQAW 4 - skip if equal
+	* EQAX 2 - skip if equal (indirect)
+	* EQI 25 - skip if equal, immed
+	* EQIW 17 - skip if equal
 	* GTA
 	* GTAW
 	* GTI
