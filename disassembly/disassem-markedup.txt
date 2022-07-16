@@ -155,8 +155,8 @@ Func from timer ISR
 00ae: 78 14   L    CALF    $0814     // x17 1418
 00b0: cb      E    JR      $00BC     // x18 14cb
 00b1: 14 1d 10T    LXI     BC,$101D  // x19 101d
-00b4: 26 10   A    ADINC   A,$10     // x1a 1026
-00b6: 9f      B    CALT    ($00BE)   // x1b 199f
+00b4: 26 10   A    ADINC   A,$10     /c x1a 1026
+00b6: 9f      B    CALT    ($00BE)   /s x1b 199f
 00b7: 19      L    MOV     EAL,A
 00b8: c7      E    JR      $00C0     // x1c 19c7
 00b9: 19      T    MOV     EAL,A
@@ -862,8 +862,8 @@ Dest from 0550
 05ba: 34 77 ff     LXI     HL,$FF77
 05bd: 48 95        STEAX   (HL++)
 05bf: 70 2f 75 ff  LDED    $FF75
-05c3: 74 b6        DSUBNB  EA,DE
-05c5: c3           JR      $05C9
+05c3: 74 b6        DSUBNB  EA,DE     /c
+05c5: c3           JR      $05C9     /s
 05c6: 15 67 01     ORIW    VV:67,$01
 05c9: 48 95        STEAX   (HL++)
 05cb: b6           DMOV    DE,EA
@@ -1223,8 +1223,8 @@ Dest from 0550
 0847: 1a           MOV     B,A
 0848: 0c           MOV     A,D
 0849: 70 8b        ANAX    (HL)
-084b: 60 b5        SUBNB   A,E
-084d: fd           JR      $084B
+084b: 60 b5        SUBNB   A,E       /c
+084d: fd           JR      $084B     /s
 084e: 60 8c        ANA     A,D
 0850: 60 9a        ORA     A,B
 0852: 3b           STAX    (HL)
@@ -2248,8 +2248,8 @@ Fixed area func from 060e, 0646
 0e29: 4e 25        JRE     $0E50
 0e2b: 40 61 10     CALL    $1061     //
 0e2e: 99           CALT    ($00B2)   // tbl to 101d
-0e2f: 74 b5        DSUBNB  EA,BC
-0e31: 4e 94        JRE     $0EC7     //
+0e2f: 74 b5        DSUBNB  EA,BC     /c
+0e31: 4e 94        JRE     $0EC7     /s
 0e33: a8           INX     EA
 0e34: b4           PUSH    EA
 0e35: 74 c7        DADD    EA,HL
@@ -2275,8 +2275,8 @@ Fixed area func from 060e, 0646
 0e5b: 99           CALT    ($00B2)   // tbl to 101d
 0e5c: 74 ed        DNE     EA,BC
 0e5e: 4e 67        JRE     $0EC7     //
-0e60: 74 b5        DSUBNB  EA,BC
-0e62: d5           JR      $0E78
+0e60: 74 b5        DSUBNB  EA,BC     /c
+0e62: d5           JR      $0E78     /s
 0e63: a9           DCX     EA
 0e64: b4           PUSH    EA
 0e65: a5           DMOV    EA,BC
@@ -2636,8 +2636,8 @@ Func from 03b8, 064d
 108d: a5           DMOV    EA,BC
 108e: b6           DMOV    DE,EA
 108f: 40 25 0f     CALL    $0F25     //
-1092: 74 b7        DSUBNB  EA,HL
-1094: ca           JR      $109F
+1092: 74 b7        DSUBNB  EA,HL     /c
+1094: ca           JR      $109F     /s
 1095: b5           DMOV    BC,EA
 1096: 7e dc        CALF    $0EDC     //
 1098: 15 67 03     ORIW    VV:67,$03
@@ -3112,8 +3112,8 @@ Func from 0577,
 Table func xe
 13fc: 4c e0        MOV     A,CR0     // Read conversion complete reg
 13fe: 1a           MOV     B,A
-13ff: 74 b0 31     SUBNBW  VV:31
-1402: c5           JR      $1408
+13ff: 74 b0 31     SUBNBW  VV:31     /c
+1402: c5           JR      $1408     /s
 1403: 27 01        GTI     A,$01
 1405: b8           RET
 
@@ -3687,8 +3687,8 @@ Jmp from way above
 1783: 69 08        MVI     A,$08
 1785: 4f 49        JRE     $16D0
 1787: 01 56        LDAW    VV:56
-1789: 36 7c        SUINB   A,$7C
-178b: 4e 21        JRE     $17AE
+1789: 36 7c        SUINB   A,$7C     /c
+178b: 4e 21        JRE     $17AE     /s
 178d: 51           DCR     A
 178e: c7           JR      $1796
 178f: 74 6c 00     NEI     D,$00
@@ -4075,8 +4075,8 @@ Func from 0530,
 1a39: 2b           LDAX    (HL)
 1a3a: 47 80        ONI     A,$80     // Check mask x80, ship next if nonzero
 1a3c: ee           JR      $1A2B
-1a3d: 74 27 08     ADINC   L,$08
-1a40: ea           JR      $1A2B
+1a3d: 74 27 08     ADINC   L,$08     /c
+1a40: ea           JR      $1A2B     /s
 1a41: f4           JR      $1A36
 1a42: 01 70        LDAW    VV:70
 1a44: 48 25        SLL     A
@@ -4132,8 +4132,8 @@ func from 0512,
 1aa3: c8           JR      $1AAC
 1aa4: 2b           LDAX    (HL)
 1aa5: 57 80        OFFI    A,$80     // Skip next if & result is 0
-1aa7: 74 27 08     ADINC   L,$08
-1aaa: e3           JR      $1A8E
+1aa7: 74 27 08     ADINC   L,$08     /cs
+1aaa: e3           JR      $1A8E     /s
 1aab: ee           JR      $1A9A
 1aac: 74 fd        DEQ     EA,BC     // Skip next if equal
 1aae: 4e 21        JRE     $1AD1
@@ -4142,8 +4142,8 @@ func from 0512,
 1ab4: 63 70        STAW    VV:70
 1ab6: 2b           LDAX    (HL)
 1ab7: 57 80        OFFI    A,$80     // Skip next if & result is 0
-1ab9: 74 27 08     ADINC   L,$08
-1abc: c2           JR      $1ABF
+1ab9: 74 27 08     ADINC   L,$08     /cs
+1abc: c2           JR      $1ABF     /s
 1abd: 4e 3f        JRE     $1AFE
 1abf: b2           PUSH    DE
 1ac0: 7d b7        CALF    $0DB7     //
@@ -5045,8 +5045,8 @@ Func from 1ccf, 1d7c
 1fa8: 2a           LDAX    (DE)
 1fa9: 2c           LDAX    (DE+)
 1faa: 30 28        DCRW    VV:28
-1fac: 36 38        SUINB   A,$38
-1fae: 3c           STAX    (DE+)
+1fac: 36 38        SUINB   A,$38     /c
+1fae: 3c           STAX    (DE+)     /s
 1faf: 3e           STAX    (DE-)
 1fb0: 42           INR     B
 1fb1: 46 4a        ADI     A,$4A

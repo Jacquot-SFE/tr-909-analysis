@@ -30,20 +30,26 @@ Conditions reflected in the status register
 
 Overlay 0 & 1 are complicated, something to do with skipping sequences of MVI L (L0), LXI H (L0), MVI A (L1),  
 
+## Marking these in the disassembly
+
+The comment at column 38 has been `//`.
+I'll follow instructions that check a condition with a `/c`
+And the optionally skipped one with '/s'
+It looks like there are cases with series of conditionals, so marking them `/cs`
+And I'll put an `x` in the table below when the disassembly has no instances of the instruction, or a number indicating how may there are.
 ## Instructions
 
 * Adds (Subts) that check no carry (borrow) (NC = skip next if No Carry):
-	* ADDNC
-	* ADDNCW
-	* ADDNCX
-	* ADINC
-	* DADDNC - Add 2regs to EA, check
-	* DSUBNB
-	* SUBNB  - effectively a GT test
-	* SUBNBW -
-	* SUBNBX
-	* SUINB
-	* SUINB
+	* ADDNC x
+	* ADDNCW x
+	* ADDNCX x
+	* ADINC 4
+	* DADDNC x - double Add: 2regs to EA, check carry
+	* DSUBNB 4 - double subt: 2 regd from EA, no borrow
+	* SUBNB 1 - effectively a GT test
+	* SUBNBW 1 -
+	* SUBNBX x
+	* SUINB 2
 * Bit tests
 	* BIT - skip next if bit is SET
 	* DOFF -
