@@ -177,8 +177,8 @@ Jmp from External interrupt (DIN Clk) if vv:63 && 0x01
 00c9: 4d cc        MOV     ETMM,A
 00cb: 69 04        MVI     A,$04
 00cd: 4d cc        MOV     ETMM,A
-00cf: 48 6c        SKNIT   OV
-00d1: d1           JR      $00E3
+00cf: 48 6c        SKNIT   OV        /c skip next if ECNT overflow NOT set
+00d1: d1           JR      $00E3     /s
 00d2: 08           MOV     A,EAH
 00d3: 58 5b        BIT     0,VV:5B   /c Test bit 0 of vv:5b, skip next if it's set
 00d5: cb           JR      $00E1     /s
@@ -2103,8 +2103,8 @@ Fixed area func from 0886, 088c
 0d6d: 48 2a        CLC
 0d6f: 2d           LDAX    (HL+)
 0d70: 60 8c        ANA     A,D
-0d72: 48 1c        SKN     Z
-0d74: d3           JR      $0D88     // Jmp to Shift left 4 bits
+0d72: 48 1c        SKN     Z         /c skip next if Zero status NOT set
+0d74: d3           JR      $0D88     /s Jmp to Shift left 4 bits
 0d75: 60 ec        NEA     A,D       /c Skip next if A !EQ
 0d77: d0           JR      $0D88     /s Jmp to Shift left 4 bits
 0d78: 60 ed        NEA     A,E       /c Skip next if A !EQ
@@ -3397,16 +3397,16 @@ Func from 18b7, 1628
 15aa: cf           JR      $15BA     /s
 15ab: 65 d0 00     NEIW    VV:D0,$00 /c Skip next if VV: !EQ immed
 15ae: da           JR      $15C9     /s
-15af: 48 4a        SKIT    FST
-15b1: b8           RET
+15af: 48 4a        SKIT    FST       /c skip next if FST flag set - transmit buffer empty
+15b1: b8           RET               /s
 
 15b2: 01 d0        LDAW    VV:D0     // Load A thru VV:d0
 15b4: 71 d0 00     MVIW    VV:D0,$00 // Clear vv:d0
 15b7: 4d d8        MOV     TXB,A     // Write A to Transmit buf
 15b9: b8           RET
 
-15ba: 48 4a        SKIT    FST
-15bc: b8           RET
+15ba: 48 4a        SKIT    FST       /c skip next if FST flag set - transmit buffer empty
+15bc: b8           RET               /s
 
 15bd: 01 4b        LDAW    VV:4B     // Load A with vv:4b
 15bf: 4d d8        MOV     TXB,A     // Write A to Transmit buf
@@ -3428,8 +3428,8 @@ Func from 18b7, 1628
 15df: 64 1e 04     ORI     MKH,$04   // Enable ser tx irq
 15e2: b8           RET
 
-15e3: 48 4a        SKIT    FST
-15e5: b8           RET
+15e3: 48 4a        SKIT    FST       /c skip next if FST flag set - transmit buffer empty
+15e5: b8           RET               /s
 
 15e6: 6e ff        MVI     H,$FF
 15e8: 1f           MOV     L,A
@@ -3457,8 +3457,8 @@ Func from 18b7, 1628
 1611: 63 4c        STAW    VV:4C
 1613: b8           RET
 
-1614: 48 4a        SKIT    FST
-1616: b8           RET
+1614: 48 4a        SKIT    FST       /c skip next if FST flag set - transmit buffer empty
+1616: b8           RET               /s
 
 1617: 15 69 08     ORIW    VV:69,$08
 161a: 6e ff        MVI     H,$FF
@@ -3485,12 +3485,12 @@ Serial ISR:
 1630: 11           EXX               // Swap (B)(C)(D)(E)(H)(L)
 1631: 64 5e 04     OFFI    MKH,$04   /c Skip next if ser tx is enabled
 1634: c3           JR      $1638     /s Jmp fwd
-1635: 48 49        SKIT    FSR       // Skip next if int flag is set: FSR is Ser Rx Full
-1637: f0           JR      $1628     // Jmp R??? back ~10
+1635: 48 49        SKIT    FSR       /c skip next if FSR flag set Ser Rx Full
+1637: f0           JR      $1628     /s Jmp R??? back ~10
 From 1634:
 1638: 4c d9        MOV     A,RXB     // Get RxBuffer into A
-163a: 48 6b        SKNIT   ER        // Skip next if ser rx irq set
-163c: 4e b6        JRE     $16F4     // Skip way fwd
+163a: 48 6b        SKNIT   ER        /c skip next if serial error NOT set
+163c: 4e b6        JRE     $16F4     /s Skip way fwd
 163e: 1c           MOV     D,A
 163f: 27 f7        GTI     A,$F7     /c Skip next if A GT imm
 1641: c9           JR      $164B     /s
@@ -3950,8 +3950,8 @@ jmp from below (18fb)
 197f: 6c 70        MVI     D,$70
 1981: b2           PUSH    DE
 1982: 40 fd 19     CALL    $19FD     //
-1985: 48 69        SKNIT   FSR       // Skip next if ser rx not set
-1987: 4c d9        MOV     A,RXB     // read ser rx int A
+1985: 48 69        SKNIT   FSR       /c skip next if ser rx NOT set
+1987: 4c d9        MOV     A,RXB     /s read ser rx int A
 1989: 6c f0        MVI     D,$F0
 198b: 9d           CALT    ($00BA)   // tbl to 19d2
 198c: 6c 41        MVI     D,$41
@@ -3966,8 +3966,8 @@ jmp from below (18fb)
 
 Table func 13
 199f: 40 e1 19     CALL    $19E1     //
-19a2: 48 49        SKIT    FSR       // Skip next if ser rx is set
-19a4: fa           JR      $199F
+19a2: 48 49        SKIT    FSR       /c skip next if FSR set - ser rx is set
+19a4: fa           JR      $199F     /s
 19a5: 4c d9        MOV     A,RXB     // Read Ser Rx into A
 19a7: 1c           MOV     D,A       // Mov A to D
 19a8: 47 80        ONI     A,$80     // look for MIDI status bit - skip next if not zero.
@@ -3986,8 +3986,8 @@ Table func 13
 Func from 1861, 189f, 18b3, 1910, 1979
 // Check Rx IRQ, read Rx buf if set, look for EOX, then check status bit
 19b6: 40 e1 19     CALL    $19E1     //
-19b9: 48 49        SKIT    FSR       // Skip next if ser rx is set
-19bb: fa           JR      $19B6     // loop back 2: Wait for Rx IRQ to hit.
+19b9: 48 49        SKIT    FSR       /c skip next if FSR flag set - ser rx is set
+19bb: fa           JR      $19B6     /s loop back 2: Wait for Rx IRQ to hit.
 19bc: 4c d9        MOV     A,RXB     // Read RX Buffer into A
 19be: 77 f7        EQI     A,$F7     /c Skip next if EQ, immed
 19c0: 47 80        ONI     A,$80     /s Check status bit (&), skip next if nonzero
@@ -4001,8 +4001,8 @@ Table func x14 - called a lot
 19c7: 1a           MOV     B,A       // Mov A to B
 Jmp from 19cd
 19c8: 40 e1 19     CALL    $19E1     //
-19cb: 48 4a        SKIT    FST       // Skip if FST = 1
-19cd: fa           JR      $19C8     // Jmp back
+19cb: 48 4a        SKIT    FST       /c skip next if FST flag set - transmit buffer empty
+19cd: fa           JR      $19C8     /s Jmp back
 19ce: 0a           MOV     A,B       // Mov B back to A
 19cf: 4d d8        MOV     TXB,A     // Write A to Transmit buf
 19d1: b8           RET
@@ -4302,15 +4302,15 @@ Func from 1a36, 1a9a
 1bd7: ea           JR      $1BC2     /s
 1bd8: 64 00 03     MVI     PA,$03
 1bdb: 40 cc 1c     CALL    $1CCC     //
-1bde: 48 65        SKNIT   FE0
-1be0: fa           JR      $1BDB
+1bde: 48 65        SKNIT   FE0       /c skip next if no match on timer zero
+1be0: fa           JR      $1BDB     /s
 1be1: 11           EXX
 1be2: 34 7b ff     LXI     HL,$FF7B
 1be5: 14 02 00     LXI     BC,$0002
 1be8: 11           EXX
 1be9: 40 3f 1d     CALL    $1D3F     //
-1bec: 48 1c        SKN     Z
-1bee: c4           JR      $1BF3
+1bec: 48 1c        SKN     Z         /c skip next if Zero status NOT set
+1bee: c4           JR      $1BF3     /s
 1bef: 40 18 1d     CALL    $1D18     //
 1bf2: f6           JR      $1BE9
 1bf3: 40 28 1d     CALL    $1D28     //
@@ -4345,8 +4345,8 @@ Func from 1a36, 1a9a
 1c38: c4           JR      $1C3D
 1c39: 40 48 1d     CALL    $1D48     //
 1c3c: c0           JR      $1C3D
-1c3d: 48 1c        SKN     Z
-1c3f: c9           JR      $1C49
+1c3d: 48 1c        SKN     Z         /c skip next if Zero status NOT set
+1c3f: c9           JR      $1C49     /s
 1c40: 43           INR     C         /c Increment, skip next on carry
 1c41: ed           JR      $1C2F     /s
 1c42: 40 ff 1c     CALL    $1CFF     //
@@ -4365,7 +4365,7 @@ Func from 1a36, 1a9a
 1c60: 69 ff        MVI     A,$FF
 1c62: 19           MOV     EAL,A
 1c63: 40 3a 1d     CALL    $1D3A     //
-1c66: 48 0c        SK      Z
+1c66: 48 0c        SK      Z         // skip next if Z flag set
 1c68: f7           JR      $1C60
 1c69: 64 00 05     MVI     PA,$05
 1c6c: 69 00        MVI     A,$00
@@ -4380,8 +4380,8 @@ Func from 1a36, 1a9a
 1c7c: 11           EXX
 1c7d: 19           MOV     EAL,A
 1c7e: 40 3a 1d     CALL    $1D3A     //
-1c81: 48 1c        SKN     Z
-1c83: c4           JR      $1C88
+1c81: 48 1c        SKN     Z         /c skip next if Zero status NOT set
+1c83: c4           JR      $1C88     /s
 1c84: 40 21 1d     CALL    $1D21     //
 1c87: f2           JR      $1C7A
 1c88: 40 33 1d     CALL    $1D33     //
@@ -4401,8 +4401,8 @@ Func from 1a36, 1a9a
 1ca1: 19           MOV     EAL,A
 1ca2: 60 46        ADD     H,A
 1ca4: 40 3a 1d     CALL    $1D3A     //
-1ca7: 48 1c        SKN     Z
-1ca9: c9           JR      $1CB3
+1ca7: 48 1c        SKN     Z         /c skip next if Zero status NOT set
+1ca9: c9           JR      $1CB3     /s
 1caa: 43           INR     C         /c Increment, skip next on carry
 1cab: ef           JR      $1C9B     /s
 1cac: 40 0d 1d     CALL    $1D0D     //
@@ -4420,7 +4420,7 @@ Func from 1a36, 1a9a
 1cc3: 0a           MOV     A,B
 1cc4: 60 9b        ORA     A,C
 1cc6: 11           EXX
-1cc7: 48 0c        SK      Z
+1cc7: 48 0c        SK      Z         // skip next if Z flag set
 1cc9: f1           JR      $1CBB
 1cca: 4e c6        JRE     $1D92
 
@@ -4453,8 +4453,8 @@ Func from 1d28
 1cee: 44 00 00     LXI     EA,$0000
 1cf1: 40 cc 1c     CALL    $1CCC     //
 1cf4: 48 2b        STC               // Set carry flag
-1cf6: 48 45        SKIT    FE0
-1cf8: 48 2a        CLC
+1cf6: 48 45        SKIT    FE0       /c skip next if FE0 flag set - timer 0 match
+1cf8: 48 2a        CLC               /s
 1cfa: 48 b0        DRLR    EA
 1cfc: 52           DCR     B         /c
 1cfd: f3           JR      $1CF1     /s
@@ -4541,7 +4541,7 @@ Func from 1d36
 1d5f: 69 09        MVI     A,$09
 1d61: 1a           MOV     B,A
 1d62: 48 b0        DRLR    EA
-1d64: 48 0a        SK      CY
+1d64: 48 0a        SK      CY        // skip next if Carry flag set
 1d66: cb           JR      $1D72
 1d67: 24 f4 01     LXI     DE,$01F4
 1d6a: 74 4f 80     ONI     L,$80     // Check mask x80, ship next if nonzero
@@ -4589,8 +4589,8 @@ Func from 1d36
 1dc1: 69 bf        MVI     A,$BF     /s
 1dc3: 69 b7        MVI     A,$B7
 1dc5: 4d c7        MOV     MKL,A     // Enable int1 based on vv:63.1 - DIN clk
-1dc7: 48 4a        SKIT    FST
-1dc9: 00           NOP
+1dc7: 48 4a        SKIT    FST       /c skip next if FST flag set - transmit buffer empty
+1dc9: 00           NOP               /s
 1dca: 69 f8        MVI     A,$F8     // Load A with MIDI Clk
 1dcc: 4d d8        MOV     TXB,A     // Write A to Transmit buf
 1dce: 40 2f 10     CALL    $102F     //

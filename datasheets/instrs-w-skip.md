@@ -112,10 +112,10 @@ And I'll put an `x` in the table below when the disassembly has no instances of 
 	* NEI x
 	* NEIW 16
 * Explicit Skips
-	* SK - skip on CY/CH/Z
-	* SKIT - interrupt flag
-	* SKN - no flags set
-	* SKNIT - skip on no interrupt flag
+	* SK 3 - skip on CY/CH/Z
+	* SKIT 10 - interrupt flag
+	* SKN 5 - no flags set
+	* SKNIT 4 - skip on no interrupt flag
 * Shifts
 	* SLLC - logical left, skip next on carry set
 	* SLRC - logical right, skip next on carry set
