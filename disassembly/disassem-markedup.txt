@@ -71,8 +71,8 @@ Table func from 0080?
 004a: 09           MOV     A,EAL
 004b: 77 00        EQI     A,$00     /c Skip next if EQ, immed
 004d: c5           JR      $0053     /s
-004e: 35 2b 0a     LTIW    VV:2B,$0A
-0051: 69 0f        MVI     A,$0F
+004e: 35 2b 0a     LTIW    VV:2B,$0A /c Skip next if VV: LT imm
+0051: 69 0f        MVI     A,$0F     /s
 0053: 63 28        STAW    VV:28
 0055: 0a           MOV     A,B
 0056: 63 25        STAW    VV:25
@@ -182,13 +182,13 @@ Jmp from External interrupt (DIN Clk) if vv:63 && 0x01
 00d2: 08           MOV     A,EAH
 00d3: 58 5b        BIT     0,VV:5B   /c Test bit 0 of vv:5b, skip next if it's set
 00d5: cb           JR      $00E1     /s
-00d6: 37 03        LTI     A,$03
-00d8: d6           JR      $00EF
+00d6: 37 03        LTI     A,$03     /c Skip next if A LT imm
+00d8: d6           JR      $00EF     /s
 00d9: 77 02        EQI     A,$02     /c Skip next if EQ, immed
 00db: c7           JR      $00E3     /s
 00dc: 09           MOV     A,EAL
-00dd: 27 a8        GTI     A,$A8
-00df: c3           JR      $00E3
+00dd: 27 a8        GTI     A,$A8     /c Skip next if A GT imm
+00df: c3           JR      $00E3     /s
 00e0: ce           JR      $00EF
 00e1: 77 01        EQI     A,$01     /c Skip next if EQ, immed
 00e3: 4e 22        JRE     $0107     /s
@@ -222,8 +222,8 @@ Jmp from ee:
 0109: aa           EI                // Enable interrupts
 010a: 62           RETI              // Return from interrupt
 jmp from eb:
-010b: 65 5b ff     NEIW    VV:5B,$FF
-010e: f8           JR      $0107
+010b: 65 5b ff     NEIW    VV:5B,$FF /c Skip next if VV: !EQ immed
+010e: f8           JR      $0107     /s
 010f: 30 5b        DCRW    VV:5B     /c
 0111: c7           JR      $0119     /s
 0112: 15 64 20     ORIW    VV:64,$20
@@ -233,8 +233,8 @@ jmp from eb:
 011b: 19           MOV     EAL,A
 011c: 01 3e        LDAW    VV:3E
 011e: 18           MOV     EAH,A
-011f: 65 5b 00     NEIW    VV:5B,$00
-0122: 44 ff ff     LXI     EA,$FFFF
+011f: 65 5b 00     NEIW    VV:5B,$00 /c Skip next if VV: !EQ immed
+0122: 44 ff ff     LXI     EA,$FFFF  /s
 0125: 48 d3        DMOV    ETM1,EA
 0127: 8b           CALT    ($0096)   // table to 12a8
 0128: 00           NOP
@@ -370,8 +370,8 @@ Jmp from 0174
 0220: 69 00        MVI     A,$00
 0222: 5f 64        BIT     7,VV:64   /c Test bit 7 of vv:64, skip next if it's set
 0224: 4e 20        JRE     $0246     /s
-0226: 25 5c f0     GTIW    VV:5C,$F0
-0229: 30 5c        DCRW    VV:5C     /c
+0226: 25 5c f0     GTIW    VV:5C,$F0 /c Skip next if VV: GT immed
+0229: 30 5c        DCRW    VV:5C     /cs
 022b: c5           JR      $0231     /s
 022c: 01 0e        LDAW    VV:0E
 022e: 71 0e 00     MVIW    VV:0E,$00
@@ -533,8 +533,8 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 
 0348: 7b a4        CALF    $0BA4     // Call
 034a: 4c e1        MOV     A,CR1     // Read conversion result 3 - mstr accent
-034c: 37 40        LTI     A,$40     // Less than 0x40, immed
-034e: dd           JR      $036C     // cond: skip ahead
+034c: 37 40        LTI     A,$40     /c Skip next if A LT imm
+034e: dd           JR      $036C     /s cond: skip ahead
 034f: 34 fe 7f     LXI     HL,$7FFE  // Ld imm HL with 0x7ffe
 0352: 2d           LDAX    (HL+)     // Ld A from 0x7ffe, post inc?  Whats at 0x7ffe?
 0353: 77 96        EQI     A,$96     /c Skip next if EQ, immed
@@ -547,8 +547,8 @@ Loop at 02f1:  // Zeroing the internl RAM (0x0ff00 to 0xffff)
 035e: 1a           MOV     B,A
 035f: 69 ff        MVI     A,$FF
 0361: 3b           STAX    (HL)
-0362: 70 eb        NEAX    (HL)
-0364: c5           JR      $036A
+0362: 70 eb        NEAX    (HL)      /c Skip next if A !EQ indirect thru HL
+0364: c5           JR      $036A     /s
 0365: 40 00 60     CALL    $6000     // Call to ??? cart space?
 0368: aa           EI
 0369: d5           JR      $037F
@@ -639,8 +639,8 @@ Jmp from 0386
 0404: 69 fe        MVI     A,$FE
 0406: 1a           MOV     B,A
 0407: 01 30        LDAW    VV:30
-0409: 60 aa        GTA     A,B
-040b: c4           JR      $0410
+0409: 60 aa        GTA     A,B       /c Skip next if A GT B
+040b: c4           JR      $0410     /s
 040c: 15 65 40     ORIW    VV:65,$40
 040f: c3           JR      $0413
 0410: 15 65 80     ORIW    VV:65,$80
@@ -738,16 +738,16 @@ Jmp from 0386
 04c9: 05 2e fe     ANIW    VV:2E,$FE
 04cc: 4f 02        JRE     $03D0
 04ce: 4c e1        MOV     A,CR1
-04d0: 37 40        LTI     A,$40
-04d2: d2           JR      $04E5
+04d0: 37 40        LTI     A,$40     /c Skip next if A LT imm
+04d2: d2           JR      $04E5     /s
 04d3: 15 33 40     ORIW    VV:33,$40
 04d6: 15 2e 01     ORIW    VV:2E,$01
 04d9: 54 d0 03     JMP     $03D0
 04dc: 5e 33        BIT     6,VV:33   /c Test bit 6 of vv:33, skip next if it's set
 04de: c6           JR      $04E5     /s
 04df: 4c e1        MOV     A,CR1
-04e1: 37 40        LTI     A,$40
-04e3: e2           JR      $04C6
+04e1: 37 40        LTI     A,$40     /c Skip next if A LT imm
+04e3: e2           JR      $04C6     /s
 04e4: d0           JR      $04F5
 04e5: 58 20        BIT     0,VV:20   /c Test bit 0 of vv:20, skip next if it's set
 04e7: c9           JR      $04F1     /s
@@ -760,8 +760,8 @@ Jmp from 0386
 04f2: 54 57 06     JMP     $0657
 04f5: 7f 84        CALF    $0F84     //
 04f7: df           JR      $0517
-04f8: 65 68 00     NEIW    VV:68,$00
-04fb: c5           JR      $0501
+04f8: 65 68 00     NEIW    VV:68,$00 /c Skip next if VV: !EQ immed
+04fb: c5           JR      $0501     /s
 04fc: 71 68 00     MVIW    VV:68,$00
 04ff: 7d df        CALF    $0DDF     //
 0501: 40 ae 14     CALL    $14AE     //
@@ -793,8 +793,8 @@ Jmp from 0386
 053a: 54 2c 04     JMP     $042C     /s
 053d: 91           CALT    ($00A2)   // tbl to 1359
 053e: 54 2c 04     JMP     $042C
-0541: 65 70 00     NEIW    VV:70,$00
-0544: c9           JR      $054E
+0541: 65 70 00     NEIW    VV:70,$00 /c Skip next if VV: !EQ immed
+0544: c9           JR      $054E     /s
 0545: 30 70        DCRW    VV:70     /c
 0547: 20 60        INRW    VV:60     /cs Increment, skip next on carry
 0549: 00           NOP               /s
@@ -813,8 +813,8 @@ Dest from 0550
 055b: 47 02        ONI     A,$02     // Check mask x2, ship next if nonzero
 055d: 4e 2c        JRE     $058B
 055f: 01 38        LDAW    VV:38
-0561: 74 b8 37     LTAW    VV:37
-0564: c5           JR      $056A
+0561: 74 b8 37     LTAW    VV:37     /c Skip next if A LT VV:
+0564: c5           JR      $056A     /s
 0565: 41           INR     A         /c Increment, skip next on carry
 0566: 79 d7        CALF    $09D7     /s
 0568: 4e 21        JRE     $058B
@@ -845,8 +845,8 @@ Dest from 0550
 0593: 5e 33        BIT     6,VV:33   /c Test bit 6 of vv:33, skip next if it's set
 0595: c7           JR      $059D     /s
 0596: 4c e1        MOV     A,CR1
-0598: 37 40        LTI     A,$40
-059a: 15 21 20     ORIW    VV:21,$20
+0598: 37 40        LTI     A,$40     /c Skip next if A LT imm
+059a: 15 21 20     ORIW    VV:21,$20 /s
 059d: 90           CALT    ($00A0)   // tbl to 12dd
 059e: 4f ae        JRE     $054E
 05a0: 79 9d        CALF    $099D     //
@@ -1166,8 +1166,8 @@ Dest from 0550
 07e7: c1           JR      $07E9
 07e8: cc           JR      $07F5
 07e9: 70 8b        ANAX    (HL)
-07eb: 60 ec        NEA     A,D
-07ed: d1           JR      $07FF
+07eb: 60 ec        NEA     A,D       /c Skip next if A !EQ
+07ed: d1           JR      $07FF     /s
 07ee: 0c           MOV     A,D
 07ef: 16 ff        XRI     A,$FF     // Toggle all bits
 07f1: 70 8b        ANAX    (HL)
@@ -1201,8 +1201,8 @@ Dest from 0550
 081f: 3b           STAX    (HL)
 0820: 7d 9d        CALF    $0D9D     //
 0822: 4e 2f        JRE     $0853
-0824: 74 a8 42     GTAW    VV:42
-0827: c2           JR      $082A
+0824: 74 a8 42     GTAW    VV:42     /c Skip next if A GT VV:
+0827: c2           JR      $082A     /s
 0828: 4e 29        JRE     $0853
 082a: 70 3f 32 ff  LHLD    $FF32
 082e: 74 0f f0     ANI     L,$F0
@@ -1236,8 +1236,8 @@ Dest from 0550
 0860: 44 00 00     LXI     EA,$0000
 0863: 09           MOV     A,EAL
 0864: 07 0f        ANI     A,$0F
-0866: 74 a8 42     GTAW    VV:42
-0869: c2           JR      $086C
+0866: 74 a8 42     GTAW    VV:42     /c Skip next if A GT VV:
+0869: c2           JR      $086C     /s
 086a: 32           INX     HL
 086b: c9           JR      $0875
 086c: 48 2a        CLC
@@ -1425,8 +1425,8 @@ Fixed area func from 0984, 098b
 
 Table func from 0086
 09c3: 01 38        LDAW    VV:38
-09c5: 74 b8 37     LTAW    VV:37
-09c8: c2           JR      $09CB
+09c5: 74 b8 37     LTAW    VV:37     /c Skip next if A LT VV:
+09c8: c2           JR      $09CB     /s
 09c9: 41           INR     A         /c Increment, skip next on carry
 09ca: cc           JR      $09D7     /s
 
@@ -1560,8 +1560,8 @@ Fixed area func from 0583, 062e, 0695, 0aa4, 0cac, 0d36, 0dee, 1b10
 
 Fixed area func from 1ffd
 0a7c: 0a           MOV     A,B       /s
-0a7d: 37 0f        LTI     A,$0F
-0a7f: c3           JR      $0A83
+0a7d: 37 0f        LTI     A,$0F     /c Skip next if A LT imm
+0a7f: c3           JR      $0A83     /s
 0a80: 7a d4        CALF    $0AD4     //
 0a82: f8           JR      $0A7B
 0a83: 0a           MOV     A,B
@@ -1583,8 +1583,8 @@ Fixed area func from 1535
 0a9c: 3c           STAX    (DE+)
 0a9d: 3e           STAX    (DE-)
 0a9e: 0a           MOV     A,B
-0a9f: 60 ab        GTA     A,C
-0aa1: c2           JR      $0AA4
+0a9f: 60 ab        GTA     A,C       /c Skip next if A GT C
+0aa1: c2           JR      $0AA4     /s
 0aa2: 43           INR     C         /c Increment, skip next on carry
 0aa3: ef           JR      $0A93     /s
 0aa4: 79 9d        CALF    $099D     //
@@ -1722,8 +1722,8 @@ Fixed area call from 0214, 0990
 Fixed area call from 045a, 045e, 0462, 0465, 0469, 046d, 0b45, 0b4b, 0b4f, 0b8d, 0b93, 0b97, 1a0e, 1a17, 1a53, 1a59, 1a66,
 0b5c: 3c           STAX    (DE+)
 0b5d: 0d           MOV     A,E
-0b5e: 37 d0        LTI     A,$D0
-0b60: 69 a0        MVI     A,$A0
+0b5e: 37 d0        LTI     A,$D0     /c Skip next if A LT imm
+0b60: 69 a0        MVI     A,$A0     /s
 0b62: 1d           MOV     E,A
 0b63: b8           RET
 
@@ -1731,14 +1731,14 @@ Fixed area func from 0557, 0623, 0691, 07d3, 0807, 132a, 1359
 0b64: 55 69 01     OFFIW   VV:69,$01 /c Skip next if & result is 0
 0b67: b8           RET               /s
 
-0b68: 65 59 00     NEIW    VV:59,$00
-0b6b: c9           JR      $0B75
+0b68: 65 59 00     NEIW    VV:59,$00 /c Skip next if VV: !EQ immed
+0b6b: c9           JR      $0B75     /s
 0b6c: 01 59        LDAW    VV:59
 0b6e: 71 59 00     MVIW    VV:59,$00
 0b71: 6b 2c        MVI     C,$2C
 0b73: 7b 83        CALF    $0B83     //
-0b75: 65 58 00     NEIW    VV:58,$00
-0b78: b8           RET
+0b75: 65 58 00     NEIW    VV:58,$00 /c Skip next if VV: !EQ immed
+0b78: b8           RET               /s
 
 0b79: 01 58        LDAW    VV:58
 0b7b: 71 58 00     MVIW    VV:58,$00
@@ -1840,8 +1840,8 @@ Fixed area func from 08af
 0c05: 8e           CALT    ($009C)   // tbl to 0068
 0c06: 32           INX     HL
 0c07: 0b           MOV     A,C
-0c08: 37 07        LTI     A,$07
-0c0a: c6           JR      $0C11
+0c08: 37 07        LTI     A,$07     /c Skip next if A LT imm
+0c0a: c6           JR      $0C11     /s
 0c0b: 63 46        STAW    VV:46
 0c0d: 2b           LDAX    (HL)
 0c0e: 07 f0        ANI     A,$F0
@@ -1950,8 +1950,8 @@ Fixed area func from 05fc, 067a
 Fixed area func from 06d6
 0c9b: 55 66 10     OFFIW   VV:66,$10 /c Skip next if & result is 0
 0c9e: d6           JR      $0CB5     /s
-0c9f: 65 23 01     NEIW    VV:23,$01
-0ca2: 59 65        BIT     1,VV:65   /c Test bit 1 of vv:65, skip next if it's set
+0c9f: 65 23 01     NEIW    VV:23,$01 /c Skip next if VV: !EQ immed
+0ca2: 59 65        BIT     1,VV:65   /cs Test bit 1 of vv:65, skip next if it's set
 0ca4: c2           JR      $0CA7     /s
 0ca5: 7d 15        CALF    $0D15     //
 0ca7: 98           CALT    ($00B0)   // tbl to 14cb
@@ -1970,10 +1970,10 @@ Fixed area func from 0c55, 159a,
 0cb6: 4e 44        JRE     $0CFC
 0cb8: 55 65 02     OFFIW   VV:65,$02 /c Skip next if & result is 0
 0cbb: f0           JR      $0CAC     /s
-0cbc: 65 22 01     NEIW    VV:22,$01
-0cbf: c6           JR      $0CC6
-0cc0: 65 23 01     NEIW    VV:23,$01
-0cc3: 7d 15        CALF    $0D15     //
+0cbc: 65 22 01     NEIW    VV:22,$01 /c Skip next if VV: !EQ immed
+0cbf: c6           JR      $0CC6     /s
+0cc0: 65 23 01     NEIW    VV:23,$01 /c Skip next if VV: !EQ immed
+0cc3: 7d 15        CALF    $0D15     /s
 0cc5: b8           RET
 
 0cc6: 59 33        BIT     1,VV:33   /c Test bit 1 of vv:33, skip next if it's set
@@ -2040,8 +2040,8 @@ Fixed area func from 0ca5, 0cc3, 0cc8
 0d1d: 07 7f        ANI     A,$7F
 0d1f: 3b           STAX    (HL)
 0d20: 0a           MOV     A,B
-0d21: 74 b8 3a     LTAW    VV:3A
-0d24: c8           JR      $0D2D     //
+0d21: 74 b8 3a     LTAW    VV:3A     /c Skip next if A LT VV:
+0d24: c8           JR      $0D2D     /s
 0d25: 7a d4        CALF    $0AD4     //
 0d27: 00           NOP
 0d28: 17 80        ORI     A,$80
@@ -2063,19 +2063,19 @@ Fixed area func from 15f2, 1605
 0d42: b8           RET
 
 0d43: 30 5f        DCRW    VV:5F     /c
-0d45: 37 f6        LTI     A,$F6     /s
-0d47: 15 69 20     ORIW    VV:69,$20
+0d45: 37 f6        LTI     A,$F6     /cs Skip next if A LT imm
+0d47: 15 69 20     ORIW    VV:69,$20 /s
 0d4a: b8           RET
 
 Fixed area func from 0d40, 16e5
-0d4b: 27 bf        GTI     A,$BF
-0d4d: b8           RET
+0d4b: 27 bf        GTI     A,$BF     /c Skip next if A GT imm
+0d4d: b8           RET               /s
 
-0d4e: 27 df        GTI     A,$DF
-0d50: b9           RETS
+0d4e: 27 df        GTI     A,$DF     /c Skip next if A GT imm
+0d50: b9           RETS              /s
 
-0d51: 27 f2        GTI     A,$F2
-0d53: b8           RET
+0d51: 27 f2        GTI     A,$F2     /c Skip next if A GT imm
+0d53: b8           RET               /s
 
 0d54: b9           RETS
 
@@ -2096,8 +2096,8 @@ Fixed area func from 0886, 088c
 0d64: 0f           MOV     A,L
 
 0d65: 07 0f        ANI     A,$0F
-0d67: 74 a8 42     GTAW    VV:42
-0d6a: c2           JR      $0D6D
+0d67: 74 a8 42     GTAW    VV:42     /c Skip next if A GT VV:
+0d6a: c2           JR      $0D6D     /s
 0d6b: 32           INX     HL
 0d6c: db           JR      $0D88     // Jmp to Shift left 4 bits
 0d6d: 48 2a        CLC
@@ -2105,10 +2105,10 @@ Fixed area func from 0886, 088c
 0d70: 60 8c        ANA     A,D
 0d72: 48 1c        SKN     Z
 0d74: d3           JR      $0D88     // Jmp to Shift left 4 bits
-0d75: 60 ec        NEA     A,D
-0d77: d0           JR      $0D88     // Jmp to Shift left 4 bits
-0d78: 60 ed        NEA     A,E       //
-0d7a: 48 2b        STC               // Set carry flag
+0d75: 60 ec        NEA     A,D       /c Skip next if A !EQ
+0d77: d0           JR      $0D88     /s Jmp to Shift left 4 bits
+0d78: 60 ed        NEA     A,E       /c Skip next if A !EQ
+0d7a: 48 2b        STC               /s Set carry flag
 0d7c: 48 33        RLR     C         // Rotate Logical Right C
 0d7e: 48 2b        STC               // Set carry flag
 
@@ -2152,8 +2152,8 @@ Fixed area func from 0e21, 0eaa, 10fc
 0daa: 18           MOV     EAH,A
 0dab: 48 92        STEAX   (DE)
 0dad: 74 45 10     ADI     E,$10
-0db0: 74 3d c0     LTI     E,$C0
-0db3: b8           RET
+0db0: 74 3d c0     LTI     E,$C0     /c Skip next if E LT imm
+0db3: b8           RET               /s
 0db4: 48 82        LDEAX   (DE)
 0db6: ef           JR      $0DA6
 
@@ -2264,8 +2264,8 @@ Fixed area func from 060e, 0646
 0e42: 18           MOV     EAH,A
 0e43: 48 92        STEAX   (DE)
 0e45: 74 45 10     ADI     E,$10
-0e48: 74 3d c0     LTI     E,$C0
-0e4b: 4e 7a        JRE     $0EC7     //
+0e48: 74 3d c0     LTI     E,$C0     /c Skip next if E LT imm
+0e4b: 4e 7a        JRE     $0EC7     /s
 0e4d: 48 82        LDEAX   (DE)
 0e4f: ed           JR      $0E3D
 0e50: 45 68 0c     ONIW    VV:68,$0C /c Check mask x0c, ship next if nonzero
@@ -2344,8 +2344,8 @@ Fixed area func from 0e23, 0eb3
 0ebb: 7a d4        CALF    $0AD4     //
 0ebd: f9           JR      $0EB7
 0ebe: 01 36        LDAW    VV:36
-0ec0: 74 a8 7f     GTAW    VV:7F
-0ec3: c3           JR      $0EC7     //
+0ec0: 74 a8 7f     GTAW    VV:7F     /c Skip next if A GT VV:
+0ec3: c3           JR      $0EC7     /s
 0ec4: 20 7f        INRW    VV:7F     /c Increment, skip next on carry
 0ec6: b9           RETS              /s
 
@@ -2404,8 +2404,8 @@ Func from 109b, 05d6, 0610, 063d
 0f19: b9           RETS
 0f1a: 5e 64        BIT     6,VV:64   /c Test bit 6 of vv:64, skip next if it's set
 0f1c: e3           JR      $0F00     /s
-0f1d: 65 d1 00     NEIW    VV:D1,$00
-0f20: 4f de        JRE     $0F00
+0f1d: 65 d1 00     NEIW    VV:D1,$00 /c Skip next if VV: !EQ immed
+0f20: 4f de        JRE     $0F00     /s
 0f22: 7e dc        CALF    $0EDC     //
 0f24: b9           RETS
 
@@ -2494,13 +2494,13 @@ func from 04f5, 05f3, 0625
 0fa3: 5a 68        BIT     2,VV:68   /c Test bit 2 of vv:68, skip next if it's set
 0fa5: 4e 2f        JRE     $0FD6     /s
 0fa7: 45 68 09     ONIW    VV:68,$09 /c Check mask x9, ship next if nonzero
-0faa: 37 0a        LTI     A,$0A     /s
-0fac: b8           RET
+0faa: 37 0a        LTI     A,$0A     /cs Skip next if A LT imm
+0fac: b8           RET               /s
 
 Fixed area func from 1134
 0fad: 41           INR     A         /c Increment, skip next on carry
-0fae: 37 0a        LTI     A,$0A     /s
-0fb0: 69 00        MVI     A,$00
+0fae: 37 0a        LTI     A,$0A     /cs Skip next if A LT imm
+0fb0: 69 00        MVI     A,$00     /s
 0fb2: 34 7d ff     LXI     HL,$FF7D
 0fb5: 48 38        RLD
 0fb7: 63 7e        STAW    VV:7E
@@ -2515,8 +2515,8 @@ Fixed area func from 1c09, 1d9e
 0fc3: 7d 94        CALF    $0D94     //
 0fc5: 77 00        EQI     A,$00     /c Skip next if EQ, immed
 0fc7: c5           JR      $0FCD     /s
-0fc8: 35 2b 0a     LTIW    VV:2B,$0A
-0fcb: 69 0f        MVI     A,$0F
+0fc8: 35 2b 0a     LTIW    VV:2B,$0A /c Skip next if VV: LT imm
+0fcb: 69 0f        MVI     A,$0F     /s
 0fcd: 63 28        STAW    VV:28
 0fcf: 01 7d        LDAW    VV:7D
 0fd1: 07 0f        ANI     A,$0F
@@ -2524,8 +2524,8 @@ Fixed area func from 1c09, 1d9e
 0fd5: b8           RET
 0fd6: 67 0a        NEI     A,$0A
 0fd8: 4e cc        JRE     $10A6
-0fda: 37 0a        LTI     A,$0A
-0fdc: c8           JR      $0FE5
+0fda: 37 0a        LTI     A,$0A     /c Skip next if A LT imm
+0fdc: c8           JR      $0FE5     /s
 0fdd: 15 68 04     ORIW    VV:68,$04
 0fe0: 71 7d 00     MVIW    VV:7D,$00
 0fe3: 4f c2        JRE     $0FA7
@@ -2608,14 +2608,14 @@ Func from 0604, 0635
 
 Func from 10b6, 10c6, 052a, 0e2b, 0e58
 1061: 01 2b        LDAW    VV:2B
-1063: 37 0a        LTI     A,$0A
-1065: 69 00        MVI     A,$00
+1063: 37 0a        LTI     A,$0A     /c Skip next if A LT imm
+1065: 69 00        MVI     A,$00     /s
 1067: 6a 64        MVI     B,$64
 1069: 48 2e        MUL     B
 106b: b7           DMOV    HL,EA
 106c: 01 28        LDAW    VV:28
-106e: 37 0a        LTI     A,$0A
-1070: 69 00        MVI     A,$00
+106e: 37 0a        LTI     A,$0A     /c Skip next if A LT imm
+1070: 69 00        MVI     A,$00     /s
 1072: 6a 0a        MVI     B,$0A
 1074: 48 2e        MUL     B
 1076: 74 c7        DADD    EA,HL
@@ -2711,8 +2711,8 @@ Func from 10b1, 10c1
 112d: 98           CALT    ($00B0)   // tbl to 14cb
 112e: c7           JR      $1136
 112f: 15 65 02     ORIW    VV:65,$02
-1132: 27 09        GTI     A,$09
-1134: 7f ad        CALF    $0FAD     //
+1132: 27 09        GTI     A,$09     /c Skip next if A GT imm
+1134: 7f ad        CALF    $0FAD     /s
 1136: 58 20        BIT     0,VV:20   /c Test bit 0 of vv:20, skip next if it's set
 1138: b8           RET               /s
 1139: 58 24        BIT     0,VV:24   /c Test bit 0 of vv:24, skip next if it's set
@@ -2721,8 +2721,8 @@ Func from 10b1, 10c1
 113f: b9           RETS
 1140: 4c e1        MOV     A,CR1
 1142: 5e 33        BIT     6,VV:33   /c Test bit 6 of vv:33, skip next if it's set
-1144: 37 40        LTI     A,$40     /s
-1146: b8           RET
+1144: 37 40        LTI     A,$40     /cs Skip next if A LT imm
+1146: b8           RET               /s
 1147: 69 04        MVI     A,$04
 1149: 63 29        STAW    VV:29
 114b: 63 2a        STAW    VV:2A
@@ -2741,8 +2741,8 @@ Func from 10b1, 10c1
 1166: 58 20        BIT     0,VV:20   /c Test bit 0 of vv:20, skip next if it's set
 1168: 4e 55        JRE     $11BF     /s
 116a: 4c e1        MOV     A,CR1
-116c: 37 40        LTI     A,$40
-116e: 4e 4f        JRE     $11BF
+116c: 37 40        LTI     A,$40     /c Skip next if A LT imm
+116e: 4e 4f        JRE     $11BF     /s
 1170: 45 24 18     ONIW    VV:24,$18 /c Check mask x18, ship next if nonzero
 1173: d1           JR      $1185     /s
 1174: 5c 24        BIT     4,VV:24   /c Test bit 4 of vv:24, skip next if it's set
@@ -2799,8 +2799,8 @@ Func from 10b1, 10c1
 11d5: e9           JR      $11BF
 
 Table func from 008a
-11d6: 35 53 08     LTIW    VV:53,$08
-11d9: d3           JR      $11ED
+11d6: 35 53 08     LTIW    VV:53,$08 /c Skip next if VV: LT imm
+11d9: d3           JR      $11ED     /s
 11da: 5a 53        BIT     2,VV:53   /c Test bit 2 of vv:53, skip next if it's set
 11dc: 69 20        MVI     A,$20     /s
 11de: 69 30        MVI     A,$30
@@ -2864,8 +2864,8 @@ Table func x1
 Func from 0bcd
 1233: 98           CALT    ($00B0)   // tbl to 14cb
 1234: 4e 38        JRE     $126E
-1236: 37 08        LTI     A,$08
-1238: 4e 22        JRE     $125C
+1236: 37 08        LTI     A,$08     /c Skip next if A LT imm
+1238: 4e 22        JRE     $125C     /s
 
 Func from 06b2, 0bc5
 123a: 15 66 01     ORIW    VV:66,$01
@@ -2930,8 +2930,8 @@ Jmp from 1293
 12a0: 1d           MOV     E,A
 12a1: 01 6d        LDAW    VV:6D
 12a3: 1c           MOV     D,A
-12a4: 60 ed        NEA     A,E
-12a6: b9           RETS
+12a4: 60 ed        NEA     A,E       /c Skip next if A !EQ
+12a6: b9           RETS              /s
 12a7: b8           RET
 
 Table func x3
@@ -2985,10 +2985,10 @@ Table func x8
 1302: 01 5b        LDAW    VV:5B
 1304: 63 d2        STAW    VV:D2
 1306: aa           EI
-1307: 65 d2 00     NEIW    VV:D2,$00
-130a: c8           JR      $1313
-130b: 65 d2 ff     NEIW    VV:D2,$FF
-130e: c9           JR      $1318
+1307: 65 d2 00     NEIW    VV:D2,$00 /c Skip next if VV: !EQ immed
+130a: c8           JR      $1313     /s
+130b: 65 d2 ff     NEIW    VV:D2,$FF /c Skip next if VV: !EQ immed
+130e: c9           JR      $1318     /s
 130f: 30 d2        DCRW    VV:D2     /c
 1311: 4e 29        JRE     $133C     /s
 1313: 75 d1 00     EQIW    VV:D1,$00 /c Skip next if EQ
@@ -3006,16 +3006,16 @@ Table func x8
 1331: 5e 64        BIT     6,VV:64   /cs Test bit 6 of vv:64, skip next if it's set
 1333: b9           RETS              /s
 1334: fc           JR      $1331
-1335: 65 d1 00     NEIW    VV:D1,$00
-1338: 4f a3        JRE     $12DD
+1335: 65 d1 00     NEIW    VV:D1,$00 /c Skip next if VV: !EQ immed
+1338: 4f a3        JRE     $12DD     /s
 133a: 30 d1        DCRW    VV:D1     /c
 133c: 30 60        DCRW    VV:60     /cs
 133e: c3           JR      $1342     /s
 133f: 69 01        MVI     A,$01
 1341: b8           RET
 1342: 01 60        LDAW    VV:60
-1344: 65 61 00     NEIW    VV:61,$00
-1347: 77 01        EQI     A,$01     /c Skip next if EQ, immed
+1344: 65 61 00     NEIW    VV:61,$00 /c Skip next if VV: !EQ immed
+1347: 77 01        EQI     A,$01     /cs Skip next if EQ, immed
 1349: c3           JR      $134D     /s
 134a: 69 02        MVI     A,$02
 134c: b8           RET
@@ -3114,13 +3114,13 @@ Table func xe
 13fe: 1a           MOV     B,A
 13ff: 74 b0 31     SUBNBW  VV:31     /c
 1402: c5           JR      $1408     /s
-1403: 27 01        GTI     A,$01
-1405: b8           RET
+1403: 27 01        GTI     A,$01     /c Skip next if A GT imm
+1405: b8           RET               /s
 
 1406: 52           DCR     B         /c
 1407: c4           JR      $140C     /s
-1408: 37 ff        LTI     A,$FF
-140a: b8           RET
+1408: 37 ff        LTI     A,$FF     /c Skip next if A LT imm
+140a: b8           RET               /s
 
 140b: 42           INR     B         /c Increment, skip next on carry
 140c: 0a           MOV     A,B       /s
@@ -3135,8 +3135,8 @@ Table func xe
 Table func xf
 1418: 5f 65        BIT     7,VV:65   /c Test bit 7 of vv:65, skip next if it's set
 141a: d3           JR      $142E     /s
-141b: 60 aa        GTA     A,B
-141d: c1           JR      $141F
+141b: 60 aa        GTA     A,B       /c Skip next if A GT B
+141d: c1           JR      $141F     /s
 141e: b8           RET
 
 141f: 01 65        LDAW    VV:65
@@ -3395,8 +3395,8 @@ Func from 1567
 Func from 18b7, 1628
 15a7: 75 4b 00     EQIW    VV:4B,$00 /c Skip next if EQ
 15aa: cf           JR      $15BA     /s
-15ab: 65 d0 00     NEIW    VV:D0,$00
-15ae: da           JR      $15C9
+15ab: 65 d0 00     NEIW    VV:D0,$00 /c Skip next if VV: !EQ immed
+15ae: da           JR      $15C9     /s
 15af: 48 4a        SKIT    FST
 15b1: b8           RET
 
@@ -3466,8 +3466,8 @@ Func from 18b7, 1628
 161d: 2d           LDAX    (HL+)
 161e: 4d d8        MOV     TXB,A     // Write A to Transmit buf
 1620: 0f           MOV     A,L
-1621: 37 d0        LTI     A,$D0
-1623: 69 a0        MVI     A,$A0
+1621: 37 d0        LTI     A,$D0     /c Skip next if A LT imm
+1623: 69 a0        MVI     A,$A0     /s
 1625: 63 4f        STAW    VV:4F
 1627: b8           RET
 
@@ -3492,8 +3492,8 @@ From 1634:
 163a: 48 6b        SKNIT   ER        // Skip next if ser rx irq set
 163c: 4e b6        JRE     $16F4     // Skip way fwd
 163e: 1c           MOV     D,A
-163f: 27 f7        GTI     A,$F7     // Skip next if received byte G.T. F7
-1641: c9           JR      $164B
+163f: 27 f7        GTI     A,$F7     /c Skip next if A GT imm
+1641: c9           JR      $164B     /s
 1642: 67 f8        NEI     A,$F8     // Skip next if not eq F8 - timing clock
 1644: 55 63 01     OFFIW   VV:63,$01 /c Skip next if & result is 0
 1647: 7d 08        CALF    $0D08     /s
@@ -3501,11 +3501,11 @@ From 1634:
 164b: 57 80        OFFI    A,$80     /c Skip next if & result is 0
 164d: 4e 23        JRE     $1672     /s
 164f: 01 6b        LDAW    VV:6B
-1651: 37 0c        LTI     A,$0C
-1653: 4e 9f        JRE     $16F4
-1655: 48 25        SLL     A        // Arith shife left (mul by 2...)
-1657: 48 a8        TABLE            // Table lookup: BC = PC + A
-1659: 21           JB               // Jump through BC
+1651: 37 0c        LTI     A,$0C     /c Skip next if A LT imm
+1653: 4e 9f        JRE     $16F4     /s
+1655: 48 25        SLL     A         // Arith shife left (mul by 2...)
+1657: 48 a8        TABLE             // Table lookup: BC = PC + A
+1659: 21           JB                // Jump through BC
 165a: f4           JR      $164F
 165b: 16 d2        XRI     A,$D2     // Toggle d2?  Is this a little table??
 165d: 16 24        XRI     A,$24
@@ -3562,8 +3562,8 @@ From 1634:
 16af: 0c           MOV     A,D
 16b0: 07 0f        ANI     A,$0F
 16b2: 74 e0 41     SUBW    VV:41
-16b5: 74 b8 74     LTAW    VV:74
-16b8: d0           JR      $16C9
+16b5: 74 b8 74     LTAW    VV:74     /c Skip next if A LT VV:
+16b8: d0           JR      $16C9     /s
 16b9: 69 02        MVI     A,$02
 16bb: d4           JR      $16D0
 16bc: 77 b0        EQI     A,$B0     /c Skip next if EQ, immed
@@ -3592,8 +3592,8 @@ From 1634:
 16e5: 7d 4b        CALF    $0D4B     //
 16e7: c9           JR      $16F1
 16e8: 30 5e        DCRW    VV:5E     /c
-16ea: 27 f5        GTI     A,$F5     /s
-16ec: c4           JR      $16F1
+16ea: 27 f5        GTI     A,$F5     /cs Skip next if A GT imm
+16ec: c4           JR      $16F1     /s
 16ed: 01 4d        LDAW    VV:4D
 16ef: 63 4e        STAW    VV:4E
 16f1: 64 0e fb     ANI     MKH,$FB   // clear serial tx mask - enable tx irq
@@ -3638,10 +3638,10 @@ Jmp from way above
 172a: 71 6b 02     MVIW    VV:6B,$02
 172d: 01 54        LDAW    VV:54
 172f: 66 23        SUI     A,$23
-1731: 27 10        GTI     A,$10
-1733: 74 6c 00     NEI     D,$00
+1731: 27 10        GTI     A,$10     /c Skip next if A GT imm
+1733: 74 6c 00     NEI     D,$00     /s
 1736: 4f 9a        JRE     $16D2
-1738: 48 a8        TABLE           // Table lookup: BC = PC + A
+1738: 48 a8        TABLE             // Table lookup: BC = PC + A
 173a: d1           JR      $174C
 173b: 10           EXA
 173c: 10           EXA
@@ -3660,21 +3660,21 @@ Jmp from way above
 174e: 6a ff        MVI     B,$FF
 1750: 74 0b 07     ANI     C,$07
 1753: 0c           MOV     A,D
-1754: 74 3b 06     LTI     C,$06
-1757: 34 c0 1f     LXI     HL,$1FC0
+1754: 74 3b 06     LTI     C,$06     /c Skip next if A LT imm
+1757: 34 c0 1f     LXI     HL,$1FC0  /s
 175a: 34 80 1f     LXI     HL,$1F80
 175d: 48 21        SLR     A
 175f: ac           LDAX    (HL+A)
 1760: 39           STAX    (BC)
-1761: 74 2b 04     GTI     C,$04
-1764: 69 08        MVI     A,$08
+1761: 74 2b 04     GTI     C,$04     /c Skip next if A GT imm
+1764: 69 08        MVI     A,$08     /s
 1766: 69 09        MVI     A,$09
 1768: 1b           MOV     C,A
 1769: 34 08 00     LXI     HL,$0008
 176c: 0d           MOV     A,E
 176d: 7d 94        CALF    $0D94     //
-176f: 27 07        GTI     A,$07
-1771: c8           JR      $177A
+176f: 27 07        GTI     A,$07     /c Skip next if A GT imm
+1771: c8           JR      $177A     /s
 1772: 67 08        NEI     A,$08
 1774: 05 09 f7     ANIW    VV:09,$F7
 1777: 34 7e 12     LXI     HL,$127E
@@ -3720,8 +3720,8 @@ Jmp from way above
 17c3: 4f 2c        JRE     $16F1
 17c5: 15 21 08     ORIW    VV:21,$08
 17c8: c7           JR      $17D0
-17c9: 65 70 ff     NEIW    VV:70,$FF
-17cc: f6           JR      $17C3
+17c9: 65 70 ff     NEIW    VV:70,$FF /c Skip next if VV: !EQ immed
+17cc: f6           JR      $17C3     /s
 17cd: 15 21 10     ORIW    VV:21,$10
 17d0: 58 63        BIT     0,VV:63   /c Test bit 0 of vv:63, skip next if it's set
 17d2: f0           JR      $17C3     /s
@@ -3973,8 +3973,8 @@ Table func 13
 19a8: 47 80        ONI     A,$80     // look for MIDI status bit - skip next if not zero.
 19aa: b8           RET               // Ret if it's MIDI data byte
 
-19ab: 37 f8        LTI     A,$F8     // L.T.imm:Skip next if  less than F8?
-19ad: f1           JR      $199F     // Handle MIDI Sys-RT
+19ab: 37 f8        LTI     A,$F8     /c Skip next if A LT imm
+19ad: f1           JR      $199F     /s Handle MIDI Sys-RT
 
 // Jmp dest from 19c5 (~12 below) - handle midi status?
 19ae: a3           POP     HL
@@ -3993,8 +3993,8 @@ Func from 1861, 189f, 18b3, 1910, 1979
 19c0: 47 80        ONI     A,$80     /s Check status bit (&), skip next if nonzero
 19c2: b8           RET               // Return if status byte?
 
-19c3: 27 f7        GTI     A,$F7     // Skip next if G.T. xF7 (MIDI Sys RT)
-19c5: e8           JR      $19AE     // LTE F7
+19c3: 27 f7        GTI     A,$F7     /c Skip next if G.T. xF7 (MIDI Sys RT)
+19c5: e8           JR      $19AE     /s LTE F7
 19c6: ef           JR      $19B6     // Handle MIDI RT?  jmp back ~10
 
 Table func x14 - called a lot
@@ -4244,8 +4244,8 @@ Func from 1a36, 1a9a
 1b5f: 48 3d        DIV     A
 1b61: 74 c0 70     ADDW    VV:70
 1b64: 63 70        STAW    VV:70
-1b66: 27 05        GTI     A,$05
-1b68: c5           JR      $1B6E
+1b66: 27 05        GTI     A,$05     /c Skip next if A GT imm
+1b68: c5           JR      $1B6E     /s
 1b69: 66 06        SUI     A,$06
 1b6b: 63 70        STAW    VV:70
 1b6d: a8           INX     EA

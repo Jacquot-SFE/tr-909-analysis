@@ -97,21 +97,20 @@ And I'll put an `x` in the table below when the disassembly has no instances of 
 	* EQAX 2 - skip if equal (indirect)
 	* EQI 25 - skip if equal, immed
 	* EQIW 17 - skip if equal
-	* GTA
-	* GTAW
-	* GTI
-	* GTIW
-	* LTA
-	* LTA
-	* LTAW
-	* LTAX
-	* LTI
-	* LTIW
-	* NEA
-	* NEAW
-	* NEAX
-	* NEI
-	* NEIW
+	* GTA 3 - skip if LH GT RH
+	* GTAW 4 -
+	* GTI 13
+	* GTIW 1 -
+	* LTA x
+	* LTAW 4
+	* LTAX x
+	* LTI 24
+	* LTIW 3
+	* NEA 4
+	* NEAW x
+	* NEAX 1
+	* NEI x
+	* NEIW 16
 * Explicit Skips
 	* SK - skip on CY/CH/Z
 	* SKIT - interrupt flag
