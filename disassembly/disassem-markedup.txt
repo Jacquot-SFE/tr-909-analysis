@@ -404,10 +404,10 @@ Jmp from 0174
 0269: 88           CALT    ($0090)   // tbl to 122d
 026a: 15 09 40     ORIW    VV:09,$40
 026d: 6f c0        MVI     L,$C0
-026f: 48 02        SLRC    B
-0271: d3           JR      $0285
-0272: 48 02        SLRC    B
-0274: ca           JR      $027F
+026f: 48 02        SLRC    B         /c shift logical right, skip next if carry
+0271: d3           JR      $0285     /s
+0272: 48 02        SLRC    B         /c shift logical right, skip next if carry
+0274: ca           JR      $027F     /s
 0275: 69 40        MVI     A,$40
 0277: 93           CALT    ($00A6)   // tbl to 121d
 0278: 05 09 f7     ANIW    VV:09,$F7
@@ -418,19 +418,19 @@ Jmp from 0174
 0282: c8           JR      $028B
 0283: 22           INX     DE
 0284: c9           JR      $028E
-0285: 48 02        SLRC    B
-0287: fb           JR      $0283
+0285: 48 02        SLRC    B         /c shift logical right, skip next if carry
+0287: fb           JR      $0283     /s
 0288: 69 32        MVI     A,$32
 028a: 93           CALT    ($00A6)   // tbl to 121d
 028b: 15 09 0c     ORIW    VV:09,$0C
-028e: 48 02        SLRC    B
-0290: c7           JR      $0298
+028e: 48 02        SLRC    B         /c shift logical right, skip next if carry
+0290: c7           JR      $0298     /s
 0291: 69 40        MVI     A,$40
 0293: 93           CALT    ($00A6)   // tbl to 121d
 0294: 15 09 10     ORIW    VV:09,$10
 0297: 23           DCX     DEf
-0298: 48 02        SLRC    B
-029a: d9           JR      $02B4
+0298: 48 02        SLRC    B         /c shift logical right, skip next if carry
+029a: d9           JR      $02B4     /s
 029b: 69 40        MVI     A,$40
 029d: 93           CALT    ($00A6)   // tbl to 121d
 029e: 15 09 20     ORIW    VV:09,$20
@@ -1705,8 +1705,8 @@ Fixed area call from 0214, 0990
 0b41: 01 3c        LDAW    VV:3C
 0b43: 46 90        ADI     A,$90
 0b45: 7b 5c        CALF    $0B5C     //
-0b47: 48 02        SLRC    B
-0b49: cc           JR      $0B56
+0b47: 48 02        SLRC    B         /c shift logical right, skip next if carry
+0b49: cc           JR      $0B56     /s
 0b4a: 0b           MOV     A,C
 0b4b: 7b 5c        CALF    $0B5C     //
 0b4d: 01 0b        LDAW    VV:0B
@@ -1754,8 +1754,8 @@ Fixed area func from 0b73, 0b80
 0b89: 01 3c        LDAW    VV:3C
 0b8b: 46 90        ADI     A,$90
 0b8d: 7b 5c        CALF    $0B5C     //
-0b8f: 48 02        SLRC    B
-0b91: cc           JR      $0B9E
+0b8f: 48 02        SLRC    B         /c shift logical right, skip next if carry
+0b91: cc           JR      $0B9E     /s
 0b92: 0b           MOV     A,C
 0b93: 7b 5c        CALF    $0B5C     //
 0b95: 69 00        MVI     A,$00
@@ -2833,8 +2833,8 @@ Table func from 008a
 1215: b8           RET
 
 Table func from 008c
-1216: 48 02        SLRC    B
-1218: cc           JR      $1225
+1216: 48 02        SLRC    B         /c shift logical right, skip next if carry
+1218: cc           JR      $1225     /s
 1219: 48 22        SLR     B
 121b: 69 50        MVI     A,$50
 
@@ -2845,8 +2845,8 @@ Table func xb
 1223: 3c           STAX    (DE+)
 1224: b8           RET
 
-1225: 48 02        SLRC    B
-1227: c3           JR      $122B
+1225: 48 02        SLRC    B         /c shift logical right, skip next if carry
+1227: c3           JR      $122B     /s
 
 Table func xa
 1228: 69 32        MVI     A,$32
@@ -2855,8 +2855,8 @@ Table func xa
 122c: b9           RETS
 
 Table func x0
-122d: 48 02        SLRC    B
-122f: fb           JR      $122B
+122d: 48 02        SLRC    B         /c shift logical right, skip next if carry
+122f: fb           JR      $122B     /s
 1230: 69 50        MVI     A,$50
 1232: ea           JR      $121D
 
@@ -3264,8 +3264,8 @@ Table func 10
 14e4: b8           RET
 
 14e5: 6b 08        MVI     C,$08
-14e7: 48 01        SLRC    A
-14e9: c1           JR      $14EB
+14e7: 48 01        SLRC    A         /c shift logical right, skip next if carry
+14e9: c1           JR      $14EB     /s
 14ea: c2           JR      $14ED
 14eb: 43           INR     C         /c Increment, skip next on carry
 14ec: fa           JR      $14E7     /s
@@ -3275,8 +3275,8 @@ Table func 10
 14f2: c3           JR      $14F6     /s
 14f3: 0c           MOV     A,D
 14f4: 6a 07        MVI     B,$07
-14f6: 48 05        SLLC    A
-14f8: c1           JR      $14FA
+14f6: 48 05        SLLC    A         /c Shift logical left, skip next if it carries
+14f8: c1           JR      $14FA     /s
 14f9: c4           JR      $14FE
 14fa: 52           DCR     B         /c
 14fb: fa           JR      $14F6     /s
@@ -3618,8 +3618,8 @@ Jmp from way above
 1705: 1b           MOV     C,A
 1706: 0c           MOV     A,D
 1707: 1a           MOV     B,A
-1708: 48 02        SLRC    B
-170a: c3           JR      $170E
+1708: 48 02        SLRC    B         /c shift logical right, skip next if carry
+170a: c3           JR      $170E     /s
 170b: 74 1b 80     ORI     C,$80
 170e: 70 1e 51 ff  SBCD    $FF51
 1712: 15 67 04     ORIW    VV:67,$04

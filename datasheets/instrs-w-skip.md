@@ -117,5 +117,5 @@ And I'll put an `x` in the table below when the disassembly has no instances of 
 	* SKN 5 - no flags set
 	* SKNIT 4 - skip on no interrupt flag
 * Shifts
-	* SLLC - logical left, skip next on carry set
-	* SLRC - logical right, skip next on carry set
+	* SLLC 1 - logical left, skip next on carry set
+	* SLRC 12 - logical right, skip next on carry set
