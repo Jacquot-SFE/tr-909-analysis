@@ -80,7 +80,7 @@ And I'll put an `x` in the table below when the disassembly has no instances of 
 	* ONA 2
 	* ONAW x
 	* ONAX x
-	* ONI x
+	* ONI 23
 	* ONIW 17
 * Ind/Dec-rements
 	* DCR 23
