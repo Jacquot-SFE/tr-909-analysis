@@ -61,8 +61,8 @@ Table func from 0080?
 0039: 6a 64        MVI     B,$64
 003b: 48 3e        DIV     B        // Divide EA by x64
 003d: 09           MOV     A,EAL
-003e: 67 00        NEI     A,$00
-0040: 69 0f        MVI     A,$0F
+003e: 67 00        NEI     A,$00    /c Skip next if not equal, imm
+0040: 69 0f        MVI     A,$0F    /s
 0042: 63 2b        STAW    VV:2B
 0044: 0a           MOV     A,B
 0045: 19           MOV     EAL,A
@@ -635,10 +635,10 @@ Jmp from 0386
 03f9: dc           JR      $0416     /s
 03fa: 74 1d 08     ORI     E,$08
 03fd: 2a           LDAX    (DE)
-03fe: 67 00        NEI     A,$00
-0400: 69 01        MVI     A,$01
-0402: 67 ff        NEI     A,$FF
-0404: 69 fe        MVI     A,$FE
+03fe: 67 00        NEI     A,$00     /c Skip next if not equal, imm
+0400: 69 01        MVI     A,$01     /s
+0402: 67 ff        NEI     A,$FF     /c Skip next if not equal, imm
+0404: 69 fe        MVI     A,$FE     /s
 0406: 1a           MOV     B,A
 0407: 01 30        LDAW    VV:30
 0409: 60 aa        GTA     A,B       /c Skip next if A GT B
@@ -1310,12 +1310,12 @@ Table func from 0084?
 08f0: d7           JR      $0908     /s
 08f1: 01 32        LDAW    VV:32
 08f3: 07 0f        ANI     A,$0F
-08f5: 67 06        NEI     A,$06
-08f7: ca           JR      $0902
+08f5: 67 06        NEI     A,$06     /c Skip next if not equal, imm
+08f7: ca           JR      $0902     /s
 08f8: 55 47 10     OFFIW   VV:47,$10 /c Skip next if & result is 0
 08fb: d0           JR      $090C     /s
-08fc: 67 03        NEI     A,$03
-08fe: c3           JR      $0902
+08fc: 67 03        NEI     A,$03     /c Skip next if not equal, imm
+08fe: c3           JR      $0902     /s
 08ff: 77 09        EQI     A,$09     /c Skip next if EQ, immed
 0901: c8           JR      $090A     /s
 0902: 71 05 0f     MVIW    VV:05,$0F
@@ -1698,8 +1698,8 @@ Fixed area call from 0214, 0990
 0b32: 63 59        STAW    VV:59
 0b34: 6b 2c        MVI     C,$2C
 0b36: 58 69        BIT     0,VV:69   /c Test bit 0 of vv:69, skip next if it's set
-0b38: 74 6a 00     NEI     B,$00     /s
-0b3b: b8           RET
+0b38: 74 6a 00     NEI     B,$00     /cs Skip next if not equal, imm
+0b3b: b8           RET               /s
 
 0b3c: 6c ff        MVI     D,$FF
 0b3e: 01 50        LDAW    VV:50
@@ -1715,8 +1715,8 @@ Fixed area call from 0214, 0990
 0b4f: 7b 5c        CALF    $0B5C     //
 0b51: 63 50        STAW    VV:50
 0b53: 64 06 00     MVI     MKH,$00   // Enable all MKH IRQs??
-0b56: 74 6a 00     NEI     B,$00
-0b59: b8           RET
+0b56: 74 6a 00     NEI     B,$00     /c Skip next if not equal, imm
+0b59: b8           RET               /s
 
 0b5a: 43           INR     C         /c Increment, skip next on carry
 0b5b: eb           JR      $0B47     /s
@@ -1764,8 +1764,8 @@ Fixed area func from 0b73, 0b80
 0b97: 7b 5c        CALF    $0B5C     //
 0b99: 63 50        STAW    VV:50
 0b9b: 64 06 00     MVI     MKH,$00   // Enable all MKH IRQs??
-0b9e: 74 6a 00     NEI     B,$00
-0ba1: b8           RET
+0b9e: 74 6a 00     NEI     B,$00     /c Skip next if not equal, imm
+0ba1: b8           RET               /s
 
 0ba2: 43           INR     C         /c Increment, skip next on carry
 0ba3: eb           JR      $0B8F     /s
@@ -1837,8 +1837,8 @@ Fixed area func from 08af
 0bfd: 98           CALT    ($00B0)   // tbl to 14cb
 0bfe: df           JR      $0C1E
 0bff: 15 65 02     ORIW    VV:65,$02
-0c02: 67 07        NEI     A,$07
-0c04: d9           JR      $0C1E
+0c02: 67 07        NEI     A,$07     /c Skip next if not equal, imm
+0c04: d9           JR      $0C1E     /s
 0c05: 8e           CALT    ($009C)   // tbl to 0068
 0c06: 32           INX     HL
 0c07: 0b           MOV     A,C
@@ -2213,8 +2213,8 @@ Fixed area func from 0ecc, 0f5e
 
 Fixed area func from 0de1, 0de7, 057c
 0df9: 07 0c        ANI     A,$0C
-0dfb: 67 0c        NEI     A,$0C
-0dfd: 69 00        MVI     A,$00
+0dfb: 67 0c        NEI     A,$0C     /c Skip next if not equal, imm
+0dfd: 69 00        MVI     A,$00     /s
 0dff: 63 34        STAW    VV:34
 0e01: b8           RET
 
@@ -2510,8 +2510,8 @@ Fixed area func from 1134
 Jmp from 101b
 Fixed area func from 1c09, 1d9e
 0fb9: 01 7e        LDAW    VV:7E
-0fbb: 67 00        NEI     A,$00
-0fbd: 69 0f        MVI     A,$0F
+0fbb: 67 00        NEI     A,$00     /c Skip next if not equal, imm
+0fbd: 69 0f        MVI     A,$0F     /s
 0fbf: 63 2b        STAW    VV:2B
 0fc1: 01 7d        LDAW    VV:7D
 0fc3: 7d 94        CALF    $0D94     //
@@ -2524,8 +2524,8 @@ Fixed area func from 1c09, 1d9e
 0fd1: 07 0f        ANI     A,$0F
 0fd3: 63 25        STAW    VV:25
 0fd5: b8           RET
-0fd6: 67 0a        NEI     A,$0A
-0fd8: 4e cc        JRE     $10A6
+0fd6: 67 0a        NEI     A,$0A     /c Skip next if not equal, imm
+0fd8: 4e cc        JRE     $10A6     /s
 0fda: 37 0a        LTI     A,$0A     /c Skip next if A LT imm
 0fdc: c8           JR      $0FE5     /s
 0fdd: 15 68 04     ORIW    VV:68,$04
@@ -3130,8 +3130,8 @@ Table func xe
 140f: 01 30        LDAW    VV:30
 1411: 5e 65        BIT     6,VV:65   /c Test bit 6 of vv:65, skip next if it's set
 1413: c4           JR      $1418     /s
-1414: 60 ba        LTA     A,B
-1416: c8           JR      $141F
+1414: 60 ba        LTA     A,B       /c Skip nxt if A LT B
+1416: c8           JR      $141F     /s
 1417: b8           RET
 
 Table func xf
@@ -3254,16 +3254,16 @@ Table func 10
 14d1: 59 65        BIT     1,VV:65   /c Test bit 1 of vv:655, skip next if it's set
 14d3: c8           JR      $14DC     /s
 14d4: 60 9d        ORA     A,E
-14d6: 67 00        NEI     A,$00
-14d8: 05 65 fd     ANIW    VV:65,$FD
+14d6: 67 00        NEI     A,$00     /c Skip next if not equal, imm
+14d8: 05 65 fd     ANIW    VV:65,$FD /s
 14db: b8           RET
 
 14dc: 6b 00        MVI     C,$00
 14de: 77 00        EQI     A,$00     /c Skip next if EQ, immed
 14e0: c6           JR      $14E7     /s
 14e1: 0d           MOV     A,E
-14e2: 67 00        NEI     A,$00
-14e4: b8           RET
+14e2: 67 00        NEI     A,$00     /c Skip next if not equal, imm
+14e4: b8           RET               /s
 
 14e5: 6b 08        MVI     C,$08
 14e7: 48 01        SLRC    A         /c shift logical right, skip next if carry
@@ -3492,19 +3492,19 @@ Serial ISR:
 From 1634:
 1638: 4c d9        MOV     A,RXB     // Get RxBuffer into A
 163a: 48 6b        SKNIT   ER        /c skip next if serial error NOT set
-163c: 4e b6        JRE     $16F4     /s Skip way fwd
-163e: 1c           MOV     D,A
+163c: 4e b6        JRE     $16F4     /s Jump to ISR exit
+163e: 1c           MOV     D,A       // store A in D
 163f: 27 f7        GTI     A,$F7     /c Skip next if A GT imm
 1641: c9           JR      $164B     /s
-1642: 67 f8        NEI     A,$F8     // Skip next if not eq F8 - timing clock
-1644: 55 63 01     OFFIW   VV:63,$01 /c Skip next if & result is 0
+1642: 67 f8        NEI     A,$F8     /c Skip next if not eq F8 - timing clock
+1644: 55 63 01     OFFIW   VV:63,$01 /cs Skip next if & result is 0
 1647: 7d 08        CALF    $0D08     /s
 1649: 4e 31        JRE     $167C
 164b: 57 80        OFFI    A,$80     /c Skip next if & result is 0
 164d: 4e 23        JRE     $1672     /s
 164f: 01 6b        LDAW    VV:6B
 1651: 37 0c        LTI     A,$0C     /c Skip next if A LT imm
-1653: 4e 9f        JRE     $16F4     /s
+1653: 4e 9f        JRE     $16F4     /s Jump to ISR exit
 1655: 48 25        SLL     A         // Arith shife left (mul by 2...)
 1657: 48 a8        TABLE             // Table lookup: BC = PC + A
 1659: 21           JB                // Jump through BC
@@ -3577,7 +3577,7 @@ From 1634:
 16c6: 69 07        MVI     A,$07
 16c8: c7           JR      $16D0
 16c9: 55 69 02     OFFIW   VV:69,$02 /c Skip next if & result is 0
-16cc: 4e 26        JRE     $16F4     /s
+16cc: 4e 26        JRE     $16F4     /s Jump to ISR exit
 16ce: 69 01        MVI     A,$01
 16d0: 63 6b        STAW    VV:6B
 16d2: 9d           CALT    ($00BA)   // tbl to 19d2
@@ -3585,7 +3585,7 @@ From 1634:
 16d4: 57 80        OFFI    A,$80     /c Skip next if & result is 0
 16d6: c9           JR      $16E0     /s
 16d7: 30 5e        DCRW    VV:5E     /c
-16d9: da           JR      $16F4     /s
+16d9: da           JR      $16F4     /s Jump to ISR exit
 16da: 01 4d        LDAW    VV:4D
 16dc: 63 4e        STAW    VV:4E
 16de: 01 48        LDAW    VV:48
@@ -3601,7 +3601,7 @@ From 1634:
 16f1: 64 0e fb     ANI     MKH,$FB   // clear serial tx mask - enable tx irq
 
 Jmp from way above
-
+Looks like the return from ISR
 16f4: 11           EXX               // Exchange extended registers (BC DE HL)
 16f5: 10           EXA               // Exchange V, A, EA
 16f6: aa           EI                // Enable interrupts
@@ -3641,8 +3641,8 @@ Jmp from way above
 172d: 01 54        LDAW    VV:54
 172f: 66 23        SUI     A,$23
 1731: 27 10        GTI     A,$10     /c Skip next if A GT imm
-1733: 74 6c 00     NEI     D,$00     /s
-1736: 4f 9a        JRE     $16D2
+1733: 74 6c 00     NEI     D,$00     /cs Skip next if not equal, imm
+1736: 4f 9a        JRE     $16D2     /s
 1738: 48 a8        TABLE             // Table lookup: BC = PC + A
 173a: d1           JR      $174C
 173b: 10           EXA
@@ -3677,8 +3677,8 @@ Jmp from way above
 176d: 7d 94        CALF    $0D94     //
 176f: 27 07        GTI     A,$07     /c Skip next if A GT imm
 1771: c8           JR      $177A     /s
-1772: 67 08        NEI     A,$08
-1774: 05 09 f7     ANIW    VV:09,$F7
+1772: 67 08        NEI     A,$08     /c Skip next if not equal, imm
+1774: 05 09 f7     ANIW    VV:09,$F7 /s
 1777: 34 7e 12     LXI     HL,$127E
 177a: ac           LDAX    (HL+A)
 177b: 70 99        ORAX    (BC)
@@ -3693,30 +3693,30 @@ Jmp from way above
 178b: 4e 21        JRE     $17AE     /s
 178d: 51           DCR     A         /c
 178e: c7           JR      $1796     /s
-178f: 74 6c 00     NEI     D,$00
-1792: 15 66 04     ORIW    VV:66,$04
+178f: 74 6c 00     NEI     D,$00     /c Skip next if not equal, imm
+1792: 15 66 04     ORIW    VV:66,$04 /s
 1795: d8           JR      $17AE
 1796: 51           DCR     A         /c
 1797: c7           JR      $179F     /s
-1798: 74 6c 00     NEI     D,$00
-179b: 05 66 fb     ANIW    VV:66,$FB
+1798: 74 6c 00     NEI     D,$00     /c Skip next if not equal, imm
+179b: 05 66 fb     ANIW    VV:66,$FB /s
 179e: cf           JR      $17AE
 179f: 51           DCR     A         /c
 17a0: c7           JR      $17A8     /s
 17a1: 0c           MOV     A,D
-17a2: 67 00        NEI     A,$00
-17a4: 41           INR     A         /c Increment, skip next on carry
+17a2: 67 00        NEI     A,$00     /c Skip next if not equal, imm
+17a4: 41           INR     A         /cs Increment, skip next on carry
 17a5: 63 74        STAW    VV:74     /s
 17a7: c6           JR      $17AE
-17a8: 74 6c 00     NEI     D,$00
-17ab: 71 74 01     MVIW    VV:74,$01
+17a8: 74 6c 00     NEI     D,$00     /c Skip next if not equal, imm
+17ab: 71 74 01     MVIW    VV:74,$01 /s
 17ae: 69 07        MVI     A,$07
 17b0: 69 04        MVI     A,$04
 17b2: 69 06        MVI     A,$06
 17b4: 69 01        MVI     A,$01
 17b6: 4f 18        JRE     $16D0
 17b8: 71 6b 00     MVIW    VV:6B,$00
-17bb: 4f 37        JRE     $16F4
+17bb: 4f 37        JRE     $16F4     // Jump to ISR exit
 17bd: 55 63 01     OFFIW   VV:63,$01 /c Skip next if & result is 0
 17c0: 40 f8 17     CALL    $17F8     /s
 17c3: 4f 2c        JRE     $16F1
@@ -3777,9 +3777,9 @@ Func from 00c0, 17c0
 1828: b8           RET
 
 1829: 71 6b 09     MVIW    VV:6B,$09
-182c: 54 f4 16     JMP     $16F4
-182f: 74 6c 41     NEI     D,$41
-1832: c5           JR      $1838
+182c: 54 f4 16     JMP     $16F4     // Jump to ISR exit
+182f: 74 6c 41     NEI     D,$41     /c Skip next if not equal, imm
+1832: c5           JR      $1838     /s
 1833: 5e 67        BIT     6,VV:67   /c Test bit 6 of vv:67, skip next if it's set
 1835: c7           JR      $183D     /s
 1836: 69 00        MVI     A,$00
@@ -3791,10 +3791,11 @@ Func from 00c0, 17c0
 1840: 4e 3e        JRE     $1880
 1842: 71 6b 00     MVIW    VV:6B,$00
 1845: 0c           MOV     A,D
-1846: 67 51        NEI     A,$51
-1848: 4e 5a        JRE     $18A4
-184a: 67 50        NEI     A,$50
-184c: 4e c2        JRE     $1910
+1846: 67 51        NEI     A,$51     /c Skip next if not equal, imm
+1848: 4e 5a        JRE     $18A4     /s
+184a: 67 50        NEI     A,$50     /c Skip next if not equal, imm
+184a: 67 50        NEI     A,$50     /cs
+184c: 4e c2        JRE     $1910     /s
 184e: 5c 67        BIT     4,VV:67   /c Test bit 4 of vv:67, skip next if it's set
 1850: dc           JR      $186D     /s
 1851: 77 53        EQI     A,$53     /c Skip next if EQ, immed
@@ -3807,17 +3808,17 @@ Func from 00c0, 17c0
 1861: 40 b6 19     CALL    $19B6     //
 1864: 6c f7        MVI     D,$F7
 1866: 4e 20        JRE     $1888
-1868: 67 71        NEI     A,$71
-186a: 4e 47        JRE     $18B3
+1868: 67 71        NEI     A,$71     /c Skip next if not equal, imm
+186a: 4e 47        JRE     $18B3     /s
 186c: cd           JR      $187A
 186d: 5d 67        BIT     5,VV:67   /c Test bit 5 of vv:67, skip next if it's set
 186f: ca           JR      $187A     /s
-1870: 67 52        NEI     A,$52
-1872: 4e b4        JRE     $1928
-1874: 67 55        NEI     A,$55
-1876: d7           JR      $188E
-1877: 67 54        NEI     A,$54
-1879: db           JR      $1895
+1870: 67 52        NEI     A,$52     /c Skip next if not equal, imm
+1872: 4e b4        JRE     $1928     /s
+1874: 67 55        NEI     A,$55     /c Skip next if not equal, imm
+1876: d7           JR      $188E     /s
+1877: 67 54        NEI     A,$54     /c Skip next if not equal, imm
+1879: db           JR      $1895     /s
 187a: b2           PUSH    DE
 187b: 6c f0        MVI     D,$F0
 187d: 9d           CALT    ($00BA)   // tbl to 19d2
@@ -3945,10 +3946,10 @@ jmp from below (18fb)
 196e: 9b           CALT    ($00B6)   // tbl to 199f
 196f: 74 c0 56     ADDW    VV:56
 1972: 07 7f        ANI     A,$7F
-1974: 67 00        NEI     A,$00
-1976: 15 69 80     ORIW    VV:69,$80
+1974: 67 00        NEI     A,$00     /c Skip next if not equal, imm
+1976: 15 69 80     ORIW    VV:69,$80 /s
 1979: 40 b6 19     CALL    $19B6     //
-197c: 54 f4 16     JMP     $16F4
+197c: 54 f4 16     JMP     $16F4     // Jump to ISR exit
 197f: 6c 70        MVI     D,$70
 1981: b2           PUSH    DE
 1982: 40 fd 19     CALL    $19FD     //
@@ -3964,7 +3965,7 @@ jmp from below (18fb)
 1993: 54 88 18     JMP     $1888
 1996: 05 69 7e     ANIW    VV:69,$7E
 1999: 71 6b 00     MVIW    VV:6B,$00
-199c: 54 f4 16     JMP     $16F4
+199c: 54 f4 16     JMP     $16F4     // Jump to ISR exit
 
 Table func 13
 199f: 40 e1 19     CALL    $19E1     //
